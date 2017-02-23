@@ -23,7 +23,7 @@ public class RegisteredUserDatabase {
     
     public RegisteredUserDatabase() {
     	userDatabase = new ArrayList<>();
-    	RegisteredUser testUser = new RegisteredUser("test@test.com", "test@test.com", "p4ssw0rd", "p4ssw0rd", "test", "test", "test");
+    	RegisteredUser testUser = new RegisteredUser("test", "test@test.com", "p4ssw0rd", "p4ssw0rd", "test", "test", "test");
     	userDatabase.add(testUser);
     }
     

@@ -24,6 +24,7 @@ public class RegisteredUser implements Serializable, Cloneable {
     
     public RegisteredUser(String userName, String email, String password, String validationPassword, String firstName,
     						String lastName, String department){
+    	this.userName = userName;
     	this.email = email;
     	this.password = password;
     	this.validationPassword = validationPassword;
@@ -31,16 +32,6 @@ public class RegisteredUser implements Serializable, Cloneable {
     	this.lastName = lastName;
     	this.department = department;
     }    
-    
-    /*
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-    */
     
     public String getUserName() {
         return userName;
@@ -98,10 +89,15 @@ public class RegisteredUser implements Serializable, Cloneable {
         this.department = department;
     }
     
-    //check if this RegisteredUser object has the same user name or email address as the other RegisteredUser object
+    //check if this RegisteredUser object has the same user name or email address as the other RegisteredUser object in the database
     //This is used to validate if the user name or the email has been used before when sign up for a new user
-    public boolean isValid(RegisteredUser registeredUser){
-    	return !(registeredUser.getUserName().equals(this.userName) || registeredUser.getEmail().equals(this.email));
+    public boolean isValid(RegisteredUserDatabase userDatabase){
+    	for(RegisteredUser r : userDatabase.getDatabase()){
+    		if(r.getUserName().equals(this.userName) || r.getEmail().equals(this.email)){
+    			return false;
+    		}
+    	}
+    	return true;
     }
     
     //check if the password is the same as the validationPassword
@@ -121,9 +117,8 @@ public class RegisteredUser implements Serializable, Cloneable {
     @Override
     public String toString() {
         return "Contact{firstName=" + firstName
-                + ", lastName=" + lastName + ", department= " + department + ", email="
+                + ", lastName=" + lastName + ", department= " + department + ", userName=" + userName + ", email="
                 + email + '}';
     }
-
 }
 
