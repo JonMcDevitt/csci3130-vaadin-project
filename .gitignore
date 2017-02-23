@@ -18,6 +18,9 @@ hs_err_pid*
 
 ### Eclipse ignore
 .project
+.classpath
+.settings/
+
 
 ### IntelliJ IDEA ignore
 /.idea
