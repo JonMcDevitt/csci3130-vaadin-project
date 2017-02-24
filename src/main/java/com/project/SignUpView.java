@@ -3,7 +3,15 @@ package com.project;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Layout;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.PasswordField;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 
 /**
@@ -58,7 +66,7 @@ public class SignUpView extends CustomComponent implements View {
     }
 
     private void configureActions() {
-    	RegisteredUserDatabase userDatabase = new RegisteredUserDatabase();
+    	RegisteredUserDatabase userDatabase = RegisteredUserDatabase.getInstance();
     	
     	
         signUpButton.addClickListener((Button.ClickListener) clickEvent -> {
@@ -75,12 +83,8 @@ public class SignUpView extends CustomComponent implements View {
                         + username.getValue());
                 userDatabase.save(newUser);
             }
-            else{
+            else {
             	Notification.show(username.getValue() + " already used");
-            }
-            
-            for(RegisteredUser r : userDatabase.getDatabase()){
-            	System.out.println("Database: " + r.toString());
             }
             
         });

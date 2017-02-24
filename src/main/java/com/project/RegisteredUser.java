@@ -92,7 +92,7 @@ public class RegisteredUser implements Serializable, Cloneable {
     //check if this RegisteredUser object has the same user name or email address as the other RegisteredUser object in the database
     //This is used to validate if the user name or the email has been used before when sign up for a new user
     public boolean isValid(RegisteredUserDatabase userDatabase){
-    	for(RegisteredUser r : userDatabase.getDatabase()){
+    	for (RegisteredUser r : userDatabase.getUserList()){
     		if(r.getUserName().equals(this.userName) || r.getEmail().equals(this.email)){
     			return false;
     		}
@@ -101,7 +101,7 @@ public class RegisteredUser implements Serializable, Cloneable {
     }
     
     //check if the password is the same as the validationPassword
-    public boolean passwordIsValid(){
+    public boolean passwordIsValid() {
     	return this.password.equals(this.validationPassword);
     }
 
@@ -116,7 +116,7 @@ public class RegisteredUser implements Serializable, Cloneable {
 
     @Override
     public String toString() {
-        return "Contact{firstName=" + firstName
+        return "RegisteredUser{firstName=" + firstName
                 + ", lastName=" + lastName + ", department= " + department + ", userName=" + userName + ", email="
                 + email + '}';
     }
