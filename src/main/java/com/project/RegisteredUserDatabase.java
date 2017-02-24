@@ -1,0 +1,53 @@
+package com.project;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/** Separate Java service class.
+ * Backend implementation for the address book application, with "detached entities"
+ * simulating real world DAO. Typically these something that the Java EE
+ * or Spring backend services provide.
+ */
+// Backend service class. This is just a typical Java backend implementation
+// class and nothing Vaadin specific.
+
+public class RegisteredUserDatabase {
+
+    private static final RegisteredUserDatabase instance;
+    private List<RegisteredUser> userList;
+    
+    public List<RegisteredUser> getUserList() {
+        return userList;
+    }
+
+    static {
+        instance = new RegisteredUserDatabase();
+    }
+    
+    private RegisteredUserDatabase() {
+    	userList = new ArrayList<>();
+    	RegisteredUser testUser = getTestUser();
+    	userList.add(testUser);
+    }
+    
+    public static RegisteredUserDatabase getInstance() {
+    	return instance;
+    }
+
+    public synchronized long count() {
+        return userList.size();
+    }
+  
+    public boolean delete(RegisteredUser user) {
+        return userList.remove(user);
+    }
+    
+    public synchronized void save(RegisteredUser user) {
+        userList.add(user);
+    }
+    
+    private static RegisteredUser getTestUser() {
+        return new RegisteredUser("test", "test@test.com", "p4ssw0rd", "p4ssw0rd", "test", "test", "test");
+    }
+}
+
