@@ -47,6 +47,10 @@ public class LoginView extends CustomComponent implements View{
         signUp = new Button("Sign Up");
         signUp.setCaption("Sign up for service");
 
+        signUp.addClickListener((Button.ClickListener) clickEvent -> {
+                     this.getUI().setContent(new SignUpView());
+        });
+                
         HorizontalLayout buttons = new HorizontalLayout(loginButton, signUp);
         buttons.setSpacing(true);
         buttons.setMargin(new MarginInfo(true, true));
