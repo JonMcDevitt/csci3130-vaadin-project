@@ -8,6 +8,8 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
 
+import javax.xml.soap.Text;
+
 /**
  * Created by Owner on 2017-02-17.
  */
@@ -40,17 +42,7 @@ public class LoginView extends CustomComponent implements View{
 
         loginButton = new Button("Login");
         loginButton.setCaption("Login");
-        loginButton.addClickListener((Button.ClickListener) clickEvent -> {
-            if(!username.isValid()) {
-                Notification.show("Invalid username.");
-            } else if(username.getValue().equals("test@test.com") && password.getValue().equals("p4ssw0rd")) {
-                getSession().setAttribute("user", username.getValue());
-                getUI().getNavigator().navigateTo(MainMenuView.NAME);
-            } else {
-                this.password.setValue(null);
-                this.password.focus();
-            }
-        });
+        loginButton.addClickListener((Button.ClickListener) clickEvent -> logIn(this.username, this.password));
 
         signUp = new Button("Sign Up");
         signUp.setCaption("Sign up for service");
@@ -76,12 +68,24 @@ public class LoginView extends CustomComponent implements View{
         setCompositionRoot(viewLayout);
     }
 
+    private void logIn(TextField uname, PasswordField pword) {
+        if(!uname.isValid()) {
+            Notification.show("Invalid username.");
+        } else if(uname.getValue().equals("test@test.com") && pword.getValue().equals("p4ssw0rd")) {
+            getSession().setAttribute("user", uname.getValue());
+            getUI().getNavigator().navigateTo(MainMenuView.NAME);
+        } else {
+            pword.setValue(null);
+            pword.focus();
+        }
+    }
+
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
         username.focus();
     }
 
-    private class PasswordValidator extends AbstractValidator<String> {
+    public static class PasswordValidator extends AbstractValidator<String> {
 
         public PasswordValidator() {
             super("Invalid password.");
@@ -100,5 +104,13 @@ public class LoginView extends CustomComponent implements View{
         public Class<String> getType() {
             return String.class;
         }
+    }
+
+    public TextField getUsername() {
+        return username;
+    }
+
+    public PasswordField getPassword() {
+        return password;
     }
 }

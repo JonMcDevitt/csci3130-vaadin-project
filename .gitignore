@@ -40,12 +40,14 @@ hs_err_pid*
 
 
 
-### IntelliJ IDEA 
-ignore
-/
-.idea
-
+### IntelliJ IDEA ignore
+/.idea
 *.iml
+
+### Eclipse ignore
+.project
+.classpath
+.settings/
 
 
 ### Generated Package 
