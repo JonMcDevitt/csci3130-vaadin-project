@@ -1,0 +1,17 @@
+language: java
+install:
+- mvn install
+jdk:
+- oraclejdk8
+sudo: false
+addons:
+  apt:
+    packages:
+    - oracle-java8-installer
+deploy:
+  provider: heroku
+  api_key:
+    secure: KyBZg0UrwUlHlBxnZH69kysNLBaPLghv4fhog+X/LXfcEJW0gqdfS2m8HHx/vXbhhAFIm7Oarrdr90XCGEZuMc5FD08/LE4bmakI1oBudh4Tw42aDwwDufvFeAW9alkXP65vPlfuTak8LL+bQ371ckGeR3TofqmS6SVqqxXCOJEw9cMz8W7J1ByWIxxlT0iwnQYEuLbjapVIdELJmqCLJfs0a8qI//owjZstHPkp3gBLOKnv0PWPeryEwwtfSRCYssxzWxxe+oumo/efp432ZszbkD8AtQt+aWtI3X0X11cnuJ3MLJsqBG7ivA0ocPP5kaFEG6MoAcWRMNMzuPtqVquZsMCB2yL3tKCmJlwjYMkp1DD74OO7wrRFdklS/Hgb1iRFLdXZgvevd+aneIvWRHWW+ShlZJpamlrKuq920yoEC0QWSkPThp6Svw4YKAT0OkEKEkcRAHPIC/ucTV0TAZ15GN65gFZ5HCdk0eu5oO/+IKxGoxnT79/RFne1Ce4GO45VIxO/PSAzx7DGLNvEnB/LgAkCJCUIuhrss0iZN2qXHjViR7LnCyLZAKkJk0QPsv5ITvLQ2+RICCyVEghuwhhZawMWqVowiYQ55lyIWr1T7SxjuMbnQdfVGjGt+FkKugpX+RaAITHH6n+8kGt8FtqZWkTj43yQDyno6tLwyRs=
+  app: csci3130-vaadin-project
+  on:
+    repo: JonMcDevitt/csci3130-vaadin-project

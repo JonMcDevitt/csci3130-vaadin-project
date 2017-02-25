@@ -77,16 +77,23 @@ public class SignUpView extends CustomComponent implements View {
                     department.getValue(),
                     password.getValue(),
                     confirmPassword.getValue());
-            if (newUser.isValid(userDatabase)) {
-                this.getUI().setContent(new LoginView());
-                Notification.show("Signed up with username: "
-                        + username.getValue());
-                userDatabase.save(newUser);
+            if(newUser.isValidInput(username.getValue(), useremail.getValue(), firstname.getValue(), 
+            		lastname.getValue(), password.getValue(), confirmPassword.getValue())){
+            	if (newUser.isValid(userDatabase)) {
+                    this.getUI().setContent(new LoginView());
+                    Notification.show("Signed up with username: "
+                            + username.getValue());
+                    userDatabase.save(newUser);
+                }
+                else{
+                	Notification.show(username.getValue() + " already used");
+                }    
             }
+
             else {
             	Notification.show(username.getValue() + " already used");
             }
-            
+           
         });
 
         clearButton.addClickListener((Button.ClickListener) clickEvent -> {

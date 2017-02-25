@@ -100,6 +100,15 @@ public class RegisteredUser implements Serializable, Cloneable {
     	return true;
     }
     
+    //check if required textfields are filled
+    public boolean isValidInput(String userName, String email, String firstName, String lastName, String password, String passwordVal){
+    	if(userName.equals("") || email.equals("") || firstName.equals("") || lastName.equals("") 
+    		|| password.equals("") || passwordVal.equals("")){
+    		return false;
+    	}
+    	return true;
+    }
+    
     //check if the password is the same as the validationPassword
     public boolean passwordIsValid() {
     	return this.password.equals(this.validationPassword);
