@@ -2,6 +2,7 @@ package com.project;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /** Separate Java service class.
  * Backend implementation for the address book application, with "detached entities"
@@ -50,6 +51,15 @@ public class RegisteredUserDatabase {
     
     private static RegisteredUser getTestUser() {
         return new RegisteredUser("test", "test@test.com", "p4ssw0rd", "test", "test", "test");
+    }
+
+    public Optional<RegisteredUser> fetchUser(String email) {
+        for(RegisteredUser r : userList) {
+            if(email.equals(r.getEmail())) {
+                return Optional.of(r);
+            }
+        }
+        return Optional.empty();
     }
 }
 

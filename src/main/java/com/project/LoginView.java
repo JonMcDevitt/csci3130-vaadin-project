@@ -2,30 +2,29 @@ package com.project;
 
 import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.data.validator.EmailValidator;
+import com.vaadin.event.FieldEvents;
+import com.vaadin.event.ShortcutAction;
+import com.vaadin.event.ShortcutListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.PasswordField;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
+import sun.rmi.runtime.Log;
+
+import javax.swing.*;
+import java.util.Optional;
 
 /**
  * Created by Owner on 2017-02-17.
  */
 public class LoginView extends CustomComponent implements View {
-    
+
+    private final RegisteredUserDatabase database = RegisteredUserDatabase.getInstance();
+
     public static final String NAME = "Login";
     
-    private final String testUsername = "test@test.com";
-    private final String testUserPassword = "p4ssw0rd"; 
-    
-    private final TextField usernameTextField = new TextField();
+    private final TextField emailTextField = new TextField();
     private final PasswordField passwordField = new PasswordField();
     private final Button loginButton = new Button();
     private final Button signUpButton = new Button();
@@ -33,7 +32,7 @@ public class LoginView extends CustomComponent implements View {
     private static final int MINIMUM_PASSWORD_LENGTH = 8;
 
     public LoginView() {
-        initUsernameTextField(usernameTextField);
+        initUsernameTextField(emailTextField);
         initPasswordField(passwordField);
         initLoginButton(loginButton);
         initSignUpButton(signUpButton);
@@ -44,35 +43,48 @@ public class LoginView extends CustomComponent implements View {
 
     private final void initUsernameTextField(TextField usernameTextField) {
         usernameTextField.addValidator(new EmailValidator("Username must be an email address."));
-        usernameTextField.setCaption("User email: ");
         usernameTextField.setWidth("300px");
         usernameTextField.setRequired(true);
-        usernameTextField.setInputPrompt("Your email here (e.g. joe_blow@mail.com)");
+        usernameTextField.setInputPrompt("Email address or username");
         usernameTextField.setInvalidAllowed(false);
+        usernameTextField.addShortcutListener(new ShortcutListener("Login", ShortcutAction.KeyCode.ENTER, null) {
+            @Override
+            public void handleAction(Object o, Object o1) {
+                LoginView.this.loginButton.click();
+            }
+        });
     }
     
     private final void initPasswordField(PasswordField passwordField) {
         passwordField.addValidator(new PasswordValidator());
-        passwordField.setCaption("Login: ");
         passwordField.setWidth("300px");
         passwordField.setRequired(true);
         passwordField.setValue("");
         passwordField.setNullRepresentation("");
+        passwordField.addFocusListener((FieldEvents.FocusListener) focusEvent -> LoginView.this.focus());
+        passwordField.addShortcutListener(new ShortcutListener("Login", ShortcutAction.KeyCode.ENTER, null) {
+            @Override
+            public void handleAction(Object o, Object o1) {
+                LoginView.this.loginButton.click();
+            }
+        });
     }
 
     private final void initLoginButton(Button loginButton) {
         Button.ClickListener onLoginClicked = event -> 
         {
-            boolean validUsername = usernameTextField.getValue().equals(testUsername);
-            boolean validPassword = passwordField.getValue().equals(testUserPassword);
-            
-            if (!usernameTextField.isValid()) {
-                Notification.show("Invalid username.");
-            } else if (validUsername && validPassword) {
-                getSession().setAttribute("user", testUsername);
+            String uName = emailTextField.getValue();
+            String pWord = passwordField.getValue();
+
+            Optional<RegisteredUser> r = database.fetchUser(uName);
+            if(!r.isPresent()) {
+                Notification.show("Invalid username", Notification.Type.ERROR_MESSAGE);
+            } else if(pWord.equals(r.get().getPassword())) {
+                getSession().setAttribute("user", uName);
                 getUI().getNavigator().navigateTo(MainMenuView.NAME);
             } else {
-                passwordField.setValue(null);
+                Notification.show("Error: Invalid password", Notification.Type.ERROR_MESSAGE);
+                passwordField.setValue("");
                 passwordField.focus();
             }
         };
@@ -82,7 +94,8 @@ public class LoginView extends CustomComponent implements View {
     }
     
     private final void initSignUpButton(Button signUpButton) {
-        signUpButton.setCaption("Sign up for service");
+        signUpButton.setCaption("Sign up");
+        signUpButton.addClickListener((Button.ClickListener) clickEvent -> getUI().setContent(new SignUpView()));
     }
     
     private final void setupLayout() {
@@ -90,23 +103,29 @@ public class LoginView extends CustomComponent implements View {
         buttons.setSpacing(true);
         buttons.setMargin(new MarginInfo(true, true));
 
-        VerticalLayout fields = new VerticalLayout(usernameTextField, passwordField, buttons);
-        String caption = String.format("Please login to access the application (%s/%s)", testUsername, testUserPassword);
-        fields.setCaption(caption);
+        FormLayout fields = new FormLayout(emailTextField, passwordField, buttons);
         fields.setSpacing(true);
-        fields.setMargin(new MarginInfo(true, true, true, true));
-        fields.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+        fields.setWidth("400px");
+        fields.setMargin(new MarginInfo(true, true));
 
         VerticalLayout viewLayout = new VerticalLayout(fields);
-        viewLayout.setComponentAlignment(fields, Alignment.MIDDLE_CENTER);
         viewLayout.setStyleName(Reindeer.LAYOUT_BLACK);
         viewLayout.setStyleName("centre-panel", true);
+        viewLayout.setSizeFull();
+        viewLayout.setComponentAlignment(fields, Alignment.MIDDLE_CENTER);
         setCompositionRoot(viewLayout);
     }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        usernameTextField.focus();
+        emailTextField.focus();
+    }
+
+    @Override
+    protected void focus() {
+        if(passwordField.getValue().equals("")) {
+            passwordField.setInputPrompt(null);
+        }
     }
 
     private static class PasswordValidator extends AbstractValidator<String> {
