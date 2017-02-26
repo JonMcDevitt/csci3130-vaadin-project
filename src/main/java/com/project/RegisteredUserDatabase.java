@@ -1,11 +1,7 @@
 package com.project;
 
-import org.apache.commons.beanutils.BeanUtils;
-
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.ArrayList;
+import java.util.List;
 
 /** Separate Java service class.
  * Backend implementation for the address book application, with "detached entities"
@@ -14,40 +10,46 @@ import java.util.ArrayList;
  */
 // Backend service class. This is just a typical Java backend implementation
 // class and nothing Vaadin specific.
+
 public class RegisteredUserDatabase {
 
-    private static RegisteredUserDatabase instance;
+    private static final RegisteredUserDatabase instance;
+    private List<RegisteredUser> userList;
+    
+    public List<RegisteredUser> getUserList() {
+        return userList;
+    }
 
-    private ArrayList<RegisteredUser> userDatabase;
-    
-    
-    public RegisteredUserDatabase() {
-    	userDatabase = new ArrayList<>();
-    	RegisteredUser testUser = new RegisteredUser("test", "test@test.com", "p4ssw0rd", "p4ssw0rd", "test", "test", "test");
-    	userDatabase.add(testUser);
+    static {
+        instance = new RegisteredUserDatabase();
     }
     
-    public ArrayList<RegisteredUser> getDatabase(){
-    	return userDatabase;
+    private RegisteredUserDatabase() {
+    	userList = new ArrayList<>();
+    	RegisteredUser testUser = getTestUser();
+    	userList.add(testUser);
+    }
+    
+    public static RegisteredUserDatabase getInstance() {
+    	return instance;
     }
 
     public synchronized long count() {
-        return userDatabase.size();
+        return userList.size();
     }
-    
-    
+  
     public boolean delete(RegisteredUser user) {
-        for (RegisteredUser r : userDatabase){
-        	if(r.getUserName().equals(user.getUserName())){
-        		userDatabase.remove(r);
-        		return true;
-        	}
-        }
-        return false;
+        return userList.remove(user);
     }
-
+    
     public synchronized void save(RegisteredUser user) {
-        userDatabase.add(user);
+        if (user.isValid(this)) {
+            userList.add(user);
+        }
+    }
+    
+    private static RegisteredUser getTestUser() {
+        return new RegisteredUser("test", "test@test.com", "p4ssw0rd", "test", "test", "test");
     }
 }
 

@@ -39,7 +39,6 @@ hs_err_pid*
 .settings/
 
 
-
 ### IntelliJ IDEA ignore
 /.idea
 *.iml
