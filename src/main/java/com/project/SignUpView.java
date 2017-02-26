@@ -24,7 +24,7 @@ import com.vaadin.ui.themes.Reindeer;
  */
 public class SignUpView extends CustomComponent implements View {
 
-    public static final String NAME = "Signup";
+    public static final String NAME = "SignUp";
     private static final String WIDTH_TEXTFIELD_DEFAULT = "300px";
     private static final String USER_INPUT_PROMPT_MESSAGE = "\"Your email here (e.g. joe_blow@mail.com)\"";
 
@@ -44,11 +44,11 @@ public class SignUpView extends CustomComponent implements View {
 
         userName = new TextField("Username: ");
         userEmail = new TextField("User Email: ");
+        password = new PasswordField("Password: ");
+        confirmPassword = new PasswordField("Confirm Password: ");
         firstName = new TextField("First Name: ");
         lastName = new TextField("Last Name: ");
         department = new TextField("Department: ");
-        password = new PasswordField("Password: ");
-        confirmPassword = new PasswordField("Confirm Password: ");
         signUpButton = new Button("Sign Up");
         clearButton = new Button("Clear");
         components = new ArrayList<Component>();
@@ -61,11 +61,11 @@ public class SignUpView extends CustomComponent implements View {
     private void configureComponents() {
         components.add(userName);
         components.add(userEmail);
+        components.add(password);
+        components.add(confirmPassword);
         components.add(firstName);
         components.add(lastName);
         components.add(department);
-        components.add(password);
-        components.add(confirmPassword);
         components.add(signUpButton);
         components.add(clearButton);
 
@@ -84,8 +84,9 @@ public class SignUpView extends CustomComponent implements View {
         RegisteredUserDatabase userDatabase = RegisteredUserDatabase.getInstance();
 
         signUpButton.addClickListener((Button.ClickListener) clickEvent -> {
-            RegisteredUser newUser = new RegisteredUser(userName.getValue(), userEmail.getValue(), firstName.getValue(),
-                    lastName.getValue(), department.getValue(), password.getValue());
+            RegisteredUser newUser = new RegisteredUser(userName.getValue(), userEmail.getValue(), password.getValue(),
+                    firstName.getValue(), lastName.getValue(), department.getValue());
+
             boolean isValidUser = newUser.isValidUser();
             boolean isValid = newUser.isValid(userDatabase);
 

@@ -16,7 +16,7 @@ public class RegisteredUser implements Serializable, Cloneable {
     private final String firstName;
     private final String lastName;
     private final String department;
-    
+
     public RegisteredUser(String userName, String email, String password, String firstName,
     						String lastName, String department) {
     	this.userName = userName;
@@ -54,6 +54,14 @@ public class RegisteredUser implements Serializable, Cloneable {
             }
         }        
         return true;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
     }
     
     @Override
