@@ -8,11 +8,7 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser window 
@@ -32,7 +28,6 @@ public class LoginUI extends UI {
         getNavigator().addView(MainMenuView.NAME, MainMenuView.class);
 
         getNavigator().addViewChangeListener(new ViewChangeListener() {
-
             @Override
             public boolean beforeViewChange(ViewChangeEvent viewChangeEvent) {
                 boolean isLoggedIn = getSession().getAttribute("user") != null;
@@ -50,7 +45,6 @@ public class LoginUI extends UI {
 
             @Override
             public void afterViewChange(ViewChangeEvent viewChangeEvent) {
-
             }
         });
     }

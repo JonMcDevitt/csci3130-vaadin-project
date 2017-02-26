@@ -1,32 +1,56 @@
 # Created by .ignore support plugin (hsz.mobi)
+
 ### Java template
+
 *.class
 
+
 # BlueJ files
+
 *.ctxt
 
+
 # Mobile Tools for Java (J2ME)
+
 .mtj.tmp/
 
-# Package Files #
+
+# Package Files 
+#
+
 *.jar
+
 *.war
+
 *.ear
 
+
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+
 hs_err_pid*
 
 # Ignore auto-generated stylesheet
 src/main/webapp/VAADIN/themes/mytheme/styles.css
 
 ### Eclipse ignore
+
 .project
+
 .classpath
+
 .settings/
+
 
 ### IntelliJ IDEA ignore
 /.idea
 *.iml
 
-### Generated Package ignore
+### Eclipse ignore
+.project
+.classpath
+.settings/
+
+
+### Generated Package 
+ignore
 /target
