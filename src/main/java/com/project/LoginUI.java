@@ -33,16 +33,15 @@ public class LoginUI extends UI {
 
         getNavigator().addViewChangeListener(new ViewChangeListener() {
 
-
             @Override
             public boolean beforeViewChange(ViewChangeEvent viewChangeEvent) {
                 boolean isLoggedIn = getSession().getAttribute("user") != null;
                 boolean isLoginView = viewChangeEvent.getNewView() instanceof LoginView;
                 boolean ret = true;
-                if(!isLoggedIn && !isLoginView) {
+                if (!isLoggedIn && !isLoginView) {
                     getNavigator().navigateTo(LoginView.NAME);
                     ret = false;
-                } else if(isLoggedIn && isLoginView) {
+                } else if (isLoggedIn && isLoginView) {
                     ret = false;
                 }
 

@@ -27,7 +27,6 @@ public class MainMenuView extends CustomComponent implements View {
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
         String username = String.valueOf(getSession().getAttribute("user"));
-
         welcome.setValue("Welcome, " + username + ", to our application!");
     }
 }
