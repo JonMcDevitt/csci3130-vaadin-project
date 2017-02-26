@@ -43,11 +43,13 @@ public class RegisteredUserDatabase {
     }
     
     public synchronized void save(RegisteredUser user) {
-        userList.add(user);
+        if (user.isValid(this)) {
+            userList.add(user);
+        }
     }
     
     private static RegisteredUser getTestUser() {
-        return new RegisteredUser("test", "test@test.com", "p4ssw0rd", "p4ssw0rd", "test", "test", "test");
+        return new RegisteredUser("test", "test@test.com", "p4ssw0rd", "test", "test", "test");
     }
 }
 
