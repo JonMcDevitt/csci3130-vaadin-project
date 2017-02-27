@@ -40,7 +40,7 @@ public class RegisteredUser implements Serializable, Cloneable {
 
     //check if required textfields are filled
     public boolean isValidUser() {
-        for (Field f : getClass().getFields()) {
+        for (Field f : this.getClass().getDeclaredFields()) {
             if (f.getType() == String.class) {
                 try {
                     String value = (String) f.get(this);
