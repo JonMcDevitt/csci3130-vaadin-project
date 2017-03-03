@@ -1,14 +1,11 @@
 package com.project;
 
-import java.io.Serializable;
-import java.lang.reflect.Field;
-
-import org.apache.commons.beanutils.BeanUtils;
-
 // Backend DTO class. This is just a typical Java backend implementation
 // class and nothing Vaadin specific.
 
-public class RegisteredUser implements Serializable, Cloneable {
+import java.lang.reflect.Field;
+
+public class RegisteredUser{
 
     private final String userName;
     private final String email;
@@ -62,15 +59,6 @@ public class RegisteredUser implements Serializable, Cloneable {
 
     public String getPassword() {
         return password;
-    }
-    
-    @Override
-    public RegisteredUser clone() throws CloneNotSupportedException {
-        try {
-            return (RegisteredUser) BeanUtils.cloneBean(this);
-        } catch (Exception ex) {
-            throw new CloneNotSupportedException();
-        }
     }
 
     @Override
