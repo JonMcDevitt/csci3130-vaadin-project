@@ -3,6 +3,8 @@ package com.project;
 // Backend DTO class. This is just a typical Java backend implementation
 // class and nothing Vaadin specific.
 
+import java.lang.reflect.Field;
+
 public class RegisteredUser{
 
     private final String userName;
