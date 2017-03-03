@@ -1,19 +1,17 @@
 package com.project;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-
-import org.apache.commons.beanutils.BeanUtils;
+import java.util.List;
 
 /*
  * Created by Jili on 2017-03-01
  * Temporary Course class for creating Course objects for "Go to class" function test
  */
 
-public class Course implements Serializable, Cloneable {
+public class Course{
 
     private final String courseName;
-    private final ArrayList<Student> studentRoster;
+    private final List<Student> studentRoster;
 
     public Course(String courseName) {
 
@@ -29,17 +27,8 @@ public class Course implements Serializable, Cloneable {
     	return courseName;
     }
     
-    public ArrayList<Student> getStudentRoster(){
+    public List<Student> getStudentRoster(){
     	return studentRoster;
-    }
-    
-    @Override
-    public RegisteredUser clone() throws CloneNotSupportedException {
-        try {
-            return (RegisteredUser) BeanUtils.cloneBean(this);
-        } catch (Exception ex) {
-            throw new CloneNotSupportedException();
-        }
     }
 
     @Override

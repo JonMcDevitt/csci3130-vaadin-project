@@ -1,8 +1,5 @@
 package com.project;
 
-import java.io.Serializable;
-import java.lang.reflect.Field;
-
 import org.apache.commons.beanutils.BeanUtils;
 
 /*
@@ -11,7 +8,7 @@ import org.apache.commons.beanutils.BeanUtils;
  * Temporary Student class for creating Student objects for "Go to class" function test
  */
 
-public class Student implements Serializable, Cloneable {
+public class Student {
 
     private final String firstName;
     private final String lastName;
@@ -30,15 +27,6 @@ public class Student implements Serializable, Cloneable {
     	return lastName;
     }
     
-    @Override
-    public RegisteredUser clone() throws CloneNotSupportedException {
-        try {
-            return (RegisteredUser) BeanUtils.cloneBean(this);
-        } catch (Exception ex) {
-            throw new CloneNotSupportedException();
-        }
-    }
-
     @Override
     public String toString() {
         return "RegisteredUser{firstName=" + firstName

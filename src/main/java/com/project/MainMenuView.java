@@ -1,6 +1,7 @@
 package com.project;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
@@ -28,7 +29,7 @@ public class MainMenuView extends CustomComponent implements View {
     private Course selectedCourse = null;
     
     //A testing courseList
-    private ArrayList<Course> courseList; 
+    private List<Course> courseList; 
 
     Button logout = new Button("Log Out", (Button.ClickListener) clickEvent -> {
         getSession().setAttribute("user", null);
