@@ -1,7 +1,5 @@
 package com.project;
 
-import java.lang.reflect.Field;
-
 // Backend DTO class. This is just a typical Java backend implementation
 // class and nothing Vaadin specific.
 
