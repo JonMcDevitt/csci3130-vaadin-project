@@ -50,7 +50,7 @@ public class RegisteredUserDatabase {
     }
     
     private static RegisteredUser getTestUser() {
-        return new RegisteredUser("test", "test@test.com", "p4ssw0rd", "test", "test", "test");
+        return new RegisteredUser("test@test.com", "p4ssw0rd", "test", "test", "test");
     }
 
     public Optional<RegisteredUser> fetchUser(String email) {

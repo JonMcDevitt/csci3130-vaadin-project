@@ -10,16 +10,15 @@ import org.apache.commons.beanutils.BeanUtils;
 
 public class RegisteredUser implements Serializable, Cloneable {
 
-    private final String userName;
     private final String email;
     private final String password;
     private final String firstName;
     private final String lastName;
     private final String department;
 
-    public RegisteredUser(String userName, String email, String password, String firstName,
+    public RegisteredUser(String email, String password, String firstName,
     						String lastName, String department) {
-    	this.userName = userName;
+
     	this.email = email;
     	this.password = password;
     	this.firstName = firstName;
@@ -31,7 +30,7 @@ public class RegisteredUser implements Serializable, Cloneable {
     //This is used to validate if the user name or the email has been used before when sign up for a new user
     public boolean isValid(RegisteredUserDatabase userDatabase) {
     	for (RegisteredUser r : userDatabase.getUserList()) {
-    		if (r.userName.equals(this.userName) || r.email.equals(this.email)){
+    		if (r.email.equals(this.email)){
     			return false;
     		}
     	}
@@ -76,7 +75,8 @@ public class RegisteredUser implements Serializable, Cloneable {
     @Override
     public String toString() {
         return "RegisteredUser{firstName=" + firstName
-                + ", lastName=" + lastName + ", department= " + department + ", userName=" + userName + ", email="
+                + ", lastName=" + lastName + ", department= " + department
+                + ", email="
                 + email + '}';
     }
 }
