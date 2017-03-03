@@ -10,7 +10,6 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
-import sun.rmi.runtime.Log;
 
 import javax.swing.*;
 import java.util.Optional;

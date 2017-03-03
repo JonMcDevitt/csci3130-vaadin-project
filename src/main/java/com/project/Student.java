@@ -1,7 +1,5 @@
 package com.project;
 
-import org.apache.commons.beanutils.BeanUtils;
-
 /*
  * Created by Jili on 2017-03-01
  * 
