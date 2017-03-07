@@ -1,8 +1,9 @@
-package com.project;
+package com.project.ui;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.project.backend.Course;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -39,8 +40,8 @@ public class MainMenuView extends CustomComponent implements View {
     public MainMenuView() {
     	//Create a courseList for testing
     	courseList = new ArrayList<>();
-    	courseList.add(new Course("TestCourse1"));
-    	courseList.add(new Course("TestCourse2"));
+    	courseList.add(new Course("TestCourse1", "CSCI 0001", "01"));
+    	courseList.add(new Course("TestCourse2", "CSCI 0001", "02"));
     	
     	//Display course name only in the grid 
     	courseGrid.setContainerDataSource(new BeanItemContainer<>(Course.class, courseList));

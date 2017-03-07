@@ -1,8 +1,10 @@
-package com.project;
+package com.project.ui;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.project.backend.RegisteredUser;
+import com.project.backend.RegisteredUserDatabase;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.MarginInfo;

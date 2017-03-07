@@ -1,7 +1,9 @@
-package com.project;
+package com.project.ui;
 
 import static org.junit.Assert.*;
 
+import com.project.backend.RegisteredUser;
+import com.project.backend.RegisteredUserDatabase;
 import org.junit.Before;
 import org.junit.Test;
 
