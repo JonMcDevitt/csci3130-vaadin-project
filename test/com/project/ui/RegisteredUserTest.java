@@ -11,13 +11,13 @@ public class RegisteredUserTest {
 
     private RegisteredUserDatabase testDatabase = RegisteredUserDatabase.getInstance();
 
-    private RegisteredUser testUserPresent = new RegisteredUser("abc", "abc", "abc", "abc", "abc", "abc");
-    private RegisteredUser testUserAbsent = new RegisteredUser("test2", "t2@test.com", "abc", "abc", "abc", "abc");
-    private RegisteredUser[] invalidUsers = { new RegisteredUser("", "t@test.com", "abc", "abc", "abc", "abc"),
-            new RegisteredUser("t", "", "abc", "abc", "abc", "abc"),
-            new RegisteredUser("t", "test", "abc", "", "abc", "abc"),
-            new RegisteredUser("t", "abc", "abc", "abc", "", "abc"),
-            new RegisteredUser("t", "abc", "", "abc", "abc", "abc")};
+    private RegisteredUser testUserPresent = new RegisteredUser("abc", "abc", "abc", "abc", "abc");
+    private RegisteredUser testUserAbsent = new RegisteredUser("t2@test.com", "abc", "abc", "abc", "abc");
+    private RegisteredUser[] invalidUsers = { new RegisteredUser("", "amc", "abc", "abc", "abc"),
+            new RegisteredUser("", "abc", "abc", "abc", "abc"),
+            new RegisteredUser("test", "abc", "", "abc", "abc"),
+            new RegisteredUser("abc", "abc", "abc", "", "abc"),
+            new RegisteredUser("abc", "", "abc", "abc", "abc")};
 
     @Before
     public void setUp() {
