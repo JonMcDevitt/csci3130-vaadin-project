@@ -6,15 +6,23 @@ package com.project.backend;
  * Temporary Student class for creating Student objects for "Go to class" function test
  */
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Student {
-    private final String id;
-    private final String firstName;
-    private final String lastName;
+    @Id
+    private String id;
+    private String firstName;
+    private String lastName;
 
     Student(String id, String firstName, String lastName) {
         this.id = id;
     	this.firstName = firstName;
     	this.lastName = lastName;
+    }
+
+    public Student() {
     }
 
     String getId() {
