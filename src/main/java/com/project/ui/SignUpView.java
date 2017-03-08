@@ -93,7 +93,7 @@ public class SignUpView extends CustomComponent implements View {
             RegisteredUser newUser = new RegisteredUser(userEmail.getValue(), password.getValue(),
                     firstName.getValue(), lastName.getValue(), department.getValue());
 
-            boolean isValidUser = newUser.isValidUser(); 
+            boolean isValidUser = newUser.isValidUser();
             boolean isValid = newUser.isValid(userDatabase);
             boolean passwordConfirm = password.getValue().equals(confirmPassword.getValue());
 
@@ -116,7 +116,7 @@ public class SignUpView extends CustomComponent implements View {
             password.clear();
             confirmPassword.clear();
         });
-        
+
         cancelButton.addClickListener((Button.ClickListener) clickEvent -> this.getUI().setContent(new LoginView()));
     }
 
