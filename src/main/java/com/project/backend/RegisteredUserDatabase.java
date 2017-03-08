@@ -62,4 +62,3 @@ public class RegisteredUserDatabase {
         return Optional.empty();
     }
 }
-
