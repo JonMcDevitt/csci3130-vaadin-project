@@ -86,8 +86,8 @@
 			<artifactId>h2</artifactId>
 			<version>1.4.193</version>
 		</dependency>
-
-        <!-- added for SighUp -->
+        
+    <!-- added for SighUp -->
 		<dependency>
 		    <groupId>commons-beanutils</groupId>
 		    <artifactId>commons-beanutils</artifactId>
