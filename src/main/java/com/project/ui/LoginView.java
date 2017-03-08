@@ -1,5 +1,7 @@
-package com.project;
+package com.project.ui;
 
+import com.project.backend.RegisteredUser;
+import com.project.backend.RegisteredUserDatabase;
 import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.event.FieldEvents;
@@ -10,9 +12,7 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
-import sun.rmi.runtime.Log;
 
-import javax.swing.*;
 import java.util.Optional;
 
 /**
