@@ -28,9 +28,7 @@ public class SignUpView extends CustomComponent implements View {
 
     public static final String NAME = "SignUp";
     private static final String WIDTH_TEXTFIELD_DEFAULT = "300px";
-    private static final String USER_INPUT_PROMPT_MESSAGE = "\"Your email here (e.g. joe_blow@mail.com)\"";
 
-    private final TextField userName;
     private final TextField userEmail;
     private final TextField firstName;
     private final TextField lastName;
@@ -39,12 +37,12 @@ public class SignUpView extends CustomComponent implements View {
     private final PasswordField confirmPassword;
     private final Button signUpButton;
     private final Button clearButton;
+    private final Button cancelButton;
     private final List<Component> components;
 
-    public SignUpView() {
+    SignUpView() {
         setSizeFull();
 
-        userName = new TextField("Username: ");
         userEmail = new TextField("User Email: ");
         password = new PasswordField("Password: ");
         confirmPassword = new PasswordField("Confirm Password: ");
@@ -53,7 +51,8 @@ public class SignUpView extends CustomComponent implements View {
         department = new TextField("Department: ");
         signUpButton = new Button("Sign Up");
         clearButton = new Button("Clear");
-        components = new ArrayList<Component>();
+        cancelButton = new Button("Cancel");
+        components = new ArrayList<>();
 
         configureComponents();
         configureActions();
@@ -61,7 +60,7 @@ public class SignUpView extends CustomComponent implements View {
     }
 
     private void configureComponents() {
-        components.add(userName);
+
         components.add(userEmail);
         components.add(password);
         components.add(confirmPassword);
@@ -70,13 +69,18 @@ public class SignUpView extends CustomComponent implements View {
         components.add(department);
         components.add(signUpButton);
         components.add(clearButton);
+        components.add(cancelButton);
+        //Input Prompts
+        userEmail.setInputPrompt("Enter email here.");
+        firstName.setInputPrompt("Enter first name.");
+        lastName.setInputPrompt("Enter last name.");
+        department.setInputPrompt("Enter department.");
 
         for (Component component : components) {
             if (component instanceof AbstractTextField) {
                 component.setWidth(WIDTH_TEXTFIELD_DEFAULT);
                 AbstractTextField textField = (AbstractTextField) component;
                 textField.setRequired(true);
-                textField.setInputPrompt(USER_INPUT_PROMPT_MESSAGE);
                 textField.setInvalidAllowed(false);
             }
         }
@@ -86,25 +90,25 @@ public class SignUpView extends CustomComponent implements View {
         RegisteredUserDatabase userDatabase = RegisteredUserDatabase.getInstance();
 
         signUpButton.addClickListener((Button.ClickListener) clickEvent -> {
-            RegisteredUser newUser = new RegisteredUser(userName.getValue(), userEmail.getValue(), password.getValue(),
+            RegisteredUser newUser = new RegisteredUser(userEmail.getValue(), password.getValue(),
                     firstName.getValue(), lastName.getValue(), department.getValue());
 
-            boolean isValidUser = newUser.isValidUser();
+            boolean isValidUser = newUser.isValidUser(); 
             boolean isValid = newUser.isValid(userDatabase);
+            boolean passwordConfirm = password.getValue().equals(confirmPassword.getValue());
 
-            if (isValidUser && isValid) {
+            if (isValidUser && isValid && passwordConfirm) {
                 this.getUI().setContent(new LoginView());
-                Notification.show("Signed up with username: " + userName.getValue());
+                Notification.show("Signed up with email: " + userEmail.getValue());
                 userDatabase.save(newUser);
             } else if (isValidUser) {
                 Notification.show("Missing fields.");
             } else {
-                Notification.show(userName.getValue() + " already used");
+                Notification.show(userEmail.getValue() + " already in use.");
             }
         });
 
         clearButton.addClickListener((Button.ClickListener) clickEvent -> {
-            userName.clear();
             userEmail.clear();
             firstName.clear();
             lastName.clear();
@@ -112,13 +116,17 @@ public class SignUpView extends CustomComponent implements View {
             password.clear();
             confirmPassword.clear();
         });
+        
+        cancelButton.addClickListener((Button.ClickListener) clickEvent -> this.getUI().setContent(new LoginView()));
     }
 
     private Layout createLayout() {
-        HorizontalLayout buttons = new HorizontalLayout(signUpButton, clearButton);
+        HorizontalLayout buttons = new HorizontalLayout(
+                signUpButton, clearButton, cancelButton);
         buttons.setSpacing(true);
         buttons.setMargin(new MarginInfo(true, true));
-        VerticalLayout fields = new VerticalLayout(userName, userEmail, firstName, lastName, department, password,
+        VerticalLayout fields = new VerticalLayout(
+                userEmail, firstName, lastName, department, password,
                 confirmPassword, buttons);
         fields.setSpacing(true);
         fields.setMargin(new MarginInfo(true, true, true, true));
@@ -132,6 +140,6 @@ public class SignUpView extends CustomComponent implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        userName.focus();
+        userEmail.focus();
     }
 }
