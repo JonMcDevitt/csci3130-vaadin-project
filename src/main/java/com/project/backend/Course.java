@@ -16,7 +16,7 @@ public class Course implements Comparable<Course>{
     private byte courseSection;
     private List<Student> studentRoster;
     private List<ClassDay> classDays;
-
+    
     public Course(String courseName, String courseCode, String courseSection) {
         this(courseName, courseCode, courseSection, null);
     }
@@ -49,6 +49,10 @@ public class Course implements Comparable<Course>{
 
     public byte getCourseSection() {
         return courseSection;
+    }
+    
+    public void addStudent(Student student){
+    	studentRoster.add(student);
     }
 
     @Override
