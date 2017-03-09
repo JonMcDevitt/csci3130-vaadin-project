@@ -105,7 +105,7 @@ public class CourseView extends CustomComponent implements View {
     		popupContent.setVisible(false);
     	});
     	popButtons.addComponent(saveButton);
-    	popButtons.addComponent(new Button("Cancel"));
+    	popButtons.addComponent(cancelButton);
     	popupContent.addComponent(popButtons);
     	popupContent.setVisible(false);
     }
