@@ -50,6 +50,7 @@ public class MainMenuView extends CustomComponent implements View {
     	//Add a selectionListener to select a course and pass it to selectedCourse as a Course object
     	courseGrid.addSelectionListener(e -> {
     		selectedCourse = (Course) courseGrid.getSelectedRow();
+    		getUI().getNavigator().addView(CourseView.NAME, new CourseView(selectedCourse));
     	});
     	
     	//goToCourse button is for resetting the UI. selectedCourse is passed in as a parameter for the
@@ -59,7 +60,7 @@ public class MainMenuView extends CustomComponent implements View {
     			Notification.show("Please select a course from the course table");
     		}
     		else{
-    			getUI().setContent(new CourseView(selectedCourse));
+    			getUI().getNavigator().navigateTo(CourseView.NAME);
     		}
     	});
     	
