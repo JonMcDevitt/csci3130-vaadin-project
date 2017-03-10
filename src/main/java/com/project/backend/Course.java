@@ -1,5 +1,6 @@
 package com.project.backend;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -9,12 +10,17 @@ import java.util.List;
  * Temporary Course class for creating Course objects for "Go to class" function test
  */
 
+@Entity
 public class Course implements Comparable<Course>{
 
-    private String courseName;
+    @Id
     private String courseCode;
+    @Id
     private byte courseSection;
+    private String courseName;
+    @ManyToMany
     private List<Student> studentRoster;
+    @OneToMany
     private List<ClassDay> classDays;
 
     public Course(String courseName, String courseCode, String courseSection) {
@@ -34,7 +40,10 @@ public class Course implements Comparable<Course>{
         /** TODO:   parse classInfo to construct the ClassDay object (create Dates)
          * */
     }
-    
+
+    public Course() {
+    }
+
     public String getCourseName(){
     	return courseName;
     }
