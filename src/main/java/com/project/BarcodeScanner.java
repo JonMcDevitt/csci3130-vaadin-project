@@ -36,6 +36,7 @@ public class BarcodeScanner extends CustomComponent {
         horizontalLayout.addComponents(activateButton, deactivateButton);
         
         verticalLayout = new VerticalLayout();
+        verticalLayout.setSpacing(true);
         verticalLayout.addComponents(hiddenTextField, horizontalLayout);
         
         setCompositionRoot(verticalLayout);
@@ -44,7 +45,7 @@ public class BarcodeScanner extends CustomComponent {
     private void setupHiddenTextField(TextField textField) {
         textField.setVisible(true);
         textField.setImmediate(true);
-        textField.setWidth("25%");
+        textField.setWidth(300, UNITS_PIXELS);
         
         textField.addBlurListener(e -> {
             if (!activateButton.isEnabled() && deactivateButton.isEnabled()) {
@@ -52,13 +53,20 @@ public class BarcodeScanner extends CustomComponent {
                 activateButton.setEnabled(true);
             }
         });
+        
+        textField.addFocusListener(e ->{
+        	if (!deactivateButton.isEnabled() && activateButton.isEnabled()) {
+        		activateButton.setEnabled(false);
+        		deactivateButton.setEnabled(true);
+        	}
+        });
     }
     
     private void setupActivateButton(Button activateButton) {
         activateButton.setCaption("Start scanning");
         activateButton.setEnabled(true);
         activateButton.setDisableOnClick(true);
-        activateButton.setWidth("12.5%");
+        activateButton.setWidth(150,UNITS_PIXELS);
         
         activateButton.addClickListener(e -> {
             deactivateButton.setEnabled(true);
@@ -70,7 +78,7 @@ public class BarcodeScanner extends CustomComponent {
         deactivateButton.setCaption("Stop scanning");
         deactivateButton.setEnabled(false);
         deactivateButton.setDisableOnClick(true);
-        deactivateButton.setWidth("12.5%");
+        deactivateButton.setWidth(150,UNITS_PIXELS);
         
         deactivateButton.addClickListener(e -> {
             activateButton.setEnabled(true);
