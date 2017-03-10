@@ -63,17 +63,15 @@ public class CourseView extends CustomComponent implements View {
     	editStudent.addClickListener(e -> {
     		if((Student) studentGrid.getSelectedRow()!=null){
     			currStudent =(Student) studentGrid.getSelectedRow();
-    			editStudent(currStudent);
+    			editStudentButton(currStudent);
     			popupContent.setVisible(true);
     		}
     	});
     }
-
     public void createLayout() {
         VerticalLayout mainLayout = new VerticalLayout(courseName, goToMain, editStudent, studentGrid);
         HorizontalLayout realmainLayout = new HorizontalLayout(mainLayout, popupContent);
         mainLayout.setSpacing(true);
-        
         setCompositionRoot(realmainLayout);       
     }
 
@@ -91,25 +89,18 @@ public class CourseView extends CustomComponent implements View {
     	popupContent.addComponent(lname);
     	Button saveButton = new Button("Save");
     	Button cancelButton = new Button("Cancel");
-    	saveButton.addClickListener(e -> {
-    		currStudent.setId(id.getValue());
-    		currStudent.setFirstName(fname.getValue());
-    		currStudent.setLastName(lname.getValue());
-    		popupContent.setVisible(false);
-    		Notification.show("Saved edit");
-    		studentGrid.refreshRows(currStudent);
-
-    		;
-    	});
-    	cancelButton.addClickListener(e -> {
-    		popupContent.setVisible(false);
-    	});
     	popButtons.addComponent(saveButton);
     	popButtons.addComponent(cancelButton);
     	popupContent.addComponent(popButtons);
     	popupContent.setVisible(false);
+    	saveButton.addClickListener(e -> {
+    	    changeStudent(id,fname,lname);
+    	});
+    	cancelButton.addClickListener(e -> {
+    		popupContent.setVisible(false);
+    	});
     }
-    public void editStudent(Student stud){
+    public void editStudentButton(Student stud){
     	TextField idEdit = (TextField)popupContent.getComponent(0);
     	TextField firstEdit = (TextField)popupContent.getComponent(1);
     	TextField lastEdit = (TextField)popupContent.getComponent(2);
@@ -117,5 +108,13 @@ public class CourseView extends CustomComponent implements View {
     	firstEdit.setValue(stud.getFirstName());
     	lastEdit.setValue(stud.getLastName());
 
+    }
+    public void changeStudent(TextField idnum, TextField firstname, TextField lastname){
+    	currStudent.setId(idnum.getValue());
+		currStudent.setFirstName(firstname.getValue());
+		currStudent.setLastName(lastname.getValue());
+		popupContent.setVisible(false);
+		Notification.show("Saved edit");
+		studentGrid.refreshRows(currStudent);
     }
 }
