@@ -40,7 +40,7 @@ public class SignUpView extends CustomComponent implements View {
     private final Button cancelButton;
     private final List<Component> components;
 
-    public SignUpView() {
+    SignUpView() {
         setSizeFull();
 
         userEmail = new TextField("User Email: ");
@@ -52,7 +52,7 @@ public class SignUpView extends CustomComponent implements View {
         signUpButton = new Button("Sign Up");
         clearButton = new Button("Clear");
         cancelButton = new Button("Cancel");
-        components = new ArrayList<Component>();
+        components = new ArrayList<>();
 
         configureComponents();
         configureActions();
@@ -93,7 +93,7 @@ public class SignUpView extends CustomComponent implements View {
             RegisteredUser newUser = new RegisteredUser(userEmail.getValue(), password.getValue(),
                     firstName.getValue(), lastName.getValue(), department.getValue());
 
-            boolean isValidUser = newUser.isValidUser(); 
+            boolean isValidUser = newUser.isValidUser();
             boolean isValid = newUser.isValid(userDatabase);
             boolean passwordConfirm = password.getValue().equals(confirmPassword.getValue());
 
@@ -116,10 +116,8 @@ public class SignUpView extends CustomComponent implements View {
             password.clear();
             confirmPassword.clear();
         });
-        
-        cancelButton.addClickListener((Button.ClickListener) clickEvent -> {
-            this.getUI().setContent(new LoginView());
-        });
+
+        cancelButton.addClickListener((Button.ClickListener) clickEvent -> this.getUI().setContent(new LoginView()));
     }
 
     private Layout createLayout() {

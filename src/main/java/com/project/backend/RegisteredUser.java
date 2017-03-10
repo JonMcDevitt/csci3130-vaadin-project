@@ -9,7 +9,6 @@ import java.util.List;
 
 public class RegisteredUser{
 
-    private final String userName;
     private final String email;
     private final String password;
     private final String firstName;
@@ -17,9 +16,8 @@ public class RegisteredUser{
     private final String department;
     private final List<String> courses; /** A list of course IDs to use for fetching from the database  */
 
-    public RegisteredUser(String userName, String email, String password, String firstName,
+    public RegisteredUser(String email, String password, String firstName,
     						String lastName, String department) {
-    	this.userName = userName;
     	this.email = email;
     	this.password = password;
     	this.firstName = firstName;
@@ -32,7 +30,7 @@ public class RegisteredUser{
     //This is used to validate if the user name or the email has been used before when sign up for a new user
     public boolean isValid(RegisteredUserDatabase userDatabase) {
     	for (RegisteredUser r : userDatabase.getUserList()) {
-    		if (r.userName.equals(this.userName) || r.email.equals(this.email)){
+    		if (r.email.equals(this.email)){
     			return false;
     		}
     	}
@@ -57,7 +55,7 @@ public class RegisteredUser{
         return true;
     }
 
-    public String getEmail() {
+    String getEmail() {
         return email;
     }
 
@@ -72,7 +70,7 @@ public class RegisteredUser{
     @Override
     public String toString() {
         return "RegisteredUser{firstName=" + firstName
-                + ", lastName=" + lastName + ", department= " + department + ", userName=" + userName + ", email="
+                + ", lastName=" + lastName + ", department= " + department + ", email="
                 + email + '}';
     }
 }
