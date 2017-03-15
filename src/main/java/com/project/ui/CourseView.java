@@ -2,6 +2,7 @@ package com.project.ui;
 
 import javax.swing.plaf.basic.BasicOptionPaneUI.ButtonActionListener;
 
+import com.project.backend.ClassDay;
 import com.project.backend.Course;
 import com.project.backend.Student;
 import com.vaadin.data.util.BeanItemContainer;
@@ -32,6 +33,7 @@ public class CourseView extends CustomComponent implements View {
     private Button goToMain;
     private Button editStudent;
     private Student currStudent;
+    private ClassDay currDay;
     private Label courseName;
     private VerticalLayout popupContent;
     private Grid studentGrid = new Grid();
@@ -56,6 +58,7 @@ public class CourseView extends CustomComponent implements View {
     	//Display the parameter -- course's student roaster
     	studentGrid.setContainerDataSource(new BeanItemContainer<>(Student.class, course.getStudentRoster()));
     	studentGrid.setColumnOrder("id");    	
+    	studentGrid.addColumn(Integer.class);
     	//goToMain goes back to the main page
     	goToMain.addClickListener(e -> {
     		getUI().getNavigator().navigateTo("");
