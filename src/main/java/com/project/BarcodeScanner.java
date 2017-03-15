@@ -16,7 +16,7 @@ public class BarcodeScanner extends CustomComponent {
 
     private static final long serialVersionUID = -2387815294780431466L;
 
-    private TextField hiddenTextField;
+    private TextField textField;
 
     private Button activateButton;
     private Button deactivateButton;
@@ -28,11 +28,11 @@ public class BarcodeScanner extends CustomComponent {
     private OnEnterKeyHandler onEnterKeyHandler;
 
     public BarcodeScanner() {
-        hiddenTextField = new TextField();
+        textField = new TextField();
         activateButton = new Button();
         deactivateButton = new Button();
 
-        setupHiddenTextField(hiddenTextField);
+        setupTextField(textField);
         setupActivateButton(activateButton);
         setupDeactivateButton(deactivateButton);
 
@@ -41,16 +41,16 @@ public class BarcodeScanner extends CustomComponent {
 
         verticalLayout = new VerticalLayout();
         verticalLayout.setSpacing(true);
-        verticalLayout.addComponents(hiddenTextField, horizontalLayout);
+        verticalLayout.addComponents(textField, horizontalLayout);
 
         setCompositionRoot(verticalLayout);
     }
 
-    private void setupHiddenTextField(TextField textField) {
-        textField.setVisible(true);
-        textField.setImmediate(true);
-        textField.setWidth(300, UNITS_PIXELS);
-        textField.addBlurListener(e -> {
+    private void setupTextField(TextField tf) {
+        tf.setVisible(true);
+        tf.setImmediate(true);
+        tf.setWidth(300, UNITS_PIXELS);
+        tf.addBlurListener(e -> {
             if (!activateButton.isEnabled() && deactivateButton.isEnabled()) {
                 deactivateButton.setEnabled(false);
                 activateButton.setEnabled(true);
@@ -61,15 +61,15 @@ public class BarcodeScanner extends CustomComponent {
             @Override
             public void onEnterKeyPressed() {
                 callbackOptional.ifPresent(c -> {
-                    c.accept(hiddenTextField.getValue());
-                    hiddenTextField.clear();
+                    c.accept(textField.getValue());
+                    textField.clear();
                 });
             }
         };
         
-        onEnterKeyHandler.installOn(hiddenTextField);
+        onEnterKeyHandler.installOn(textField);
         
-        textField.addFocusListener(e -> {
+        tf.addFocusListener(e -> {
         	if (!deactivateButton.isEnabled() && activateButton.isEnabled()) {
         		activateButton.setEnabled(false);
         		deactivateButton.setEnabled(true);
@@ -84,7 +84,7 @@ public class BarcodeScanner extends CustomComponent {
         
         activateButton.addClickListener(e -> {
             deactivateButton.setEnabled(true);
-            hiddenTextField.focus();
+            textField.focus();
         });
     }
 
