@@ -40,6 +40,7 @@ public class BarcodeScanner extends CustomComponent {
         horizontalLayout.addComponents(activateButton, deactivateButton);
 
         verticalLayout = new VerticalLayout();
+        verticalLayout.setSpacing(true);
         verticalLayout.addComponents(hiddenTextField, horizontalLayout);
 
         setCompositionRoot(verticalLayout);
@@ -47,8 +48,8 @@ public class BarcodeScanner extends CustomComponent {
 
     private void setupHiddenTextField(TextField textField) {
         textField.setVisible(true);
-        textField.setImmediate(true);        
-
+        textField.setImmediate(true);
+        textField.setWidth(300, UNITS_PIXELS);
         textField.addBlurListener(e -> {
             if (!activateButton.isEnabled() && deactivateButton.isEnabled()) {
                 deactivateButton.setEnabled(false);
@@ -67,12 +68,20 @@ public class BarcodeScanner extends CustomComponent {
         };
         
         onEnterKeyHandler.installOn(hiddenTextField);
+        
+        textField.addFocusListener(e -> {
+        	if (!deactivateButton.isEnabled() && activateButton.isEnabled()) {
+        		activateButton.setEnabled(false);
+        		deactivateButton.setEnabled(true);
+        	}
+        });
     }
 
     private void setupActivateButton(Button activateButton) {
         activateButton.setEnabled(true);
         activateButton.setDisableOnClick(true);
-
+        activateButton.setWidth(150,UNITS_PIXELS);
+        
         activateButton.addClickListener(e -> {
             deactivateButton.setEnabled(true);
             hiddenTextField.focus();
@@ -83,7 +92,8 @@ public class BarcodeScanner extends CustomComponent {
         deactivateButton.setCaption("Stop scanning");
         deactivateButton.setEnabled(false);
         deactivateButton.setDisableOnClick(true);
-
+        deactivateButton.setWidth(150,UNITS_PIXELS);
+        
         deactivateButton.addClickListener(e -> {
             activateButton.setEnabled(true);
         });
