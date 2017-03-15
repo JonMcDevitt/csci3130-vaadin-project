@@ -1,3 +1,17 @@
+/*CSCI 3130
+ * 
+ * March 15, 2017
+ * 
+ *Project - User Story 2
+ *By Team Alpha
+ *
+ *This user story was created by Nicholas Broderick and Liam Gowan.
+ *
+ *This class allows for a component to be added that is able to continuously scan barcodes in. 
+ *It will be activated/deactivated if the focus is gain/lost, respectively. 
+ */
+
+
 package com.project;
 
 import java.util.Optional;
@@ -27,6 +41,7 @@ public class BarcodeScanner extends CustomComponent {
     private Optional<Consumer<String>> callbackOptional;
     private OnEnterKeyHandler onEnterKeyHandler;
 
+    //Creates new barcode object and calls setup methods.
     public BarcodeScanner() {
         textField = new TextField();
         activateButton = new Button();
@@ -48,6 +63,7 @@ public class BarcodeScanner extends CustomComponent {
         setCompositionRoot(verticalLayout);
     }
 
+    //Sets up the textfield, and toggle the component to be deactivated if focus is lost.
     private void setupTextField(TextField tf) {
         tf.setVisible(true);
         tf.setImmediate(true);
@@ -59,6 +75,7 @@ public class BarcodeScanner extends CustomComponent {
             }
         });
 
+        //Upon an enter key being pressed, the component will return the string (barcode) it in the textfield.
         onEnterKeyHandler = new OnEnterKeyHandler() {
             @Override
             public void onEnterKeyPressed() {
@@ -71,6 +88,7 @@ public class BarcodeScanner extends CustomComponent {
         
         onEnterKeyHandler.installOn(textField);
         
+        //toggles the component to be 'active' if focus is gained.
         tf.addFocusListener(e -> {
         	if (!deactivateButton.isEnabled() && activateButton.isEnabled()) {
         		activateButton.setEnabled(false);
@@ -79,6 +97,8 @@ public class BarcodeScanner extends CustomComponent {
         });
     }
 
+    //Sets up the activate button (caption, enabled, width, click listener). If this button is pushed, the 
+    //textfield will have focus, and this button will be disabled, and the deactivate button will be enabled
     private void setupActivateButton(Button activateButton) {
     	activateButton.setCaption("Start scanning");
         activateButton.setEnabled(true);
@@ -91,6 +111,8 @@ public class BarcodeScanner extends CustomComponent {
         });
     }
 
+    //Sets up the deactivate button (caption, enabled, width, click listener). If this button is pushed, the 
+    //textfield will lose focus, and this button will be disabled, and the activate button will be enabled
     private void setupDeactivateButton(Button deactivateButton) {
         deactivateButton.setCaption("Stop scanning");
         deactivateButton.setEnabled(false);
@@ -102,6 +124,7 @@ public class BarcodeScanner extends CustomComponent {
         });
     }
 
+    //Allows for the listening of an enter key being pressed
     private abstract class OnEnterKeyHandler {
 
         @SuppressWarnings("serial")
