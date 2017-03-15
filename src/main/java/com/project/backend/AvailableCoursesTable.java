@@ -7,6 +7,9 @@ import java.util.List;
 /**
  * Created by Owner on 2017-03-06.
  */
+
+/** TODO:   Remove this once the JPAContainer is set up
+ *  */
 public class AvailableCoursesTable {
     private final static AvailableCoursesTable instance;
     private final static Course COURSE_NOT_FOUND = null;
