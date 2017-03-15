@@ -1,9 +1,13 @@
 package com.project;
 
+import javax.servlet.annotation.WebServlet;
+
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
 
 /**
@@ -45,8 +49,8 @@ public class LoginUI extends UI {
         });
     }
 
-//    @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
-//    @VaadinServletConfiguration(ui = LoginUI.class, productionMode = false)
-//    public static class MyUIServlet extends VaadinServlet {
-//    }
+    @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
+    @VaadinServletConfiguration(ui = LoginUI.class, productionMode = false)
+    public static class MyUIServlet extends VaadinServlet {
+    }
 }
