@@ -43,6 +43,8 @@ public class BarcodeScanner extends CustomComponent {
         verticalLayout.setSpacing(true);
         verticalLayout.addComponents(textField, horizontalLayout);
 
+        callbackOptional = Optional.empty();
+        
         setCompositionRoot(verticalLayout);
     }
 
@@ -78,6 +80,7 @@ public class BarcodeScanner extends CustomComponent {
     }
 
     private void setupActivateButton(Button activateButton) {
+    	activateButton.setCaption("Start scanning");
         activateButton.setEnabled(true);
         activateButton.setDisableOnClick(true);
         activateButton.setWidth(150,UNITS_PIXELS);

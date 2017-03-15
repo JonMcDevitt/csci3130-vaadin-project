@@ -21,11 +21,13 @@ public class MainMenuView extends CustomComponent implements View {
     });
 
     public MainMenuView() {
+    	
         setCompositionRoot(new CssLayout(welcome, logout));
     }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+    	
         String username = String.valueOf(getSession().getAttribute("user"));
         welcome.setValue("Welcome, " + username + ", to our application!");
     }
