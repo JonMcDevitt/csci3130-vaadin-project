@@ -44,6 +44,7 @@ public class CourseView extends CustomComponent implements View {
     	
     	//goToMain goes back to the main page
     	goToMain.addClickListener(e -> {
+    		getUI().getNavigator().addView(MainMenuView.NAME, new MainMenuView(course));
     		getUI().getNavigator().navigateTo(MainMenuView.NAME);
     	});
     	
