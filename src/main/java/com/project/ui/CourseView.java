@@ -58,7 +58,6 @@ public class CourseView extends CustomComponent implements View {
     	//Display the parameter -- course's student roaster
     	studentGrid.setContainerDataSource(new BeanItemContainer<>(Student.class, course.getStudentRoster()));
     	studentGrid.setColumnOrder("id");    	
-    	studentGrid.addColumn(Integer.class);
     	//goToMain goes back to the main page
     	goToMain.addClickListener(e -> {
     		getUI().getNavigator().navigateTo("");

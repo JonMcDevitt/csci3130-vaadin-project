@@ -2,17 +2,13 @@ package com.project.ui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import com.project.backend.Course;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
+import com.vaadin.ui.*;
 
 /**
  * Created by Owner on 2017-02-17.
@@ -22,20 +18,15 @@ import com.vaadin.ui.Notification;
 public class MainMenuView extends CustomComponent implements View {
     public static final String NAME = "";
 
-    Label welcome = new Label();
-    Grid courseGrid = new Grid();
-    Button goToCourse = new Button("Go To Course");
+    private Label welcome = new Label();
+    private Grid courseGrid = new Grid();
+    private Button addCourse;
     
     //selectedCourse is to store selected Course object from the grid
     private Course selectedCourse = null;
     
     //A testing courseList
-    private List<Course> courseList; 
-
-    Button logout = new Button("Log Out", (Button.ClickListener) clickEvent -> {
-        getSession().setAttribute("user", null);
-        getUI().getNavigator().navigateTo(NAME);
-    });
+    private List<Course> courseList;
 
     public MainMenuView() {
     	//Create a courseList for testing
@@ -54,7 +45,7 @@ public class MainMenuView extends CustomComponent implements View {
     	
     	//goToCourse button is for resetting the UI. selectedCourse is passed in as a parameter for the
     	//use of it's attributes in CourseView
-    	goToCourse.addClickListener((Button.ClickListener) clickEvent ->{
+        Button goToCourse = new Button("Go To Course", (Button.ClickListener) clickEvent ->{
     		if(selectedCourse == null){
     			Notification.show("Please select a course from the course table");
     		}
@@ -62,8 +53,16 @@ public class MainMenuView extends CustomComponent implements View {
     			getUI().setContent(new CourseView(selectedCourse));
     		}
     	});
-    	
-        setCompositionRoot(new CssLayout(welcome, goToCourse, logout, courseGrid));
+
+        Button logout = new Button("Log Out", (Button.ClickListener) clickEvent -> {
+            getSession().setAttribute("user", null);
+            getUI().getNavigator().navigateTo(NAME);
+        });
+
+        addCourse = new Button("Add new course", (Button.ClickListener) clickEvent -> {
+            getUI().addWindow(new AddCourseInputsView(courseList, courseGrid));
+        });
+        setCompositionRoot(new CssLayout(welcome, goToCourse, addCourse, logout, courseGrid));
     }
 
     @Override
