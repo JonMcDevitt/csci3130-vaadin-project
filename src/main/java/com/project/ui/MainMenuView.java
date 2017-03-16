@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.project.backend.Course;
+import com.project.backend.RegisteredUser;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -37,7 +38,7 @@ public class MainMenuView extends CustomComponent implements View {
         getUI().getNavigator().navigateTo(NAME);
     });
 
-    public MainMenuView() {
+    public MainMenuView() {    	
     	//Create a courseList for testing
     	courseList = new ArrayList<>();
     	courseList.add(new Course("TestCourse1", "CSCI 0001", "01"));

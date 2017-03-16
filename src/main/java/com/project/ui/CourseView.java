@@ -48,6 +48,7 @@ public class CourseView extends CustomComponent implements View {
     	});
     	
     	addStudent.addClickListener(e -> {
+    		getUI().getNavigator().addView(NewStudentView.NAME, new NewStudentView(course));
     		getUI().getNavigator().navigateTo(NewStudentView.NAME);
     	});
     }
