@@ -1,4 +1,4 @@
-package com.project;
+package com.project.ui;
 
 import javax.servlet.annotation.WebServlet;
 

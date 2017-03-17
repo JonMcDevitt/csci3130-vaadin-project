@@ -1,4 +1,4 @@
-package com.project;
+package com.project.ui;
 
 import static org.junit.Assert.*;
 

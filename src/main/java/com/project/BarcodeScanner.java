@@ -9,6 +9,10 @@
  *
  *This class allows for a component to be added that is able to continuously scan barcodes in. 
  *It will be activated/deactivated if the focus is gain/lost, respectively. 
+ *
+ *Attribution-
+ *The code used to detect when an enter key is pressed in the text field was found at the following link.
+ *http://ramontalaverasuarez.blogspot.ca/2014/06/vaadin-7-detect-enter-key-in-textfield.html
  */
 
 
