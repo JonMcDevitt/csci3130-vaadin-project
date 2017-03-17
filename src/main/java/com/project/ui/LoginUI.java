@@ -26,6 +26,7 @@ public class LoginUI extends UI {
 
         getNavigator().addView(LoginView.NAME, LoginView.class);
         getNavigator().addView(MainMenuView.NAME, MainMenuView.class);
+        getNavigator().addView(SignUpView.NAME, SignUpView.class);
 
         getNavigator().addViewChangeListener(new ViewChangeListener() {
             @Override

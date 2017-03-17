@@ -22,6 +22,7 @@ public class AddCourseInputsView extends Window {
         center();
 
         setClosable(true);
+        setModal(true);
 
         initButtons(courseList, courseGrid);
         initInputs();
@@ -68,7 +69,10 @@ public class AddCourseInputsView extends Window {
 
     private void initInputs() {
         inputCourseCode = new TextField();
+        inputCourseCode.setInputPrompt("Course Code (e.g. CSCI 1101)");
         inputCourseName = new TextField();
+        inputCourseName.setInputPrompt("Course Name (e.g. Software Engineering)");
         inputCourseSection = new TextField();
+        inputCourseSection.setInputPrompt("Course Section (e.g. 01)");
     }
 }
