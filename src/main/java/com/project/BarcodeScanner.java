@@ -66,6 +66,18 @@ public class BarcodeScanner extends CustomComponent {
         
         setCompositionRoot(verticalLayout);
     }
+    
+    public TextField getTextField() {
+        return textField;
+    }
+
+    public Button getActivateButton() {
+        return activateButton;
+    }
+
+    public Button getDeactivateButton() {
+        return deactivateButton;
+    }
 
     //Sets up the textfield, and toggle the component to be deactivated if focus is lost.
     private void setupTextField(TextField tf) {
