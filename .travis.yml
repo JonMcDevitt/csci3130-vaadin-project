@@ -1,18 +1,15 @@
 language: java
-before_install:
-- wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-- sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-- sudo apt-get update
-- sudo apt-get install google-chrome-stable
-install:
 - mvn install
 jdk:
 - oraclejdk8
 sudo: false
 addons:
   apt:
+    sources:
+    - google-chrome
     packages:
     - oracle-java8-installer
+    - google-chrome-stable
 deploy:
   provider: heroku
   api_key:
