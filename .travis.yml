@@ -9,8 +9,8 @@ addons:
     sources:
     - google-chrome
     packages:
-    - oracle-java8-installer
     - google-chrome-stable
+    - oracle-java8-installer
 deploy:
   provider: heroku
   api_key:
