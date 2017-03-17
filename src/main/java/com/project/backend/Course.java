@@ -38,10 +38,11 @@ public class Course implements Comparable<Course>{
 
         //create a test studentRoster
         studentRoster = new ArrayList<>();
-        studentRoster.add(new Student("B00123456", "TestFN1", "TestLN1"));
-        studentRoster.add(new Student("B00987654", "TestFN2", "TestLN2"));
+        studentRoster.add(new Student("B00123456", "23456789", "TestFN1", "TestLN1"));
+        studentRoster.add(new Student("B00987654", "234567898765432", "TestFN2", "TestLN2"));
         LocalDate today = LocalDate.of(2017, 3, 15);
         //classDays.add(test);
+
 
         /** TODO:   parse classInfo to construct the ClassDay object (create Dates)
          * */

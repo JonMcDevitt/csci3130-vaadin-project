@@ -85,9 +85,11 @@ public class CourseView extends CustomComponent implements View {
     	popupContent = new VerticalLayout();
     	HorizontalLayout popButtons = new HorizontalLayout();
     	TextField id = new TextField("ID");
+    	TextField barcode = new TextField("Barcode");
     	TextField fname = new TextField("First Name");
     	TextField lname = new TextField("Last Name");
     	popupContent.addComponent(id);
+    	popupContent.addComponent(barcode);
     	popupContent.addComponent(fname);
     	popupContent.addComponent(lname);
     	Button saveButton = new Button("Save");
@@ -97,7 +99,7 @@ public class CourseView extends CustomComponent implements View {
     	popupContent.addComponent(popButtons);
     	popupContent.setVisible(false);
     	saveButton.addClickListener(e -> {
-    	    changeStudent(id,fname,lname);
+    	    changeStudent(id, barcode, fname,lname);
     	});
     	cancelButton.addClickListener(e -> {
     		popupContent.setVisible(false);
@@ -105,15 +107,18 @@ public class CourseView extends CustomComponent implements View {
     }
     public void editStudentButton(Student stud){
     	TextField idEdit = (TextField)popupContent.getComponent(0);
-    	TextField firstEdit = (TextField)popupContent.getComponent(1);
-    	TextField lastEdit = (TextField)popupContent.getComponent(2);
+    	TextField barcodeEdit = (TextField)popupContent.getComponent(1);
+    	TextField firstEdit = (TextField)popupContent.getComponent(2);
+    	TextField lastEdit = (TextField)popupContent.getComponent(3);
     	idEdit.setValue(stud.getId());
+    	barcodeEdit.setValue(stud.getBarcode());
     	firstEdit.setValue(stud.getFirstName());
     	lastEdit.setValue(stud.getLastName());
 
     }
-    public void changeStudent(TextField idnum, TextField firstname, TextField lastname){
+    public void changeStudent(TextField idnum, TextField barcode, TextField firstname, TextField lastname){
     	currStudent.setId(idnum.getValue());
+    	currStudent.setBarcode(idnum.getValue());
 		currStudent.setFirstName(firstname.getValue());
 		currStudent.setLastName(lastname.getValue());
 		popupContent.setVisible(false);
