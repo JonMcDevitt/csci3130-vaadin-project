@@ -30,8 +30,10 @@ public class CourseView extends CustomComponent implements View {
 
     public static final String NAME = "CourseInfo";
     private static final String WIDTH_TEXTFIELD_DEFAULT = "300px";
+    private Course course;
     private Button goToMain;
     private Button editStudent;
+    private Button goToTakeAttendance;
     private Student currStudent;
     private ClassDay currDay;
     private Label courseName;
@@ -43,6 +45,7 @@ public class CourseView extends CustomComponent implements View {
     
     //a overloading constructor uses a Course type parameter to set up the UI content
     public CourseView(Course course) {
+    	this.course = course;
         setSizeFull();
 
         configureComponents(course);
@@ -54,6 +57,7 @@ public class CourseView extends CustomComponent implements View {
     	goToMain = new Button("Back to main page");
     	courseName = new Label(course.getCourseName());
     	editStudent = new Button("Edit selected Student");
+    	goToTakeAttendance = new Button("Take Attendance For Today");
     	configurePopup();
     	//Display the parameter -- course's student roaster
     	studentGrid.setContainerDataSource(new BeanItemContainer<>(Student.class, course.getStudentRoster()));
@@ -69,9 +73,14 @@ public class CourseView extends CustomComponent implements View {
     			popupContent.setVisible(true);
     		}
     	});
+    	goToTakeAttendance.addClickListener(e ->{
+    		getUI().setContent(new AttendanceView(course));
+    		
+    	});
+    	
     }
     public void createLayout() {
-        VerticalLayout mainLayout = new VerticalLayout(courseName, goToMain, editStudent, studentGrid);
+        VerticalLayout mainLayout = new VerticalLayout(courseName, goToMain, editStudent, goToTakeAttendance, studentGrid);
         HorizontalLayout realmainLayout = new HorizontalLayout(mainLayout, popupContent);
         mainLayout.setSpacing(true);
         setCompositionRoot(realmainLayout);       

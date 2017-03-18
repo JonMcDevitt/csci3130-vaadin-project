@@ -26,9 +26,6 @@ public class ClassDay {
         this.cancellation = false;
     }
 
-    public ClassDay() {
-    }
-
     public Date getStartTime() {
         return startTime;
     }
@@ -61,4 +58,5 @@ public class ClassDay {
     public void modifyCancellationStatus(boolean status) {
         cancellation = status;
     }
+    
 }
