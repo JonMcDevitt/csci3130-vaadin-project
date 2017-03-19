@@ -70,6 +70,7 @@ public class BarcodeScannerComponent extends CustomComponent {
 
     //Sets up the textfield, and toggle the component to be deactivated if focus is lost.
     private void setupTextField(TextField tf) {
+    	tf.setInputPrompt("Input barcodes here");
         tf.setVisible(true);
         tf.setImmediate(true);
         tf.setWidth(300, UNITS_PIXELS);
