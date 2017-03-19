@@ -1,6 +1,6 @@
 language: java
 before-install:
-- java -Dvaadin.testbench.developer.license=487b5b4c-ff55-48cb-8d11-7c04b96a78cf
+- java -D.vaadin.testbench.developer.license=487b5b4c-ff55-48cb-8d11-7c04b96a78cf
 install:
 - mvn install
 jdk:
