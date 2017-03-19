@@ -1,13 +1,11 @@
 package com.project.ui;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.util.Date;
+
 import com.project.backend.ClassDay;
 import com.project.backend.Course;
 import com.project.backend.Student;
 import com.vaadin.data.Item;
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -16,47 +14,49 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.VerticalLayout;
 
 public class AttendanceView extends CustomComponent implements View {
-	private Course course;
-	private Grid attendanceGrid;
-	private Date date;
+    
+    private static final long serialVersionUID = 8909424502341897571L;
+    
+    private Grid attendanceGrid;
+	private ClassDay todayClassDay;
+	private BarcodeScanner barcodeScanner;
+	private IndexedContainer attendanceRecords;
 	
-	public AttendanceView(Course course){
-		date = new Date();
-		this.course=course;
-		BarcodeScanner scanner = new BarcodeScanner();
+    private static final String FIRST_NAME = "First Name";
+    private static final String LAST_NAME = "Last Name";
+    private static final String BANNER_NUMBER = "Banner Number";
+    private static final String BARCODE = "Barcode";
+    private static final String PRESENT = "Present";
+	
+	public AttendanceView(Course course) {
+	    barcodeScanner = new BarcodeScanner();
 		attendanceGrid = new Grid();
+        todayClassDay = getTodayClassDay(course);
+		attendanceRecords = getAttendanceRecords(todayClassDay);
 		
-		List<ClassDay> classDays = course.getClassDays();
-		ClassDay todayClassDay = null;
-		for (ClassDay c : classDays) {
-			if (isToday(c.getStartTime())){
-				todayClassDay=c;
-				break;
-			}
-		}
-		if(todayClassDay==null){
-			todayClassDay = new ClassDay(new Date(), new Date(), course.getStudentRoster());
-			course.getClassDays().add(todayClassDay);
-		}
-		configureGrid(todayClassDay);
-		VerticalLayout layout = new VerticalLayout(scanner, attendanceGrid);
+		attendanceGrid.setContainerDataSource(attendanceRecords);
+
+		barcodeScanner.onBarcodeScanned(s -> {
+		    todayClassDay.studentScanned(s);
+		    updateAttendanceGrid(s, true);
+		});
+		
+		VerticalLayout layout = new VerticalLayout(barcodeScanner, attendanceGrid);
 		setCompositionRoot(layout);
 	}
-	private void configureGrid(ClassDay classDay){
-		List<AttendanceRecordEntry> list = getAttendanceRecordList(classDay);
-		
-		attendanceGrid.setContainerDataSource(getAttendanceRecords(classDay));
-	}
+
+	@SuppressWarnings("unchecked")
+    private void updateAttendanceGrid(String barcode, boolean present) {
+	    Item record = attendanceRecords.getItem(barcode);
+	    if (record != null) {
+	        record.getItemProperty(PRESENT).setValue(present);
+	    }
+    }
 	
-	private static IndexedContainer getAttendanceRecords(ClassDay classDay) {
+	@SuppressWarnings("unchecked")
+    private static IndexedContainer getAttendanceRecords(ClassDay classDay) {
 		IndexedContainer attendanceRecords = new IndexedContainer();
 		
-		final String FIRST_NAME = "First Name";
-		final String LAST_NAME = "Last Name";
-		final String BANNER_NUMBER = "Banner Number";
-		final String BARCODE = "Barcode";
-		final String PRESENT = "Present";
-
 		attendanceRecords.addContainerProperty(FIRST_NAME, String.class, "");
 		attendanceRecords.addContainerProperty(LAST_NAME, String.class, "");
 		attendanceRecords.addContainerProperty(BANNER_NUMBER, String.class, "");
@@ -65,7 +65,7 @@ public class AttendanceView extends CustomComponent implements View {
 		
 		if (classDay != null) {
 			for (Student s : classDay.getAbsentStudents()) {
-				Item item = attendanceRecords.addItem(s.getId());
+				Item item = attendanceRecords.addItem(s.getBarcode());
 				item.getItemProperty(FIRST_NAME).setValue(s.getFirstName());
 				item.getItemProperty(LAST_NAME).setValue(s.getLastName());
 				item.getItemProperty(BANNER_NUMBER).setValue(s.getId());
@@ -73,7 +73,7 @@ public class AttendanceView extends CustomComponent implements View {
 				item.getItemProperty(PRESENT).setValue(false);
 			}
 			for (Student s : classDay.getAttendingStudents()) {
-				Item item = attendanceRecords.addItem(s.getId());
+				Item item = attendanceRecords.addItem(s.getBarcode());
 				item.getItemProperty(FIRST_NAME).setValue(s.getFirstName());
 				item.getItemProperty(LAST_NAME).setValue(s.getLastName());
 				item.getItemProperty(BANNER_NUMBER).setValue(s.getId());
@@ -90,17 +90,6 @@ public class AttendanceView extends CustomComponent implements View {
 		
 	}
 	
-	public List<AttendanceRecordEntry> getAttendanceRecordList(ClassDay classDay){
-		List<AttendanceRecordEntry> list = new ArrayList<AttendanceRecordEntry>();
-		for (Student s : classDay.getAbsentStudents()) {
-			list.add(new AttendanceRecordEntry(s.getFirstName(), s.getLastName(), s.getId(), s.getBarcode(), false));
-		}
-		for (Student s : classDay.getAttendingStudents()) {
-			list.add(new AttendanceRecordEntry(s.getFirstName(), s.getLastName(), s.getId(), s.getBarcode(), true));
-		}
-		return list;
-	}
-	
 	private static boolean isToday(Date compareDate){
 		Date date = new Date();
 		if(compareDate.getYear()==date.getYear()&&compareDate.getDate()==date.getDate()
@@ -111,25 +100,12 @@ public class AttendanceView extends CustomComponent implements View {
 			
 	}
 	
+	private ClassDay getTodayClassDay(Course course) {
+	    for (ClassDay c : course.getClassDays()) {
+            if (isToday(c.getStartTime())){
+                return c;
+            }
+        }
+	    return new ClassDay(new Date(), new Date(), course.getStudentRoster());
+	}	
 }
-
-class AttendanceRecordEntry{
-	private String firstName;
-	private String lastName;
-	private String bannerNumber;
-	private String barcode;
-	private boolean present;
-	
-	public AttendanceRecordEntry(String firstName, String lastName, String bannerNumber, String barcode,
-			boolean present) {
-		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.bannerNumber = bannerNumber;
-		this.barcode = barcode;
-		this.present = present;
-	}
-}
-
-
-
