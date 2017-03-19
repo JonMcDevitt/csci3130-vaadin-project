@@ -1,11 +1,11 @@
 language: java
-before-install:
-- java -D.vaadin.testbench.developer.license=487b5b4c-ff55-48cb-8d11-7c04b96a78cf
+script: "./.travis.script.sh"
 install:
 - mvn install
 jdk:
 - oraclejdk8
-sudo: false
+sudo: required
+dist: trusty
 script: phantomjs testrunner.js
 addons:
   apt:
