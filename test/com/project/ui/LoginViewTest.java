@@ -1,6 +1,7 @@
 package com.project.ui;
 
 import com.vaadin.data.validator.EmailValidator;
+import com.vaadin.testbench.TestBench;
 import com.vaadin.testbench.TestBenchTestCase;
 import com.vaadin.testbench.elements.ButtonElement;
 import com.vaadin.testbench.elements.PasswordFieldElement;
@@ -10,7 +11,9 @@ import com.vaadin.ui.TextField;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 import static org.junit.Assert.*;
 
@@ -20,7 +23,8 @@ import static org.junit.Assert.*;
 public class LoginViewTest extends TestBenchTestCase{
     @Before
     public void setUp() {
-        setDriver(new ChromeDriver());
+        setDriver(TestBench.createDriver(new PhantomJSDriver()));
+        getDriver().manage().window().setSize(new Dimension(1024, 768));
     }
 
     private void openTestURL(String url) {
