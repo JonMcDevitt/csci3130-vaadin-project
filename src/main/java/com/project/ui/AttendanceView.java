@@ -38,6 +38,7 @@ public class AttendanceView extends CustomComponent implements View {
         todayClassDay = getTodayClassDay(course);
 		attendanceRecords = getAttendanceRecords(todayClassDay);
 		
+		configureGrid(todayClassDay);
 		configureLabel(course);
 		VerticalLayout layout = new VerticalLayout();
 		layout.setMargin(true);
@@ -54,7 +55,7 @@ public class AttendanceView extends CustomComponent implements View {
 
 		barcodeScanner.onBarcodeScanned(s -> {
 		    todayClassDay.studentScanned(s);
-		    updateAttendanceGrid(s, true);
+		    updateAttendanceGrid(s,PRESENT);
 		});
 		setCompositionRoot(layout);
 	}
@@ -76,7 +77,7 @@ public class AttendanceView extends CustomComponent implements View {
 	}
 
 	@SuppressWarnings("unchecked")
-    private void updateAttendanceGrid(String barcode, boolean present) {
+    private void updateAttendanceGrid(String barcode, String present) {
 	    Item record = attendanceRecords.getItem(barcode);
 	    if (record != null) {
 	        record.getItemProperty(PRESENT).setValue(present);
@@ -91,7 +92,7 @@ public class AttendanceView extends CustomComponent implements View {
 		attendanceRecords.addContainerProperty(LAST_NAME, String.class, "");
 		attendanceRecords.addContainerProperty(BANNER_NUMBER, String.class, "");
 		attendanceRecords.addContainerProperty(BARCODE, String.class, "");
-		attendanceRecords.addContainerProperty(PRESENT, Boolean.class, false);
+		attendanceRecords.addContainerProperty(PRESENT, String.class, "Absent");
 		
 		if (classDay != null) {
 			for (Student s : classDay.getAbsentStudents()) {
@@ -100,7 +101,7 @@ public class AttendanceView extends CustomComponent implements View {
 				item.getItemProperty(LAST_NAME).setValue(s.getLastName());
 				item.getItemProperty(BANNER_NUMBER).setValue(s.getId());
 				item.getItemProperty(BARCODE).setValue(s.getBarcode());
-				item.getItemProperty(PRESENT).setValue(false);
+				item.getItemProperty(PRESENT).setValue("Absent");
 			}
 			for (Student s : classDay.getAttendingStudents()) {
 				Item item = attendanceRecords.addItem(s.getBarcode());
@@ -108,7 +109,7 @@ public class AttendanceView extends CustomComponent implements View {
 				item.getItemProperty(LAST_NAME).setValue(s.getLastName());
 				item.getItemProperty(BANNER_NUMBER).setValue(s.getId());
 				item.getItemProperty(BARCODE).setValue(s.getBarcode());
-				item.getItemProperty(PRESENT).setValue(true);
+				item.getItemProperty(PRESENT).setValue("Present");
 			}
 		}
 		
