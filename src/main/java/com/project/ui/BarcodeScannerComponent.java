@@ -84,8 +84,8 @@ public class BarcodeScannerComponent extends CustomComponent {
         onEnterKeyHandler = new OnEnterKeyHandler() {
             @Override
             public void onEnterKeyPressed() {
-                callbackOptional.ifPresent(c -> {
-                    c.accept(textField.getValue());
+                callbackOptional.ifPresent(callback -> {
+                    callback.accept(textField.getValue());
                     textField.clear();
                 });
             }
@@ -163,8 +163,7 @@ public class BarcodeScannerComponent extends CustomComponent {
     }
     
     public void onBarcodeScanned(Consumer<String> onBarcodeScanned) {
-        System.out.println("callback registered");
-        this.callbackOptional = Optional.of(onBarcodeScanned);
+        callbackOptional = Optional.of(onBarcodeScanned);
     }
 
 }
