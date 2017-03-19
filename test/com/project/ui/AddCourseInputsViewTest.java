@@ -60,7 +60,7 @@ public class AddCourseInputsViewTest extends TestBenchTestCase {
         $(TextFieldElement.class).all().get(2).setValue("01");
 
         /** Click button; expect that one more element has been added to the grid   */
-        $(ButtonElement.class).all().get($(ButtonElement.class).all().size()-1).click();
+        $(ButtonElement.class).all().get($(ButtonElement.class).all().size() - 1).click();
         assertEquals($(GridElement.class).first().getRowCount(), currentRows + 1);
     }
 
