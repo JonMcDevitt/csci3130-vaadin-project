@@ -30,7 +30,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
-public class BarcodeScanner extends CustomComponent {
+public class BarcodeScannerComponent extends CustomComponent {
 
     private static final long serialVersionUID = -2387815294780431466L;
 
@@ -46,7 +46,7 @@ public class BarcodeScanner extends CustomComponent {
     private OnEnterKeyHandler onEnterKeyHandler;
 
     //Creates new barcode object and calls setup methods.
-    public BarcodeScanner() {
+    public BarcodeScannerComponent() {
         textField = new TextField();
         activateButton = new Button();
         deactivateButton = new Button();

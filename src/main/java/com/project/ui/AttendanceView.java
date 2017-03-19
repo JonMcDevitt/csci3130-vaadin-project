@@ -21,7 +21,7 @@ public class AttendanceView extends CustomComponent implements View {
     
     private Grid attendanceGrid;
 	private ClassDay todayClassDay;
-	private BarcodeScanner barcodeScanner;
+	private BarcodeScannerComponent barcodeScannerComponent;
 	private IndexedContainer attendanceRecords;
 	private Button toCourseView;
 	private Label label;
@@ -33,7 +33,7 @@ public class AttendanceView extends CustomComponent implements View {
     private static final String PRESENT = "Present";
 	
 	public AttendanceView(Course course) {
-	    barcodeScanner = new BarcodeScanner();
+	    barcodeScannerComponent = new BarcodeScannerComponent();
 		attendanceGrid = new Grid();
         todayClassDay = getTodayClassDay(course);
 		attendanceRecords = getAttendanceRecords(todayClassDay);
@@ -43,17 +43,17 @@ public class AttendanceView extends CustomComponent implements View {
 		VerticalLayout layout = new VerticalLayout();
 		layout.setMargin(true);
 		configureBackButton(course);
-		layout.addComponents(label, attendanceGrid,barcodeScanner, toCourseView);
+		layout.addComponents(label, attendanceGrid,barcodeScannerComponent, toCourseView);
 		layout.setSizeFull();
 		layout.setSpacing(true);
 		layout.setComponentAlignment(label,Alignment.MIDDLE_CENTER);
 		layout.setComponentAlignment(attendanceGrid,Alignment.MIDDLE_CENTER);
-		layout.setComponentAlignment(barcodeScanner,Alignment.MIDDLE_CENTER);
+		layout.setComponentAlignment(barcodeScannerComponent,Alignment.MIDDLE_CENTER);
 		layout.setComponentAlignment(toCourseView,Alignment.MIDDLE_CENTER);
 		
 		attendanceGrid.setContainerDataSource(attendanceRecords);
 
-		barcodeScanner.onBarcodeScanned(s -> {
+		barcodeScannerComponent.onBarcodeScanned(s -> {
 		    todayClassDay.studentScanned(s);
 		    updateAttendanceGrid(s,PRESENT);
 		});

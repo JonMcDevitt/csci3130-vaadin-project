@@ -1,10 +1,10 @@
 package com.project.ui;
 
-import com.project.ui.BarcodeScanner;
+import com.project.ui.BarcodeScannerComponent;
 
 public class BarcodeScannerTest {
 
-    private BarcodeScanner scanner = new BarcodeScanner();
+    private BarcodeScannerComponent scanner = new BarcodeScannerComponent();
     
     @org.junit.Before
     public void setUp() throws Exception {
