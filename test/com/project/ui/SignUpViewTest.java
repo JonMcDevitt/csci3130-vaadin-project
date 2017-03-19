@@ -21,6 +21,7 @@ public class SignUpViewTest extends TestBenchTestCase{
     @Before
     public void setUp() throws Exception {
         setDriver(TestBench.createDriver(new PhantomJSDriver()));
+        /** Need to do this so that the elements are not out of the viewport    */
         getDriver().manage().window().setSize(new Dimension(1024, 768));
         openTestURL("http://localhost:8080");
         waitMilli(1000);
