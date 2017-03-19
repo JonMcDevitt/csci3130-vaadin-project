@@ -1,6 +1,6 @@
 language: java
 before-install:
-- mvn -B -e -V -Dvaadin.testbench.developer.license=$TESTBENCH_LICENSE clean verify
+- java -Dvaadin.testbench.developer.license=LICENSE_CODE_HERE
 install:
 - mvn install
 jdk:
