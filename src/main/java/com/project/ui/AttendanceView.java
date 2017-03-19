@@ -97,7 +97,7 @@ public class AttendanceView extends CustomComponent implements View {
     private void configureLabel(Label label) {
         String courseCode = course.getCourseCode();
         String courseName = course.getCourseName();
-        String caption = String.format("Attendance for: %s %s", courseCode, courseName);
+        String caption = String.format("Attendance for: %s - %s", courseCode, courseName);
         label.setCaption(caption);
     }
 
