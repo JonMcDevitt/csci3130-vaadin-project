@@ -13,7 +13,7 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import static org.junit.Assert.*;
 
 /**
- * Created by Owner on 2017-03-17.
+ * Created by Jonathan McDevitt on 2017-03-17.
  */
 public class AddCourseInputsViewTest extends TestBenchTestCase {
     @Before
