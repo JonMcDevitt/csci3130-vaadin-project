@@ -1,5 +1,6 @@
 package com.project.ui;
 
+import com.vaadin.testbench.TestBench;
 import com.vaadin.testbench.TestBenchTestCase;
 import com.vaadin.testbench.elements.ButtonElement;
 import com.vaadin.testbench.elements.PasswordFieldElement;
@@ -7,7 +8,9 @@ import com.vaadin.testbench.elements.TextFieldElement;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 import static org.junit.Assert.*;
 
@@ -17,7 +20,8 @@ import static org.junit.Assert.*;
 public class SignUpViewTest extends TestBenchTestCase{
     @Before
     public void setUp() throws Exception {
-        setDriver(new ChromeDriver());
+        setDriver(TestBench.createDriver(new PhantomJSDriver()));
+        getDriver().manage().window().setSize(new Dimension(1024, 768));
         openTestURL("http://localhost:8080");
         waitMilli(1000);
         $(ButtonElement.class).get(1).click();
