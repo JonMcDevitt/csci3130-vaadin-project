@@ -65,6 +65,7 @@ public class BarcodeScanner extends CustomComponent {
         callbackOptional = Optional.empty();
         
         setCompositionRoot(verticalLayout);
+        setSizeUndefined();
     }
 
     //Sets up the textfield, and toggle the component to be deactivated if focus is lost.

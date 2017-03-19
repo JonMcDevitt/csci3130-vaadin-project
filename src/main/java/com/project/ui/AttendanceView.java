@@ -11,14 +11,19 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
 public class AttendanceView extends CustomComponent implements View {
 	private Course course;
 	private Grid attendanceGrid;
 	private Date date;
+	private Button toCourseView;
+	private Label label;
 	
 	public AttendanceView(Course course){
 		date = new Date();
@@ -38,14 +43,36 @@ public class AttendanceView extends CustomComponent implements View {
 			todayClassDay = new ClassDay(new Date(), new Date(), course.getStudentRoster());
 			course.getClassDays().add(todayClassDay);
 		}
+		configureLabel();
 		configureGrid(todayClassDay);
-		VerticalLayout layout = new VerticalLayout(scanner, attendanceGrid);
+		VerticalLayout layout = new VerticalLayout();
+		layout.setMargin(true);
+		configureBackButton();
+		layout.addComponents(label, attendanceGrid,scanner, toCourseView);
+		layout.setSizeFull();
+		layout.setSpacing(true);
+		layout.setComponentAlignment(label,Alignment.MIDDLE_CENTER);
+		layout.setComponentAlignment(attendanceGrid,Alignment.MIDDLE_CENTER);
+		layout.setComponentAlignment(scanner,Alignment.MIDDLE_CENTER);
+		layout.setComponentAlignment(toCourseView,Alignment.MIDDLE_CENTER);
 		setCompositionRoot(layout);
 	}
 	private void configureGrid(ClassDay classDay){
 		List<AttendanceRecordEntry> list = getAttendanceRecordList(classDay);
 		
 		attendanceGrid.setContainerDataSource(getAttendanceRecords(classDay));
+		attendanceGrid.setWidth("100%");
+	}
+	
+	private void configureBackButton(){
+		toCourseView = new Button("Back to Course View");
+		toCourseView.addClickListener(e ->{
+    		getUI().setContent(new CourseView(course));
+		});
+	}
+	
+	private void configureLabel(){
+		label = new Label("Attendance for: " +course.getCourseCode()+" "+course.getCourseName());
 	}
 	
 	private static IndexedContainer getAttendanceRecords(ClassDay classDay) {

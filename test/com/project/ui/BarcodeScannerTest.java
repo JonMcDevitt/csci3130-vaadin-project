@@ -1,4 +1,6 @@
-package com.project;
+package com.project.ui;
+
+import com.project.ui.BarcodeScanner;
 
 public class BarcodeScannerTest {
 
