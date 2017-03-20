@@ -51,7 +51,7 @@ public class RegisteredUserDatabase {
         }
     }
     
-    private static RegisteredUser getTestUser() {
+    public static RegisteredUser getTestUser() {
         return new RegisteredUser("test@test.com", "p4ssw0rd", "testFirst", "testLast", "test");
     }
 

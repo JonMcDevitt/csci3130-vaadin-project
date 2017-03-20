@@ -1,23 +1,17 @@
 package com.project.ui;
 
-import javax.swing.plaf.basic.BasicOptionPaneUI.ButtonActionListener;
-
 import com.project.backend.ClassDay;
 import com.project.backend.Course;
 import com.project.backend.Student;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.Page;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Grid;
-import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.PopupView;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
@@ -29,7 +23,10 @@ import com.vaadin.ui.VerticalLayout;
 public class CourseView extends CustomComponent implements View {
 
     public static final String NAME = "CourseInfo";
+    
     private static final String WIDTH_TEXTFIELD_DEFAULT = "300px";
+    public static final String TAKE_ATTENDANCE_FOR_TODAY_BUTTON_ID = "takeAttendanceForTodayButton";
+    
     private Course course;
     private Button goToMain;
     private Button editStudent;
@@ -78,6 +75,7 @@ public class CourseView extends CustomComponent implements View {
     		getUI().setContent(new AttendanceView(course));
     		
     	});
+    	goToTakeAttendance.setId(TAKE_ATTENDANCE_FOR_TODAY_BUTTON_ID);
     	
     }
     public void createLayout() {

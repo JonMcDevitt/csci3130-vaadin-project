@@ -40,6 +40,8 @@ public class AttendanceView extends CustomComponent implements View {
     private Button toCourseViewButton;
     private Label label;
 
+    public static final String BACK_BUTTON_ID = "backButton";
+    
     private static final String FIRST_NAME = "First Name";
     private static final String LAST_NAME = "Last Name";
     private static final String BANNER_NUMBER = "Banner Number";
@@ -88,6 +90,7 @@ public class AttendanceView extends CustomComponent implements View {
     }
 
     private void configureBackButton(Button backButton) {
+        toCourseViewButton.setId(BACK_BUTTON_ID);
         toCourseViewButton.setCaption("Back to Course View");
         toCourseViewButton.addClickListener(e -> {
             getUI().setContent(new CourseView(course));

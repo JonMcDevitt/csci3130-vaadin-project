@@ -1,24 +1,33 @@
 package com.project.ui;
 
-import com.project.ui.BarcodeScannerComponent;
+import org.junit.Before;
+import org.junit.Test;
 
-public class BarcodeScannerTest {
+import junit.framework.TestCase;
 
-    private BarcodeScannerComponent scanner = new BarcodeScannerComponent();
+public class BarcodeScannerTest extends TestCase {
     
-    @org.junit.Before
-    public void setUp() throws Exception {
+    private static final String TEST_BARCODE = "223456789";
+    
+    private BarcodeScannerComponent scanner;
+    private String output;
 
-    }
-
-    @org.junit.After
-    public void tearDown() throws Exception {
-
-    }
-
-    @org.junit.Test
-    public void init() throws Exception {
-
+    @Before
+    public void setUp() {
+        scanner = new BarcodeScannerComponent();
+        output = "";
     }
     
+    @Test
+    public void testWithoutCallback() {
+        scanner.simulateBarcodeScan(TEST_BARCODE);
+        assertEquals(output, "");
+    }
+
+    @Test
+    public void testWithCallback() {
+        scanner.onBarcodeScanned(s -> output = s);
+        scanner.simulateBarcodeScan(TEST_BARCODE);
+        assertEquals(output, TEST_BARCODE);
+    }
 }

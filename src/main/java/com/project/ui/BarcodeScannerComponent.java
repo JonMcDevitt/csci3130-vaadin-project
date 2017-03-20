@@ -86,8 +86,9 @@ public class BarcodeScannerComponent extends CustomComponent {
             @Override
             public void onEnterKeyPressed() {
                 callbackOptional.ifPresent(callback -> {
-                    callback.accept(textField.getValue());
+                    String value = textField.getValue();
                     textField.clear();
+                    callback.accept(value);
                 });
             }
         };
@@ -109,7 +110,7 @@ public class BarcodeScannerComponent extends CustomComponent {
     	activateButton.setCaption("Start scanning");
         activateButton.setEnabled(true);
         activateButton.setDisableOnClick(true);
-        activateButton.setWidth(150,UNITS_PIXELS);
+        activateButton.setWidth(150, UNITS_PIXELS);
         
         activateButton.addClickListener(e -> {
             deactivateButton.setEnabled(true);
@@ -123,7 +124,7 @@ public class BarcodeScannerComponent extends CustomComponent {
         deactivateButton.setCaption("Stop scanning");
         deactivateButton.setEnabled(false);
         deactivateButton.setDisableOnClick(true);
-        deactivateButton.setWidth(150,UNITS_PIXELS);
+        deactivateButton.setWidth(150, UNITS_PIXELS);
         
         deactivateButton.addClickListener(e -> {
             activateButton.setEnabled(true);
@@ -132,7 +133,7 @@ public class BarcodeScannerComponent extends CustomComponent {
 
     //Allows for the listening of an enter key being pressed
     private abstract class OnEnterKeyHandler {
-
+        
         @SuppressWarnings("serial")
         final ShortcutListener enterShortCut
                 = new ShortcutListener("EnterOnTextAreaShorcut", ShortcutAction.KeyCode.ENTER, null) {
@@ -144,6 +145,7 @@ public class BarcodeScannerComponent extends CustomComponent {
 
         @SuppressWarnings("serial")
         public void installOn(final TextField component) {
+
             component.addFocusListener(new FieldEvents.FocusListener() {
                 @Override
                 public void focus(FieldEvents.FocusEvent event) {
@@ -163,8 +165,27 @@ public class BarcodeScannerComponent extends CustomComponent {
 
     }
     
+    // Register the callback to be executed when a barcode is scanned
     public void onBarcodeScanned(Consumer<String> onBarcodeScanned) {
         callbackOptional = Optional.of(onBarcodeScanned);
+    }
+    
+    // Simulates a barcode being scanned.
+    public void simulateBarcodeScan(String barcode) {
+        textField.setValue(barcode);
+        onEnterKeyHandler.enterShortCut.handleAction(null, null);
+    }
+
+    public Button getActivateButton() {
+        return activateButton;
+    }
+
+    public Button getDeactivateButton() {
+        return deactivateButton;
+    }
+    
+    public TextField getTextField() {
+        return textField;
     }
 
 }
