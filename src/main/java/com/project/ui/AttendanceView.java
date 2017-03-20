@@ -46,11 +46,12 @@ public class AttendanceView extends CustomComponent implements View {
     private static final String LAST_NAME = "Last Name";
     private static final String BANNER_NUMBER = "Banner Number";
     private static final String BARCODE = "Barcode";
-    private static final String PRESENT = "Present";
+    private static final String PRESENT = "Attendance Status";
 
+    //Creates the view
     public AttendanceView(Course course) {
         this.course = course;
-
+        //creates all compontents used in view
         attendanceGrid = new Grid();
         todayClassDay = getTodayClassDay(course);
         barcodeScannerComponent = new BarcodeScannerComponent();
@@ -58,7 +59,7 @@ public class AttendanceView extends CustomComponent implements View {
         label = new Label();
         toCourseViewButton = new Button();
 
-
+        //configures components
         configureGrid(todayClassDay);
         configureLabel(label);
         configureBackButton(toCourseViewButton);
@@ -72,7 +73,8 @@ public class AttendanceView extends CustomComponent implements View {
 
         VerticalLayout layout = new VerticalLayout();
         layout.setMargin(true);
-
+        
+        //adds components to layout and alligns them.
         layout.addComponents(label, attendanceGrid, barcodeScannerComponent, toCourseViewButton);
         layout.setSizeFull();
         layout.setSpacing(true);
@@ -84,11 +86,13 @@ public class AttendanceView extends CustomComponent implements View {
         setCompositionRoot(layout);
     }
 
+    //configures grid, sets to width to 100%
     private void configureGrid(ClassDay classDay) {
         attendanceGrid.setContainerDataSource(attendanceRecords);
         attendanceGrid.setWidth("100%");
     }
 
+    //configures back button, if clicked it will go to course view
     private void configureBackButton(Button backButton) {
         toCourseViewButton.setId(BACK_BUTTON_ID);
         toCourseViewButton.setCaption("Back to Course View");
@@ -97,13 +101,15 @@ public class AttendanceView extends CustomComponent implements View {
         });
     }
 
+    //Configures label, it displays "courseCode - courseName" at the top of the view
     private void configureLabel(Label label) {
         String courseCode = course.getCourseCode();
         String courseName = course.getCourseName();
-        String caption = String.format("Attendance for: %s %s", courseCode, courseName);
+        String caption = String.format("Attendance for: %s - %s", courseCode, courseName);
         label.setCaption(caption);
     }
 
+    //accepts a barcode, if the barcode is found it will mark the status for that student as present
     @SuppressWarnings("unchecked")
     private void updateAttendanceGrid(String barcode, AttendanceStatus status) {
         Item record = attendanceRecords.getItem(barcode);
@@ -112,6 +118,10 @@ public class AttendanceView extends CustomComponent implements View {
         }
     }
 
+    
+    //sets the content of each grid. If the students are coming from the absent list, they will
+    //be marked as absent, and if they are coming from the attending list, they will be
+    //marked as present
     private static IndexedContainer getAttendanceRecords(ClassDay classDay) {
 
         IndexedContainer attendanceRecords = new IndexedContainer();
@@ -137,6 +147,7 @@ public class AttendanceView extends CustomComponent implements View {
         return attendanceRecords;
     }
 
+    //sets item properties for the grid
     @SuppressWarnings("unchecked")
     private static void setRecordItemProperties(Item item, Student student, AttendanceStatus status) {
         item.getItemProperty(FIRST_NAME).setValue(student.getFirstName());
@@ -151,6 +162,7 @@ public class AttendanceView extends CustomComponent implements View {
 
     }
 
+    //Checks if a given date is equal to todays day of month, month and year.
     private static boolean isToday(Date compareDate) {
         Date date = new Date();
         if (compareDate.getYear() == date.getYear() && compareDate.getDate() == date.getDate()
@@ -161,6 +173,8 @@ public class AttendanceView extends CustomComponent implements View {
 
     }
 
+    //Returns ClassDay object for today. If one isn't already existing, it gets created and uploaded
+    //to database.
     private ClassDay getTodayClassDay(Course course) {
         for (ClassDay c : course.getClassDays()) {
             if (isToday(c.getStartTime())) {

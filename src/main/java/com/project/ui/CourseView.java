@@ -125,7 +125,7 @@ public class CourseView extends CustomComponent implements View {
     }
     public void changeStudent(TextField idnum, TextField barcode, TextField firstname, TextField lastname){
     	currStudent.setId(idnum.getValue());
-    	currStudent.setBarcode(idnum.getValue());
+    	currStudent.setBarcode(barcode.getValue());
 		currStudent.setFirstName(firstname.getValue());
 		currStudent.setLastName(lastname.getValue());
 		popupContent.setVisible(false);

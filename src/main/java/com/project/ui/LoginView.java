@@ -87,9 +87,6 @@ public class LoginView extends CustomComponent implements View {
     private final void initLoginButton(Button loginButton) {
         Button.ClickListener onLoginClicked = event -> 
         {
-            
-            emailTextField.setValue("test@test.com");
-            passwordField.setValue("p4ssw0rd");
 
             String uName = emailTextField.getValue();
             String pWord = passwordField.getValue();
