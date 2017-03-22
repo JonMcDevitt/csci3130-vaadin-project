@@ -7,6 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 import static org.junit.Assert.*;
@@ -14,7 +15,7 @@ import static org.junit.Assert.*;
 /**
  * Created by Jonathan McDevitt on 2017-03-17.
  */
-public class AddCourseInputsViewTest extends TestBenchTestCase {
+public class AddCourseInputsViewIT extends TestBenchTestCase {
     @Before
     public void setUp() throws Exception {
         setDriver(TestBench.createDriver(new PhantomJSDriver()));
@@ -65,6 +66,6 @@ public class AddCourseInputsViewTest extends TestBenchTestCase {
 
     @After
     public void tearDown() throws Exception {
-        getDriver().close();
+        getDriver().quit();
     }
 }

@@ -9,6 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 import static org.junit.Assert.*;
@@ -16,11 +17,11 @@ import static org.junit.Assert.*;
 /**
  * Created by Owner on 2017-02-22.
  */
-public class LoginViewTest extends TestBenchTestCase{
+public class LoginViewIT extends TestBenchTestCase{
     @Before
     public void setUp() {
         setDriver(TestBench.createDriver(new PhantomJSDriver()));
-        getDriver().manage().window().setSize(new Dimension(1024, 768));
+        getDriver().manage().window().setSize(new Dimension(1920, 1080));
     }
 
     private void openTestURL(String url) {
@@ -43,6 +44,6 @@ public class LoginViewTest extends TestBenchTestCase{
 
     @After
     public void tearDown() {
-        getDriver().close();
+        getDriver().quit();
     }
 }

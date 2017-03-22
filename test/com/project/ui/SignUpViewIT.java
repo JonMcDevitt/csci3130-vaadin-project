@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 /**
  * Created by Owner on 2017-03-17.
  */
-public class SignUpViewTest extends TestBenchTestCase{
+public class SignUpViewIT extends TestBenchTestCase{
     @Before
     public void setUp() throws Exception {
         setDriver(TestBench.createDriver(new PhantomJSDriver()));
@@ -59,7 +59,7 @@ public class SignUpViewTest extends TestBenchTestCase{
 
     @After
     public void tearDown() throws Exception {
-        getDriver().close();
+        getDriver().quit();
     }
 
     private void waitMilli(long milli) {
