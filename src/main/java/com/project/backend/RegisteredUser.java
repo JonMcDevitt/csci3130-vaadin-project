@@ -3,23 +3,27 @@ package com.project.backend;
 // Backend DTO class. This is just a typical Java backend implementation
 // class and nothing Vaadin specific.
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class RegisteredUser{
 
-    private final String userName;
-    private final String email;
-    private final String password;
-    private final String firstName;
-    private final String lastName;
-    private final String department;
-    private final List<String> courses; /** A list of course IDs to use for fetching from the database  */
+    @Id
+    private String email;
+    private String password;
+    private String firstName;
+    private String lastName;
+    private String department;
+    @OneToMany
+    private List<Course> courses; /** A list of course IDs to use for fetching from the database  */
 
-    public RegisteredUser(String userName, String email, String password, String firstName,
+    public RegisteredUser(String email, String password, String firstName,
     						String lastName, String department) {
-    	this.userName = userName;
     	this.email = email;
     	this.password = password;
     	this.firstName = firstName;
@@ -27,12 +31,15 @@ public class RegisteredUser{
     	this.department = department;
     	this.courses = new ArrayList<>();
     }
-    
+
+    public RegisteredUser() {
+    }
+
     //check if this RegisteredUser object has the same user name or email address as the other RegisteredUser object in the database
     //This is used to validate if the user name or the email has been used before when sign up for a new user
     public boolean isValid(RegisteredUserDatabase userDatabase) {
     	for (RegisteredUser r : userDatabase.getUserList()) {
-    		if (r.userName.equals(this.userName) || r.email.equals(this.email)){
+    		if (r.email.equals(this.email)){
     			return false;
     		}
     	}
@@ -57,7 +64,7 @@ public class RegisteredUser{
         return true;
     }
 
-    public String getEmail() {
+    String getEmail() {
         return email;
     }
 
@@ -72,8 +79,7 @@ public class RegisteredUser{
     @Override
     public String toString() {
         return "RegisteredUser{firstName=" + firstName
-                + ", lastName=" + lastName + ", department= " + department + ", userName=" + userName + ", email="
+                + ", lastName=" + lastName + ", department= " + department + ", email="
                 + email + '}';
     }
 }
-

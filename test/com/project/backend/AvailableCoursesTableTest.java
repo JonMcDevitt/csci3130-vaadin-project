@@ -10,6 +10,9 @@ import static org.junit.Assert.*;
 /**
  * Created by Owner on 2017-03-07.
  */
+
+/** TODO: Get rid of this once JPA container is done
+ * */
 public class AvailableCoursesTableTest {
     private static AvailableCoursesTable db;
 

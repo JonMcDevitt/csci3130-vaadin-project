@@ -6,10 +6,15 @@ package com.project.backend;
  * Temporary Student class for creating Student objects for "Go to class" function test
  */
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Student {
-    private final String id;
-    private final String firstName;
-    private final String lastName;
+    @Id
+    private String id;
+    private String firstName;
+    private String lastName;
 
     Student(String id, String firstName, String lastName) {
         this.id = id;
@@ -17,7 +22,10 @@ public class Student {
     	this.lastName = lastName;
     }
 
-    String getId() {
+    public Student() {
+    }
+
+    public String getId() {
         return id;
     }
     
@@ -29,10 +37,21 @@ public class Student {
     	return lastName;
     }
     
+    public void setId(String id) {
+    	this.id =  id;
+    }
+    
+    public void setFirstName(String firstname) {
+    	this.firstName = firstname;
+    }
+    
+    public void setLastName (String lastname) {
+    	this.lastName = lastname;
+    }
     @Override
     public String toString() {
         return "RegisteredUser{firstName=" + firstName
-                + ", lastName=" + lastName + '}';
+                + ", lastName=" + lastName + ", id=" + id +'}';
     }
 }
 

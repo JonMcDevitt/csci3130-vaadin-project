@@ -3,7 +3,9 @@ install:
 - mvn install
 jdk:
 - oraclejdk8
-sudo: false
+sudo: required
+dist: trusty
+script: "./.travis.script.sh"
 addons:
   apt:
     packages:
