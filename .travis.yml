@@ -1,10 +1,12 @@
 language: java
+script: "./.travis.script.sh"
 install:
-- mvn clean install -DskipTests
+- mvn install
 jdk:
 - oraclejdk8
 sudo: required
 dist: trusty
+script: phantomjs testrunner.js
 addons:
   apt:
     packages:
