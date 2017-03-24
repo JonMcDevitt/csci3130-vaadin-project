@@ -2,6 +2,7 @@ package com.project.ui;
 
 import javax.servlet.annotation.WebServlet;
 
+import com.project.backend.RegisteredUser;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
@@ -26,10 +27,13 @@ public class LoginUI extends UI {
 
         getNavigator().addView(LoginView.NAME, LoginView.class);
         getNavigator().addView(MainMenuView.NAME, MainMenuView.class);
+        getNavigator().addView(CourseView.NAME, CourseView.class);
+        getNavigator().addView(NewStudentView.NAME, NewStudentView.class);
+        getNavigator().addView(SignUpView.NAME, SignUpView.class);
 
         getNavigator().addViewChangeListener(new ViewChangeListener() {
             @Override
-            public boolean beforeViewChange(ViewChangeEvent viewChangeEvent) {
+            public boolean beforeViewChange(ViewChangeEvent viewChangeEvent) {           	
                 boolean isLoggedIn = getSession().getAttribute("user") != null;
                 boolean isLoginView = viewChangeEvent.getNewView() instanceof LoginView;
                 boolean ret = true;

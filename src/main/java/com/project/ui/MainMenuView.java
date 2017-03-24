@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.project.backend.Course;
+import com.project.backend.RegisteredUser;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -35,7 +36,7 @@ public class MainMenuView extends CustomComponent implements View {
     //A testing courseList
     private List<Course> courseList;
 
-    public MainMenuView() {
+    public MainMenuView() {    	
     	//Create a courseList for testing
     	courseList = new ArrayList<>();
     	courseList.add(new Course("TestCourse1", "CSCI 0001", "01"));
@@ -50,6 +51,7 @@ public class MainMenuView extends CustomComponent implements View {
     	//Add a selectionListener to select a course and pass it to selectedCourse as a Course object
     	courseGrid.addSelectionListener(e -> {
     		selectedCourse = (Course) courseGrid.getSelectedRow();
+    		getUI().getNavigator().addView(CourseView.NAME, new CourseView(selectedCourse));
     	});
     	
     	//goToCourse button is for resetting the UI. selectedCourse is passed in as a parameter for the
@@ -59,7 +61,44 @@ public class MainMenuView extends CustomComponent implements View {
     			Notification.show("Please select a course from the course table");
     		}
     		else{
-    			getUI().setContent(new CourseView(selectedCourse));
+    			getUI().getNavigator().navigateTo(CourseView.NAME);
+    		}
+    	});
+    	
+        setCompositionRoot(new CssLayout(welcome, goToCourse, logout, courseGrid));
+    }
+    
+    public MainMenuView(Course course) {    	
+    	//Create a courseList for testing
+    	courseList = new ArrayList<>();
+    	courseList.add(new Course("TestCourse1", "CSCI 0001", "01"));
+    	courseList.add(new Course("TestCourse2", "CSCI 0001", "02"));
+    	
+    	for(int i = 0; i < courseList.size(); i++){
+    		if(courseList.get(i).getCourseName().equals(course.getCourseName())){
+    			courseList.remove(i);
+    			courseList.add(i, course);
+    		}
+    	}
+    	
+    	//Display course name only in the grid 
+    	courseGrid.setContainerDataSource(new BeanItemContainer<>(Course.class, courseList));
+    	courseGrid.removeColumn("studentRoster");
+    	
+    	//Add a selectionListener to select a course and pass it to selectedCourse as a Course object
+    	courseGrid.addSelectionListener(e -> {
+    		selectedCourse = (Course) courseGrid.getSelectedRow();
+    		getUI().getNavigator().addView(CourseView.NAME, new CourseView(selectedCourse));
+    	});
+    	
+    	//goToCourse button is for resetting the UI. selectedCourse is passed in as a parameter for the
+    	//use of it's attributes in CourseView
+    	goToCourse.addClickListener((Button.ClickListener) clickEvent ->{
+    		if(selectedCourse == null){
+    			Notification.show("Please select a course from the course table");
+    		}
+    		else{
+    			getUI().getNavigator().navigateTo(CourseView.NAME);
     		}
     	});
         goToCourse.setId(GO_TO_COURSE_BUTTON_ID);
