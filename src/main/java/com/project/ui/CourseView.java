@@ -8,6 +8,7 @@ import com.project.backend.Student;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.server.Page;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
@@ -21,16 +22,12 @@ import com.vaadin.ui.PopupView;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
-/*
- * Created by Jili on 2017-03-01
- * 
- */
-
 public class CourseView extends CustomComponent implements View {
-
+	
     public static final String NAME = "CourseInfo";
     private static final String WIDTH_TEXTFIELD_DEFAULT = "300px";
     private Button goToMain;
+    private Button addStudent;
     private Button editStudent;
     private Student currStudent;
     private ClassDay currDay;
@@ -52,6 +49,7 @@ public class CourseView extends CustomComponent implements View {
     private void configureComponents(Course course) {
 
     	goToMain = new Button("Back to main page");
+    	addStudent = new Button("Add Student");
     	courseName = new Label(course.getCourseName());
     	editStudent = new Button("Edit selected Student");
     	configurePopup();
@@ -60,7 +58,13 @@ public class CourseView extends CustomComponent implements View {
     	studentGrid.setColumnOrder("id");    	
     	//goToMain goes back to the main page
     	goToMain.addClickListener(e -> {
-    		getUI().getNavigator().navigateTo("");
+    		getUI().getNavigator().addView(MainMenuView.NAME, new MainMenuView(course));
+    		getUI().getNavigator().navigateTo(MainMenuView.NAME);
+    	});
+    	
+    	addStudent.addClickListener(e -> {
+    		getUI().getNavigator().addView(NewStudentView.NAME, new NewStudentView(course));
+    		getUI().getNavigator().navigateTo(NewStudentView.NAME);
     	});
     	editStudent.addClickListener(e -> {
     		if((Student) studentGrid.getSelectedRow()!=null){
@@ -70,10 +74,13 @@ public class CourseView extends CustomComponent implements View {
     		}
     	});
     }
-    public void createLayout() {
+    private void createLayout() {
+    	  HorizontalLayout buttons = new HorizontalLayout(goToMain, addStudent, editStudent);
+    	  buttons.setSpacing(true);
+        buttons.setMargin(new MarginInfo(true, true));
         VerticalLayout mainLayout = new VerticalLayout(courseName, goToMain, editStudent, studentGrid);
+        mainLayout.setSpacing(true);  
         HorizontalLayout realmainLayout = new HorizontalLayout(mainLayout, popupContent);
-        mainLayout.setSpacing(true);
         setCompositionRoot(realmainLayout);       
     }
 

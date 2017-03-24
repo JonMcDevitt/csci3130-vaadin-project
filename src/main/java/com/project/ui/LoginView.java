@@ -46,6 +46,7 @@ public class LoginView extends CustomComponent implements View {
         usernameTextField.setWidth("300px");
         usernameTextField.setRequired(true);
         usernameTextField.setInputPrompt("Email address or username");
+        usernameTextField.setInvalidAllowed(false);
         usernameTextField.addShortcutListener(new ShortcutListener("Login", ShortcutAction.KeyCode.ENTER, null) {
             @Override
             public void handleAction(Object o, Object o1) {
