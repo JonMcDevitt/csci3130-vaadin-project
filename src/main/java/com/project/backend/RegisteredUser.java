@@ -64,7 +64,7 @@ public class RegisteredUser{
         return true;
     }
 
-    String getEmail() {
+    public String getEmail() {
         return email;
     }
 

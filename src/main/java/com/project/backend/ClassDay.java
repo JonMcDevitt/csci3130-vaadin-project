@@ -1,11 +1,12 @@
 package com.project.backend;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  * Created by Owner on 2017-03-06.
@@ -26,9 +27,6 @@ public class ClassDay {
         this.cancellation = false;
     }
 
-    public ClassDay() {
-    }
-
     public Date getStartTime() {
         return startTime;
     }
@@ -46,12 +44,10 @@ public class ClassDay {
     }
 
     public void studentScanned(String studentId) {
-        for(int i = 0; i < absentStudents.size(); i++) {
-            if(studentId.equals(absentStudents.get(i).getId())) {
-                attendingStudents.add(absentStudents.remove(i));
-                break;
-            }
-        }
+        absentStudents.stream().filter(s -> s.getId().equals(studentId)).findAny().ifPresent(s -> {
+            attendingStudents.add(s);
+            absentStudents.remove(s);
+        });
     }
 
     public boolean isCancelled() {

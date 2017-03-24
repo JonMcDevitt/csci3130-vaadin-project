@@ -2,14 +2,18 @@ package com.project.ui;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import com.project.backend.Course;
 import com.project.backend.RegisteredUser;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Grid;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 
 /**
  * Created by Owner on 2017-02-17.
@@ -19,6 +23,9 @@ import com.vaadin.ui.*;
 public class MainMenuView extends CustomComponent implements View {
     public static final String NAME = "";
 
+    public static final String COURSE_GRID_ID = "courseGrid";
+    public static final String GO_TO_COURSE_BUTTON_ID = "goToCourseButton";
+    
     private Label welcome = new Label();
     private Grid courseGrid = new Grid();
     private Button addCourse;
@@ -35,9 +42,11 @@ public class MainMenuView extends CustomComponent implements View {
     	courseList.add(new Course("TestCourse1", "CSCI 0001", "01"));
     	courseList.add(new Course("TestCourse2", "CSCI 0001", "02"));
     	
-    	//Display course name only in the grid 
+    	//Display course name only in the grid
+    	courseGrid.setId(COURSE_GRID_ID);
     	courseGrid.setContainerDataSource(new BeanItemContainer<>(Course.class, courseList));
     	courseGrid.removeColumn("studentRoster");
+    	courseGrid.removeColumn("classDays");
     	
     	//Add a selectionListener to select a course and pass it to selectedCourse as a Course object
     	courseGrid.addSelectionListener(e -> {
@@ -92,6 +101,7 @@ public class MainMenuView extends CustomComponent implements View {
     			getUI().getNavigator().navigateTo(CourseView.NAME);
     		}
     	});
+        goToCourse.setId(GO_TO_COURSE_BUTTON_ID);
 
         Button logout = new Button("Log Out", (Button.ClickListener) clickEvent -> {
             getSession().setAttribute("user", null);

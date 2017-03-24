@@ -16,8 +16,8 @@ public class ClassDayTest {
     @Before
     public void setUp() throws Exception {
         List<Student> students = new ArrayList<>();
-        students.add(new Student("B00123123", "Bob", "Barker"));
-        students.add(new Student("B00987987", "Alica", "Blah"));
+        students.add(new Student("B00123123", "5667887678", "Bob", "Barker"));
+        students.add(new Student("B00987987","87565789", "Alica", "Blah"));
         classDay = new ClassDay(
                 new Date(2017, 03, 07, 12, 30),
                 new Date(2017, 03, 07, 13, 30),

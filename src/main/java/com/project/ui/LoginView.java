@@ -1,5 +1,7 @@
 package com.project.ui;
 
+import java.util.Optional;
+
 import com.project.backend.RegisteredUser;
 import com.project.backend.RegisteredUserDatabase;
 import com.vaadin.data.validator.AbstractValidator;
@@ -10,10 +12,16 @@ import com.vaadin.event.ShortcutListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.PasswordField;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
-
-import java.util.Optional;
 
 /**
  * Created by Owner on 2017-02-17.
@@ -23,6 +31,11 @@ public class LoginView extends CustomComponent implements View {
     private final RegisteredUserDatabase database = RegisteredUserDatabase.getInstance();
 
     public static final String NAME = "Login";
+    
+    public static final String EMAIL_TEXT_FIELD_ID = "emailTextField";
+    public static final String PASSWORD_TEXT_FIELD_ID = "passwordTextField";
+    public static final String LOGIN_BUTTON_ID = "passwordTextField";
+    
     
     private final TextField emailTextField = new TextField();
     private final PasswordField passwordField = new PasswordField();
@@ -42,6 +55,7 @@ public class LoginView extends CustomComponent implements View {
     }
 
     private final void initUsernameTextField(TextField usernameTextField) {
+        usernameTextField.setId(EMAIL_TEXT_FIELD_ID);
         usernameTextField.addValidator(new EmailValidator("Username must be an email address."));
         usernameTextField.setWidth("300px");
         usernameTextField.setRequired(true);
@@ -56,6 +70,7 @@ public class LoginView extends CustomComponent implements View {
     }
     
     private final void initPasswordField(PasswordField passwordField) {
+        passwordField.setId(PASSWORD_TEXT_FIELD_ID);
         passwordField.addValidator(new PasswordValidator());
         passwordField.setWidth("300px");
         passwordField.setRequired(true);
@@ -73,9 +88,9 @@ public class LoginView extends CustomComponent implements View {
     private final void initLoginButton(Button loginButton) {
         Button.ClickListener onLoginClicked = event -> 
         {
+
             String uName = emailTextField.getValue();
             String pWord = passwordField.getValue();
-
             Optional<RegisteredUser> r = database.fetchUser(uName);
             if(!r.isPresent()) {
                 Notification.show("Invalid username", Notification.Type.ERROR_MESSAGE);
@@ -89,6 +104,7 @@ public class LoginView extends CustomComponent implements View {
             }
         };
         
+        loginButton.setId(LOGIN_BUTTON_ID);
         loginButton.setCaption("Login");
         loginButton.addClickListener(onLoginClicked);
     }

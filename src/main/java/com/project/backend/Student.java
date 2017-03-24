@@ -13,16 +13,26 @@ import javax.persistence.Id;
 public class Student {
     @Id
     private String id;
+    private String barcode;
     private String firstName;
     private String lastName;
 
-    public Student(String id, String firstName, String lastName) {
+    Student(String id, String barcode, String firstName, String lastName) {
         this.id = id;
+        this.barcode = barcode;
     	this.firstName = firstName;
     	this.lastName = lastName;
     }
 
-    public Student() {
+    public String getBarcode() {
+		return barcode;
+	}
+
+	public void setBarcode(String barcode) {
+		this.barcode = barcode;
+	}
+
+	public Student() {
     }
 
     public String getId() {
