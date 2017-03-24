@@ -37,6 +37,44 @@ public class MainMenuView extends CustomComponent implements View {
     
     //A testing courseList
     private List<Course> courseList;
+
+	public MainMenuView() {
+		//Create a courseList for testing
+		courseList = new ArrayList<>();
+		courseList.add(new Course("TestCourse1", "CSCI 0001", "01"));
+		courseList.add(new Course("TestCourse2", "CSCI 0001", "02"));
+
+		//Display course name only in the grid
+		courseGrid.setContainerDataSource(new BeanItemContainer<>(Course.class, courseList));
+		courseGrid.removeColumn("studentRoster");
+
+		//Add a selectionListener to select a course and pass it to selectedCourse as a Course object
+		courseGrid.addSelectionListener(e -> {
+			selectedCourse = (Course) courseGrid.getSelectedRow();
+			getUI().getNavigator().addView(CourseView.NAME, new CourseView(selectedCourse));
+		});
+
+		logout = new Button("Log Out", (Button.ClickListener) clickEvent -> {
+			getUI().setSession(null);
+			getUI().getNavigator().navigateTo(NAME);
+		});
+
+		//goToCourse button is for resetting the UI. selectedCourse is passed in as a parameter for the
+		//use of it's attributes in CourseView
+		goToCourse = new Button("Go To Course", (Button.ClickListener) clickEvent ->{
+			if(selectedCourse == null){
+				Notification.show("Please select a course from the course table");
+			}
+			else{
+				getUI().getNavigator().navigateTo(CourseView.NAME);
+			}
+		});
+
+		addCourse = new Button("Add new course", (Button.ClickListener) clickEvent -> {
+			getUI().addWindow(new AddCourseInputsView(courseList, courseGrid));
+		});
+		setCompositionRoot(new CssLayout(welcome, goToCourse, addCourse, logout, courseGrid));
+	}
     
     public MainMenuView(Course course) {    	
     	//Create a courseList for testing
@@ -61,6 +99,10 @@ public class MainMenuView extends CustomComponent implements View {
     		getUI().getNavigator().addView(CourseView.NAME, new CourseView(selectedCourse));
     	});
 
+		logout = new Button("Log Out", (Button.ClickListener) clickEvent -> {
+			getUI().getNavigator().navigateTo(NAME);
+		});
+
     	goToCourse = new Button("Go to Course", (Button.ClickListener) clickEvent ->{
 			if(selectedCourse == null){
 				Notification.show("Please select a course from the course table");
@@ -69,17 +111,7 @@ public class MainMenuView extends CustomComponent implements View {
 				getUI().getNavigator().navigateTo(CourseView.NAME);
 			}
 		});
-    	
-    	//goToCourse button is for resetting the UI. selectedCourse is passed in as a parameter for the
-    	//use of it's attributes in CourseView
-    	goToCourse.addClickListener((Button.ClickListener) clickEvent ->{
-    		if(selectedCourse == null){
-    			Notification.show("Please select a course from the course table");
-    		}
-    		else{
-    			getUI().getNavigator().navigateTo(CourseView.NAME);
-    		}
-    	});
+
         goToCourse.setId(GO_TO_COURSE_BUTTON_ID);
 
         addCourse = new Button("Add new course", (Button.ClickListener) clickEvent -> {

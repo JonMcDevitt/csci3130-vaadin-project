@@ -17,7 +17,7 @@ public class Student {
     private String firstName;
     private String lastName;
 
-    Student(String id, String barcode, String firstName, String lastName) {
+    public Student(String id, String barcode, String firstName, String lastName) {
         this.id = id;
         this.barcode = barcode;
     	this.firstName = firstName;
