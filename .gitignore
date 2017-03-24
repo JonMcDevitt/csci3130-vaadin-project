@@ -36,3 +36,8 @@ hs_err_pid*
 ignore
 /target
 /src/main/webapp/VAADIN/themes/mytheme/styles.css
+
+
+### Custom ignore
+/test/com/project/ui
+/src/main/webapp/VAADIN/themes/mytheme/addons.scss

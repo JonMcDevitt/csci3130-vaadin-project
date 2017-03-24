@@ -54,5 +54,4 @@ public class ClassDayTest {
         classDay.modifyCancellationStatus(true);
         assertTrue(classDay.isCancelled());
     }
-
 }

@@ -12,6 +12,8 @@ import java.util.Optional;
 // Backend service class. This is just a typical Java backend implementation
 // class and nothing Vaadin specific.
 
+/** TODO:   Remove this once the JPAContainer is set up
+ *  */
 public class RegisteredUserDatabase {
 
     private static final RegisteredUserDatabase instance;
@@ -50,7 +52,7 @@ public class RegisteredUserDatabase {
     }
     
     private static RegisteredUser getTestUser() {
-        return new RegisteredUser("test", "test@test.com", "p4ssw0rd", "test", "test");
+        return new RegisteredUser("test@test.com", "p4ssw0rd", "testFirst", "testLast", "test");
     }
 
     public Optional<RegisteredUser> fetchUser(String email) {

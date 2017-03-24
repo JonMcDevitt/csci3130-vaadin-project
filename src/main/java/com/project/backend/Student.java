@@ -25,7 +25,7 @@ public class Student {
     public Student() {
     }
 
-    String getId() {
+    public String getId() {
         return id;
     }
     
@@ -37,10 +37,21 @@ public class Student {
     	return lastName;
     }
     
+    public void setId(String id) {
+    	this.id =  id;
+    }
+    
+    public void setFirstName(String firstname) {
+    	this.firstName = firstname;
+    }
+    
+    public void setLastName (String lastname) {
+    	this.lastName = lastname;
+    }
     @Override
     public String toString() {
         return "RegisteredUser{firstName=" + firstName
-                + ", lastName=" + lastName + '}';
+                + ", lastName=" + lastName + ", id=" + id +'}';
     }
 }
 

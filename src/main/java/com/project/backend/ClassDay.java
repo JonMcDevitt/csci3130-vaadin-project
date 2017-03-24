@@ -1,5 +1,8 @@
 package com.project.backend;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,8 +10,11 @@ import java.util.List;
 /**
  * Created by Owner on 2017-03-06.
  */
+@Entity
 public class ClassDay {
-    private final Date startTime, endTime;
+    @Id
+    private Date startTime, endTime;
+    @OneToMany
     private List<Student> attendingStudents, absentStudents;
     private boolean cancellation;
 
@@ -18,6 +24,9 @@ public class ClassDay {
         this.absentStudents = new ArrayList<>(studentsInCourse);
         this.attendingStudents = new ArrayList<>();
         this.cancellation = false;
+    }
+
+    public ClassDay() {
     }
 
     public Date getStartTime() {
