@@ -8,7 +8,6 @@ import com.project.backend.Student;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.AbstractTextField;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -64,12 +63,13 @@ public class NewStudentView extends CustomComponent implements View {
         setSizeFull();
 
         id = new TextField("ID: ");
-
         firstName = new TextField("First Name: ");
         lastName = new TextField("Last Name: ");
+
         addButton = new Button("Add Student");
         clearButton = new Button("Clear");
         cancelButton = new Button("Cancel");
+
         components = new ArrayList<>();
 
         components.add(id);
@@ -83,34 +83,35 @@ public class NewStudentView extends CustomComponent implements View {
         firstName.setInputPrompt("Enter first name.");
         lastName.setInputPrompt("Enter last name.");
 
-        for (Component component : components) {
-            if (component instanceof AbstractTextField) {
-                component.setWidth(WIDTH_TEXTFIELD_DEFAULT);
-                AbstractTextField textField = (AbstractTextField) component;
-                textField.setRequired(true);
-                textField.setInvalidAllowed(false);
-            }
-        }
+        UserInterfaceHelperFunctions.setTextFieldsWidth(components, WIDTH_TEXTFIELD_DEFAULT);
+        UserInterfaceHelperFunctions.setTextFieldsRequired(components, true);
+        UserInterfaceHelperFunctions.setTextFieldsInvalidAllowed(components, false);
     }
 
     private void configureActions(Course course) {
 
-        clearButton.addClickListener((Button.ClickListener) clickEvent -> {
-            id.clear();
-            firstName.clear();
-            lastName.clear();
-            barcode.clear();
-        });
+        clearButton.addClickListener((Button.ClickListener) clickEvent -> clearFields());
 
-        cancelButton.addClickListener(e -> {
-            getUI().getNavigator().navigateTo(CourseView.NAME);
-        });
+        cancelButton.addClickListener(e -> cancel());
 
-        addButton.addClickListener(e -> {
-            course.addStudent(new Student(id.getValue(), barcode.getValue(), firstName.getValue(), lastName.getValue()));
-            getUI().getNavigator().addView(CourseView.NAME, new CourseView(course));
-            getUI().getNavigator().navigateTo(CourseView.NAME);
-        });
+        addButton.addClickListener(e -> addStudent(course));
+    }
+
+    private void addStudent(Course course) {
+        course.addStudent(new Student(id.getValue(), barcode.getValue(), firstName.getValue(), lastName.getValue()));
+        getUI().getNavigator().addView(CourseView.NAME, new CourseView(course));
+        getUI().getNavigator().navigateTo(CourseView.NAME);
+    }
+
+    private void cancel() {
+        getUI().getNavigator().navigateTo(CourseView.NAME);
+    }
+
+    private void clearFields() {
+        id.clear();
+        firstName.clear();
+        lastName.clear();
+        barcode.clear();
     }
 
     private Layout createLayout() {

@@ -35,12 +35,10 @@ public class AttendanceView extends CustomComponent implements View {
     private Course course;
     private Grid attendanceGrid;
     private ClassDay todayClassDay;
-    private BarcodeScannerComponent barcodeScannerComponent;
     private IndexedContainer attendanceRecords;
     private Button toCourseViewButton;
-    private Label label;
 
-    public static final String BACK_BUTTON_ID = "backButton";
+    private static final String BACK_BUTTON_ID = "backButton";
     
     private static final String FIRST_NAME = "First Name";
     private static final String LAST_NAME = "Last Name";
@@ -49,14 +47,14 @@ public class AttendanceView extends CustomComponent implements View {
     private static final String PRESENT = "Attendance Status";
 
     //Creates the view
-    public AttendanceView(Course course) {
+    AttendanceView(Course course) {
         this.course = course;
         //creates all compontents used in view
         attendanceGrid = new Grid();
         todayClassDay = getTodayClassDay(course);
-        barcodeScannerComponent = new BarcodeScannerComponent();
+        BarcodeScannerComponent barcodeScannerComponent = new BarcodeScannerComponent();
         attendanceRecords = getAttendanceRecords(todayClassDay);
-        label = new Label();
+        Label label = new Label();
         toCourseViewButton = new Button();
 
         //configures components
@@ -71,11 +69,10 @@ public class AttendanceView extends CustomComponent implements View {
             updateAttendanceGrid(s, AttendanceStatus.PRESENT);
         });
 
-        VerticalLayout layout = new VerticalLayout();
+        VerticalLayout layout = new VerticalLayout(label, attendanceGrid, barcodeScannerComponent, toCourseViewButton);
         layout.setMargin(true);
         
         //adds components to layout and alligns them.
-        layout.addComponents(label, attendanceGrid, barcodeScannerComponent, toCourseViewButton);
         layout.setSizeFull();
         layout.setSpacing(true);
         layout.setComponentAlignment(label, Alignment.MIDDLE_CENTER);
@@ -165,11 +162,9 @@ public class AttendanceView extends CustomComponent implements View {
     //Checks if a given date is equal to todays day of month, month and year.
     private static boolean isToday(Date compareDate) {
         Date date = new Date();
-        if (compareDate.getYear() == date.getYear() && compareDate.getDate() == date.getDate()
-                && date.getMonth() == compareDate.getMonth()) {
-            return true;
-        }
-        return false;
+        return  compareDate.getYear() == date.getYear() &&
+                compareDate.getDate() == date.getDate() &&
+                date.getMonth() == compareDate.getMonth();
 
     }
 

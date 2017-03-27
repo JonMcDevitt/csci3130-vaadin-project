@@ -21,10 +21,10 @@ import com.vaadin.ui.Notification;
  * the course selected from the grid
  */
 public class MainMenuView extends CustomComponent implements View {
-    public static final String NAME = "";
+    static final String NAME = "";
 
     public static final String COURSE_GRID_ID = "courseGrid";
-    public static final String GO_TO_COURSE_BUTTON_ID = "goToCourseButton";
+    private static final String GO_TO_COURSE_BUTTON_ID = "goToCourseButton";
     
     private Label welcome = new Label();
     private Grid courseGrid = new Grid();
@@ -49,34 +49,42 @@ public class MainMenuView extends CustomComponent implements View {
 		courseGrid.removeColumn("studentRoster");
 
 		//Add a selectionListener to select a course and pass it to selectedCourse as a Course object
-		courseGrid.addSelectionListener(e -> {
-			selectedCourse = (Course) courseGrid.getSelectedRow();
-			getUI().getNavigator().addView(CourseView.NAME, new CourseView(selectedCourse));
-		});
+		courseGrid.addSelectionListener(e -> selectCourse());
 
-		logout = new Button("Log Out", (Button.ClickListener) clickEvent -> {
-			getUI().setSession(null);
-			getUI().getNavigator().navigateTo(NAME);
-		});
+		logout = new Button("Log Out", (Button.ClickListener) clickEvent -> logOut());
 
 		//goToCourse button is for resetting the UI. selectedCourse is passed in as a parameter for the
 		//use of it's attributes in CourseView
-		goToCourse = new Button("Go To Course", (Button.ClickListener) clickEvent ->{
-			if(selectedCourse == null){
-				Notification.show("Please select a course from the course table");
-			}
-			else{
-				getUI().getNavigator().navigateTo(CourseView.NAME);
-			}
-		});
+		goToCourse = new Button("Go To Course", (Button.ClickListener) clickEvent -> goToCourse());
 
-		addCourse = new Button("Add new course", (Button.ClickListener) clickEvent -> {
-			getUI().addWindow(new AddCourseInputsView(courseList, courseGrid));
-		});
+		addCourse = new Button("Add new course", (Button.ClickListener) clickEvent -> addCourse());
 		setCompositionRoot(new CssLayout(welcome, goToCourse, addCourse, logout, courseGrid));
 	}
+
+	private void addCourse() {
+		getUI().addWindow(new AddCourseInputsView(courseList, courseGrid));
+	}
+
+	private void goToCourse() {
+		if(selectedCourse == null){
+			Notification.show("Please select a course from the course table");
+		}
+		else{
+			getUI().getNavigator().navigateTo(CourseView.NAME);
+		}
+	}
+
+	private void logOut() {
+		getUI().setSession(null);
+		getUI().getNavigator().navigateTo(NAME);
+	}
+
+	private void selectCourse() {
+		selectedCourse = (Course) courseGrid.getSelectedRow();
+		getUI().getNavigator().addView(CourseView.NAME, new CourseView(selectedCourse));
+	}
     
-    public MainMenuView(Course course) {    	
+    MainMenuView(Course course) {
     	//Create a courseList for testing
     	courseList = new ArrayList<>();
     	courseList.add(new Course("TestCourse1", "CSCI 0001", "01"));
@@ -94,29 +102,15 @@ public class MainMenuView extends CustomComponent implements View {
     	courseGrid.removeColumn("studentRoster");
     	
     	//Add a selectionListener to select a course and pass it to selectedCourse as a Course object
-    	courseGrid.addSelectionListener(e -> {
-    		selectedCourse = (Course) courseGrid.getSelectedRow();
-    		getUI().getNavigator().addView(CourseView.NAME, new CourseView(selectedCourse));
-    	});
+    	courseGrid.addSelectionListener(e -> selectCourse());
 
-		logout = new Button("Log Out", (Button.ClickListener) clickEvent -> {
-			getUI().getNavigator().navigateTo(NAME);
-		});
+		logout = new Button("Log Out", (Button.ClickListener) clickEvent -> logOut());
 
-    	goToCourse = new Button("Go to Course", (Button.ClickListener) clickEvent ->{
-			if(selectedCourse == null){
-				Notification.show("Please select a course from the course table");
-			}
-			else{
-				getUI().getNavigator().navigateTo(CourseView.NAME);
-			}
-		});
+    	goToCourse = new Button("Go to Course", (Button.ClickListener) clickEvent -> goToCourse());
 
         goToCourse.setId(GO_TO_COURSE_BUTTON_ID);
 
-        addCourse = new Button("Add new course", (Button.ClickListener) clickEvent -> {
-            getUI().addWindow(new AddCourseInputsView(courseList, courseGrid));
-        });
+        addCourse = new Button("Add new course", (Button.ClickListener) clickEvent -> addCourse());
         setCompositionRoot(new CssLayout(welcome, goToCourse, addCourse, logout, courseGrid));
     }
 

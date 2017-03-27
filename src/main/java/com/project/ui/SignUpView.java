@@ -8,7 +8,6 @@ import com.project.backend.RegisteredUserDatabase;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.AbstractTextField;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -26,7 +25,7 @@ import com.vaadin.ui.themes.Reindeer;
  */
 public class SignUpView extends CustomComponent implements View {
 
-    public static final String NAME = "SignUp";
+    static final String NAME = "SignUp";
     private static final String WIDTH_TEXTFIELD_DEFAULT = "300px";
 
     private final TextField userEmail;
@@ -76,48 +75,51 @@ public class SignUpView extends CustomComponent implements View {
         lastName.setInputPrompt("Enter last name.");
         department.setInputPrompt("Enter department.");
 
-        for (Component component : components) {
-            if (component instanceof AbstractTextField) {
-                component.setWidth(WIDTH_TEXTFIELD_DEFAULT);
-                AbstractTextField textField = (AbstractTextField) component;
-                textField.setRequired(true);
-                textField.setInvalidAllowed(false);
-            }
-        }
+        UserInterfaceHelperFunctions.setTextFieldsWidth(components, WIDTH_TEXTFIELD_DEFAULT);
+        UserInterfaceHelperFunctions.setTextFieldsRequired(components, true);
+        UserInterfaceHelperFunctions.setTextFieldsInvalidAllowed(components, false);
     }
 
     private void configureActions() {
         RegisteredUserDatabase userDatabase = RegisteredUserDatabase.getInstance();
 
-        signUpButton.addClickListener((Button.ClickListener) clickEvent -> {
-            RegisteredUser newUser = new RegisteredUser(userEmail.getValue(), password.getValue(),
-                    firstName.getValue(), lastName.getValue(), department.getValue());
+        signUpButton.addClickListener((Button.ClickListener) clickEvent -> signUp(userDatabase));
 
-            boolean isValidUser = newUser.isValidUser();
-            boolean isValid = newUser.isValid(userDatabase);
-            boolean passwordConfirm = password.getValue().equals(confirmPassword.getValue());
+        clearButton.addClickListener((Button.ClickListener) clickEvent -> clear());
 
-            if (isValidUser && isValid && passwordConfirm) {
-                this.getUI().setContent(new LoginView());
-                Notification.show("Signed up with email: " + userEmail.getValue());
-                userDatabase.save(newUser);
-            } else if (isValidUser) {
-                Notification.show("Missing fields.");
-            } else {
-                Notification.show(userEmail.getValue() + " already in use.");
-            }
-        });
+        cancelButton.addClickListener((Button.ClickListener) clickEvent -> cancel());
+    }
 
-        clearButton.addClickListener((Button.ClickListener) clickEvent -> {
-            userEmail.clear();
-            firstName.clear();
-            lastName.clear();
-            department.clear();
-            password.clear();
-            confirmPassword.clear();
-        });
+    private void cancel() {
+        this.getUI().setContent(new LoginView());
+    }
 
-        cancelButton.addClickListener((Button.ClickListener) clickEvent -> this.getUI().setContent(new LoginView()));
+    private void clear() {
+        userEmail.clear();
+        firstName.clear();
+        lastName.clear();
+        department.clear();
+        password.clear();
+        confirmPassword.clear();
+    }
+
+    private void signUp(RegisteredUserDatabase userDatabase) {
+        RegisteredUser newUser = new RegisteredUser(userEmail.getValue(), password.getValue(),
+                firstName.getValue(), lastName.getValue(), department.getValue());
+
+        boolean isValidUser = newUser.isValidUser();
+        boolean isValid = newUser.isValid(userDatabase);
+        boolean passwordConfirm = password.getValue().equals(confirmPassword.getValue());
+
+        if (isValidUser && isValid && passwordConfirm) {
+            this.getUI().setContent(new LoginView());
+            Notification.show("Signed up with email: " + userEmail.getValue());
+            userDatabase.save(newUser);
+        } else if (isValidUser) {
+            Notification.show("Missing fields.");
+        } else {
+            Notification.show(userEmail.getValue() + " already in use.");
+        }
     }
 
     private Layout createLayout() {

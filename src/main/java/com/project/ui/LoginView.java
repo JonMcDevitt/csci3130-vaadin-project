@@ -30,11 +30,11 @@ public class LoginView extends CustomComponent implements View {
 
     private final RegisteredUserDatabase database = RegisteredUserDatabase.getInstance();
 
-    public static final String NAME = "Login";
+    static final String NAME = "Login";
     
-    public static final String EMAIL_TEXT_FIELD_ID = "emailTextField";
-    public static final String PASSWORD_TEXT_FIELD_ID = "passwordTextField";
-    public static final String LOGIN_BUTTON_ID = "passwordTextField";
+    private static final String EMAIL_TEXT_FIELD_ID = "emailTextField";
+    private static final String PASSWORD_TEXT_FIELD_ID = "passwordTextField";
+    private static final String LOGIN_BUTTON_ID = "passwordTextField";
     
     
     private final TextField emailTextField = new TextField();
@@ -44,7 +44,7 @@ public class LoginView extends CustomComponent implements View {
     
     private static final int MINIMUM_PASSWORD_LENGTH = 8;
 
-    public LoginView() {
+    LoginView() {
         initUsernameTextField(emailTextField);
         initPasswordField(passwordField);
         initLoginButton(loginButton);
@@ -54,7 +54,7 @@ public class LoginView extends CustomComponent implements View {
         setupLayout();
     }
 
-    private final void initUsernameTextField(TextField usernameTextField) {
+    private void initUsernameTextField(TextField usernameTextField) {
         usernameTextField.setId(EMAIL_TEXT_FIELD_ID);
         usernameTextField.addValidator(new EmailValidator("Username must be an email address."));
         usernameTextField.setWidth("300px");
@@ -69,7 +69,7 @@ public class LoginView extends CustomComponent implements View {
         });
     }
     
-    private final void initPasswordField(PasswordField passwordField) {
+    private void initPasswordField(PasswordField passwordField) {
         passwordField.setId(PASSWORD_TEXT_FIELD_ID);
         passwordField.addValidator(new PasswordValidator());
         passwordField.setWidth("300px");
@@ -85,7 +85,7 @@ public class LoginView extends CustomComponent implements View {
         });
     }
 
-    private final void initLoginButton(Button loginButton) {
+    private void initLoginButton(Button loginButton) {
         Button.ClickListener onLoginClicked = event -> 
         {
 
@@ -109,12 +109,12 @@ public class LoginView extends CustomComponent implements View {
         loginButton.addClickListener(onLoginClicked);
     }
     
-    private final void initSignUpButton(Button signUpButton) {
+    private void initSignUpButton(Button signUpButton) {
         signUpButton.setCaption("Sign up");
         signUpButton.addClickListener((Button.ClickListener) clickEvent -> getUI().setContent(new SignUpView()));
     }
     
-    private final void setupLayout() {
+    private void setupLayout() {
         HorizontalLayout buttons = new HorizontalLayout(loginButton, signUpButton);
         buttons.setSpacing(true);
         buttons.setMargin(new MarginInfo(true, true));
@@ -148,7 +148,7 @@ public class LoginView extends CustomComponent implements View {
         
         private static final String errorMessage = "Invalid password.";
         
-        public PasswordValidator() { 
+        PasswordValidator() {
             super(errorMessage);
         }
 
