@@ -32,13 +32,13 @@ hs_err_pid*
 .settings/
 
 
-### Generated Package 
+### Generated Package
 ignore
 /target
 
 
 ### Custom ignore
-/test/com/project/ui
+#/test/com/project/ui
 /src/main/webapp/VAADIN/themes/mytheme/styles.scss
 /src/main/webapp/VAADIN/themes/mytheme/styles.css
 /src/main/webapp/VAADIN/themes/mytheme/addons.scss

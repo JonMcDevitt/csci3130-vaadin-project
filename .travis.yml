@@ -5,6 +5,7 @@ jdk:
 - oraclejdk8
 sudo: required
 dist: trusty
+script: sh .travis.script.sh
 addons:
   apt:
     packages:
