@@ -19,9 +19,6 @@ public class CourseTest {
 
     @Test
     public void compareTo() throws Exception {
-        /** Test isEqual    */
-        Course isEqual = DatabaseHandler.addCourse("Software Engineering","CSCI 3130", "02");
-
         /** Test isLess */
         Course isLess = DatabaseHandler.addCourse("Software Engineering","CSCI 3130", "01");
 
@@ -32,7 +29,6 @@ public class CourseTest {
         Course oOpSysOne = DatabaseHandler.addCourse("Operating Systems","CSCI 3120", "01");
         Course oOpSysTwo = DatabaseHandler.addCourse("Operating Systems", "CSCI 3120", "02");
 
-        assertEquals(course.compareTo(isEqual), 0);
         assertEquals(course.compareTo(isLess), 1);
         assertEquals(course.compareTo(isMore), -1);
         assertNotEquals(course.compareTo(oOpSysOne), 0);
