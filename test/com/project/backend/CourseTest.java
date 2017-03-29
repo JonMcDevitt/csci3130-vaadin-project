@@ -13,17 +13,24 @@ public class CourseTest {
 
     @Before
     public void setUp() {
-        course = new Course("Software Engineering","CSCI 3130", "02");
+        course = DatabaseHandler.addCourse("Software Engineering","CSCI 3130", "02");
         assertNotNull(course);
     }
 
     @Test
     public void compareTo() throws Exception {
-        Course isEqual = new Course("Software Engineering","CSCI 3130", "02");
-        Course isLess = new Course("Software Engineering","CSCI 3130", "01");
-        Course isMore = new Course("Software Engineering","CSCI 3130", "03");
-        Course oOpSysOne = new Course("Operating Systems","CSCI 3120", "01");
-        Course oOpSysTwo = new Course("Operating Systems", "CSCI 3120", "02");
+        /** Test isEqual    */
+        Course isEqual = DatabaseHandler.addCourse("Software Engineering","CSCI 3130", "02");
+
+        /** Test isLess */
+        Course isLess = DatabaseHandler.addCourse("Software Engineering","CSCI 3130", "01");
+
+        /** Test isMore */
+        Course isMore = DatabaseHandler.addCourse("Software Engineering","CSCI 3130", "03");
+
+        /** Test notEqual   */
+        Course oOpSysOne = DatabaseHandler.addCourse("Operating Systems","CSCI 3120", "01");
+        Course oOpSysTwo = DatabaseHandler.addCourse("Operating Systems", "CSCI 3120", "02");
 
         assertEquals(course.compareTo(isEqual), 0);
         assertEquals(course.compareTo(isLess), 1);

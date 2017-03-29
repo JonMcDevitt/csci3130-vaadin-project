@@ -3,7 +3,7 @@ package com.project.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.project.backend.RegisteredUser;
+import com.project.backend.User;
 import com.project.backend.RegisteredUserDatabase;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -104,7 +104,7 @@ public class SignUpView extends CustomComponent implements View {
     }
 
     private void signUp(RegisteredUserDatabase userDatabase) {
-        RegisteredUser newUser = new RegisteredUser(userEmail.getValue(), password.getValue(),
+        User newUser = new User(userEmail.getValue(), password.getValue(),
                 firstName.getValue(), lastName.getValue(), department.getValue());
 
         boolean isValidUser = newUser.isValidUser();

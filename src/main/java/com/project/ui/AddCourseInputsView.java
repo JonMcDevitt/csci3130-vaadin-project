@@ -1,13 +1,11 @@
 package com.project.ui;
 
 import com.project.backend.Course;
-import com.vaadin.data.Validator;
+import com.project.backend.DatabaseHandler;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.*;
 
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -24,7 +22,7 @@ public class AddCourseInputsView extends Window {
         setClosable(true);
         setModal(true);
 
-        initButtons(courseList, courseGrid);
+        initButtons(courseGrid);
         initInputs();
 
         /** TODO:   Make all this pretty
@@ -34,7 +32,7 @@ public class AddCourseInputsView extends Window {
         setContent(layout);
     }
 
-    private void initButtons(List<Course> courseList, Grid courseGrid) {
+    private void initButtons(Grid courseGrid) {
         save = new Button("Save", (Button.ClickListener) clickEvent -> {
             /**
              *  TODO:   Fix validator functions
@@ -46,10 +44,11 @@ public class AddCourseInputsView extends Window {
             } else {
                 Notification.show("Invalid fields.", Notification.Type.WARNING_MESSAGE);
             }*/
-            courseList.add(new Course(inputCourseName.getValue(), inputCourseCode.getValue(), inputCourseSection.getValue()));
+
+            DatabaseHandler.addCourse(inputCourseName.getValue(), inputCourseCode.getValue(), inputCourseSection.getValue());
             BeanItemContainer<Course> bic = (BeanItemContainer<Course>) courseGrid.getContainerDataSource();
             bic.removeAllItems();
-            bic.addAll(courseList);
+            bic.addAll(DatabaseHandler.getAllCourses());
             courseGrid.setHeightByRows(courseGrid.getContainerDataSource().size());
             this.close();
         });

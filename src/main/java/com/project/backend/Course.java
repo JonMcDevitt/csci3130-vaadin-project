@@ -27,14 +27,11 @@ public class Course implements Comparable<Course>{
     @OneToMany
     private List<ClassDay> classDays;
     
-    public Course(String courseName, String courseCode, String courseSection) {
-        this(courseName, courseCode, courseSection, null);
-    }
-
     public Course(String courseName, String courseCode, String courseSection, List<String> classInfo) {
-        this.courseName = courseName;
-        this.courseCode = courseCode;
-        this.courseSection = Byte.parseByte(courseSection);
+        this();
+        setCourseName(courseName);
+        setCourseCode(courseCode);
+        setCourseSection(courseSection);
 
         //create a test studentRoster
         studentRoster = new ArrayList<>();
@@ -54,6 +51,11 @@ public class Course implements Comparable<Course>{
 	}
 
 	public Course() {
+    }
+
+    public void initLists() {
+        studentRoster = new ArrayList<>();
+        classDays = new ArrayList<>();
     }
 
     public String getCourseName(){
@@ -76,9 +78,21 @@ public class Course implements Comparable<Course>{
     	studentRoster.add(student);
     }
 
+    public void setCourseCode(String courseCode) {
+        this.courseCode = courseCode;
+    }
+
+    public void setCourseSection(String courseSection) {
+        this.courseSection = Byte.parseByte(courseSection);
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
     @Override
     public String toString() {
-        return "RegisteredUser{courseName=" + courseName + '}';
+        return "User{courseName=" + courseName + '}';
     }
 
     @Override

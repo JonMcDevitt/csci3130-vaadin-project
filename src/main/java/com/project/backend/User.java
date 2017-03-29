@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class RegisteredUser{
+public class User {
 
     @Id
     private String email;
@@ -22,8 +22,8 @@ public class RegisteredUser{
     @OneToMany
     private List<Course> courses; /** A list of course IDs to use for fetching from the database  */
 
-    public RegisteredUser(String email, String password, String firstName,
-    						String lastName, String department) {
+    public User(String email, String password, String firstName,
+                String lastName, String department) {
     	this.email = email;
     	this.password = password;
     	this.firstName = firstName;
@@ -32,13 +32,13 @@ public class RegisteredUser{
     	this.courses = new ArrayList<>();
     }
 
-    public RegisteredUser() {
+    public User() {
     }
 
-    //check if this RegisteredUser object has the same user name or email address as the other RegisteredUser object in the database
+    //check if this User object has the same user name or email address as the other User object in the database
     //This is used to validate if the user name or the email has been used before when sign up for a new user
     public boolean isValid(RegisteredUserDatabase userDatabase) {
-    	for (RegisteredUser r : userDatabase.getUserList()) {
+    	for (User r : userDatabase.getUserList()) {
     		if (r.email.equals(this.email)){
     			return false;
     		}
@@ -78,7 +78,7 @@ public class RegisteredUser{
 
     @Override
     public String toString() {
-        return "RegisteredUser{firstName=" + firstName
+        return "User{firstName=" + firstName
                 + ", lastName=" + lastName + ", department= " + department + ", email="
                 + email + '}';
     }

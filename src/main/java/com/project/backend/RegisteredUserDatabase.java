@@ -17,9 +17,9 @@ import java.util.Optional;
 public class RegisteredUserDatabase {
 
     private static final RegisteredUserDatabase instance;
-    private List<RegisteredUser> userList;
+    private List<User> userList;
     
-    public List<RegisteredUser> getUserList() {
+    public List<User> getUserList() {
         return userList;
     }
 
@@ -29,7 +29,7 @@ public class RegisteredUserDatabase {
     
     private RegisteredUserDatabase() {
     	userList = new ArrayList<>();
-    	RegisteredUser testUser = getTestUser();
+    	User testUser = getTestUser();
     	userList.add(testUser);
     }
     
@@ -41,22 +41,22 @@ public class RegisteredUserDatabase {
         return userList.size();
     }
   
-    public boolean delete(RegisteredUser user) {
+    public boolean delete(User user) {
         return userList.remove(user);
     }
     
-    public synchronized void save(RegisteredUser user) {
+    public synchronized void save(User user) {
         if (user.isValid(this)) {
             userList.add(user);
         }
     }
     
-    public static RegisteredUser getTestUser() {
-        return new RegisteredUser("test@test.com", "p4ssw0rd", "testFirst", "testLast", "test");
+    public static User getTestUser() {
+        return new User("test@test.com", "p4ssw0rd", "testFirst", "testLast", "test");
     }
 
-    public Optional<RegisteredUser> fetchUser(String email) {
-        for(RegisteredUser r : userList) {
+    public Optional<User> fetchUser(String email) {
+        for(User r : userList) {
             if(email.equals(r.getEmail())) {
                 return Optional.of(r);
             }

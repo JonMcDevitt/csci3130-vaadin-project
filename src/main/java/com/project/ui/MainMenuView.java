@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.project.backend.Course;
-import com.project.backend.RegisteredUser;
+import com.project.backend.DatabaseHandler;
 import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.addon.jpacontainer.JPAContainerFactory;
 import com.vaadin.data.util.BeanItemContainer;
@@ -34,8 +34,6 @@ public class MainMenuView extends CustomComponent implements View {
     private Button goToCourse;
     private Button logout;
 
-    private JPAContainer<Course> courseJPAContainer;
-    
     //selectedCourse is to store selected Course object from the grid
     private Course selectedCourse = null;
     
@@ -45,8 +43,8 @@ public class MainMenuView extends CustomComponent implements View {
 	public MainMenuView() {
 		//Create a courseList for testing
 		courseList = new ArrayList<>();
-		courseList.add(new Course("TestCourse1", "CSCI 0001", "01"));
-		courseList.add(new Course("TestCourse2", "CSCI 0001", "02"));
+        DatabaseHandler.addCourse("Computer Science 1", "CSCI 1100", "01");
+        DatabaseHandler.addCourse("Computer Science 1", "CSCI 1100", "02");
 
 		//Display course name only in the grid
 //		courseGrid.setContainerDataSource(new BeanItemContainer<>(Course.class, courseList));
@@ -87,22 +85,22 @@ public class MainMenuView extends CustomComponent implements View {
 		selectedCourse = (Course) courseGrid.getSelectedRow();
 		getUI().getNavigator().addView(CourseView.NAME, new CourseView(selectedCourse));
 	}
-    
+
+	@Deprecated
     MainMenuView(Course course) {
     	//Create a courseList for testing
-    	courseList = new ArrayList<>();
-    	courseList.add(new Course("TestCourse1", "CSCI 0001", "01"));
-    	courseList.add(new Course("TestCourse2", "CSCI 0001", "02"));
+        DatabaseHandler.addCourse("Computer Science 1", "CSCI 1100", "01");
+        DatabaseHandler.addCourse("Computer Science 1", "CSCI 1100", "02");
     	
-    	for(int i = 0; i < courseList.size(); i++){
-    		if(courseList.get(i).getCourseName().equals(course.getCourseName())){
-    			courseList.remove(i);
-    			courseList.add(i, course);
-    		}
-    	}
+//    	for(int i = 0; i < courseList.size(); i++){
+//    		if(courseList.get(i).getCourseName().equals(course.getCourseName())){
+//    			courseList.remove(i);
+//    			courseList.add(i, course);
+//    		}
+//    	}
     	
     	//Display course name only in the grid 
-    	courseGrid.setContainerDataSource(new BeanItemContainer<>(Course.class, courseList));
+    	courseGrid.setContainerDataSource(new BeanItemContainer<>(Course.class, DatabaseHandler.getAllCourses()));
     	courseGrid.removeColumn("studentRoster");
     	
     	//Add a selectionListener to select a course and pass it to selectedCourse as a Course object
@@ -122,18 +120,11 @@ public class MainMenuView extends CustomComponent implements View {
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
 		String username = String.valueOf(getSession().getAttribute("user"));
         welcome.setValue("Welcome, " + username + ", to our application!");
-		courseJPAContainer = JPAContainerFactory.make(Course.class, "alpha_scanner_db");
 
-		courseGrid.setContainerDataSource(new BeanItemContainer<>(Course.class, getCourses(courseJPAContainer)));
+		courseGrid.setContainerDataSource(new BeanItemContainer<>(Course.class, DatabaseHandler.getAllCourses()));
 		courseGrid.removeColumn("studentRoster");
 
 		//Add a selectionListener to select a course and pass it to selectedCourse as a Course object
 		courseGrid.addSelectionListener(e -> selectCourse());
     }
-
-    private List<Course> getCourses(JPAContainer jpaContainer) {
-		List<Course> courses = new ArrayList<>();
-		jpaContainer.getItemIds().forEach(itemId -> courses.add((Course) jpaContainer.getItem(itemId).getEntity()));
-		return courses;
-	}
 }

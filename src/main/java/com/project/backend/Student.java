@@ -62,7 +62,7 @@ public class Student {
     }
     @Override
     public String toString() {
-        return "RegisteredUser{firstName=" + firstName
+        return "User{firstName=" + firstName
                 + ", lastName=" + lastName + ", id=" + id +'}';
     }
 }

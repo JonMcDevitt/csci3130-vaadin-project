@@ -2,7 +2,7 @@ package com.project.ui;
 
 import java.util.Optional;
 
-import com.project.backend.RegisteredUser;
+import com.project.backend.User;
 import com.project.backend.RegisteredUserDatabase;
 import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.data.validator.EmailValidator;
@@ -91,7 +91,7 @@ public class LoginView extends CustomComponent implements View {
 
             String uName = emailTextField.getValue();
             String pWord = passwordField.getValue();
-            Optional<RegisteredUser> r = database.fetchUser(uName);
+            Optional<User> r = database.fetchUser(uName);
             if(!r.isPresent()) {
                 Notification.show("Invalid username", Notification.Type.ERROR_MESSAGE);
             } else if(pWord.equals(r.get().getPassword())) {
