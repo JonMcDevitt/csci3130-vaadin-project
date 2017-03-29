@@ -5,7 +5,7 @@ import java.util.List;
 
 /*
  * Created by Jili on 2017-03-01
- * 
+ *
  * Temporary Student class for creating Student objects for "Go to class" function test
  */
 
@@ -28,52 +28,52 @@ public class Student {
     public Student(String id, String barcode, String firstName, String lastName) {
         this.studentId = id;
         this.barcode = barcode;
-    	this.firstName = firstName;
-    	this.lastName = lastName;
-    	courseList = new ArrayList<>();
+        this.firstName = firstName;
+        this.lastName = lastName;
+        courseList = new ArrayList<>();
     }
 
     public String getBarcode() {
-		return barcode;
-	}
-    public void courseListInit(){
-    	courseList = new ArrayList<>();
+        return barcode;
     }
-	public void setBarcode(String barcode) {
-		this.barcode = barcode;
-	}
+    public void courseListInit(){
+        courseList = new ArrayList<>();
+    }
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
 
-	public Student() {
+    public Student() {
     }
 
     public String getId() {
         return studentId;
     }
-    
+
     public String getFirstName(){
-    	return firstName;
+        return firstName;
     }
-    
+
     public String getLastName(){
-    	return lastName;
+        return lastName;
     }
     public List<Course> getCourseList(){
-    	return courseList;
+        return courseList;
     }
-    
+
     public void setId(String id) {
-    	this.studentId =  id;
+        this.studentId =  id;
     }
     public void addCourse(Course newCourse){
-    	courseList.add(newCourse);
+        courseList.add(newCourse);
     }
-    
+
     public void setFirstName(String firstname) {
-    	this.firstName = firstname;
+        this.firstName = firstname;
     }
-    
+
     public void setLastName (String lastname) {
-    	this.lastName = lastname;
+        this.lastName = lastname;
     }
     @Override
     public String toString() {

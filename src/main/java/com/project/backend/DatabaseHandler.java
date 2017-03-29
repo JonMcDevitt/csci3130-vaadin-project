@@ -26,20 +26,12 @@ public class DatabaseHandler {
         ).getResultList();
     }
 
-  /*  public static Course getCourseById(String id) {
-        String[] courseId = id.split("-");
-        if (courseId.length != 2) {
-            return null;
-        }
-        return getCourseById(courseId[0], courseId[1]);
-    }*/
-
     public static Course getCourseById(String code) {
         try {
             return em.createQuery(
-                    "SELECT c FROM Course c WHERE c.courseCode = :courseCode",
+                    "SELECT c FROM Course c WHERE c.courseCode LIKE :courseCode",
                     Course.class
-            ).setParameter("courseCode", code)
+            ).setParameter("courseCode", code.replaceAll(" ", "_"))
                     .getSingleResult();
         } catch (NoResultException e) {
             return null;
@@ -51,16 +43,58 @@ public class DatabaseHandler {
         c.setCourseName(inputCourseName);
         c.setCourseCode(inputCourseCode);
         c.initLists();
-        Course test = getCourseById(inputCourseCode);
-        if( test == null) {
+
+        if(getCourseById(inputCourseCode) == null) {
             em.getTransaction().begin();
             em.persist(c);
             em.getTransaction().commit();
         }
         return c;
     }
+
+    /** User database functions */
+
+    public static List<User> getAllUsers() {
+        return em.createQuery(
+                "SELECT u FROM User u",
+                User.class
+        ).getResultList();
+    }
+
+    public static User addUser(String email, String password, String firstName,
+                        String lastName, String department) {
+        User u = new User();
+        u.setEmail(email);
+        u.setPassword(password);
+        u.setFirstName(firstName);
+        u.setLastName(lastName);
+        u.setDepartment(department);
+        u.initCourses();
+
+        if(getUserById(email) == null) {
+            em.getTransaction().begin();
+            em.persist(u);
+            em.getTransaction().commit();
+        }
+
+        return u;
+    }
+
+    public static User getUserById(String email) {
+        try {
+            return em.createQuery(
+                    "SELECT u FROM User u WHERE u.email LIKE :email",
+                    User.class
+            ).setParameter("email", email).getSingleResult();
+        } catch(NoResultException e) {
+            return null;
+        }
+    }
+
+    /** Student database functions  */
+
     public static Student getStudentByID(String studId){
-    	try {
+        try {
             return em.createQuery(
                     "SELECT s FROM Student s WHERE s.studentId = :studID",
                     Student.class
@@ -70,39 +104,37 @@ public class DatabaseHandler {
             return null;
         }
     }
+
     public static  Student addStudent(String courseid, String studID, String fName, String lName, String barCode){
-    		Student stud = new Student();
-    		stud.setId(studID);
-    		stud.setBarcode(barCode);
-    		stud.setFirstName(fName);
-    		stud.setLastName(lName);
-    		stud.courseListInit();
-    		Course tempCourse =getCourseById(courseid);
-    		Student tempStud = getStudentByID(studID);
-    		if(tempCourse==null){
-    			return null;
-    		}
-    		if(tempStud==null){
-    			tempCourse.addStudent(stud);
-    			stud.addCourse(tempCourse);
-    			em.getTransaction().begin();
-    			em.persist(stud);
-    			em.getTransaction().commit();
-    			return stud;
-    		}
-    		else{
-    			tempStud.addCourse(tempCourse);
-    			tempCourse.addStudent(tempStud);
-    			return tempStud;
-    		}
-    		
+        Student stud = new Student();
+        stud.setId(studID);
+        stud.setBarcode(barCode);
+        stud.setFirstName(fName);
+        stud.setLastName(lName);
+        stud.courseListInit();
+        Course tempCourse =getCourseById(courseid);
+        Student tempStud = getStudentByID(studID);
+        if(tempCourse==null){
+            return null;
+        }
+        if(tempStud==null){
+            tempCourse.addStudent(stud);
+            stud.addCourse(tempCourse);
+            em.getTransaction().begin();
+            em.persist(stud);
+            em.getTransaction().commit();
+            return stud;
+        }
+        else{
+            tempStud.addCourse(tempCourse);
+            tempCourse.addStudent(tempStud);
+            return tempStud;
+        }
+
     }
+
     public static List<Student> getCourseStudents(String courseID){
-    	Course testCourse = getCourseById(courseID);
-    	return testCourse.getStudentRoster();
+        Course testCourse = getCourseById(courseID);
+        return testCourse.getStudentRoster();
     }
-
-    /** Student database functions  */
-
-    /** User database functions */
 }

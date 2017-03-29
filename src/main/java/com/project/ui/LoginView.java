@@ -1,9 +1,7 @@
 package com.project.ui;
 
-import java.util.Optional;
-
+import com.project.backend.DatabaseHandler;
 import com.project.backend.User;
-import com.project.backend.RegisteredUserDatabase;
 import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.event.FieldEvents;
@@ -27,8 +25,6 @@ import com.vaadin.ui.themes.Reindeer;
  * Created by Owner on 2017-02-17.
  */
 public class LoginView extends CustomComponent implements View {
-
-    private final RegisteredUserDatabase database = RegisteredUserDatabase.getInstance();
 
     public static final String NAME = "Login";
     
@@ -89,13 +85,13 @@ public class LoginView extends CustomComponent implements View {
         Button.ClickListener onLoginClicked = event -> 
         {
 
-            String uName = emailTextField.getValue();
+            String email = emailTextField.getValue();
             String pWord = passwordField.getValue();
-            Optional<User> r = database.fetchUser(uName);
-            if(!r.isPresent()) {
+            User r = DatabaseHandler.getUserById(email);
+            if(r == null) {
                 Notification.show("Invalid username", Notification.Type.ERROR_MESSAGE);
-            } else if(pWord.equals(r.get().getPassword())) {
-                getSession().setAttribute("user", uName);
+            } else if(r.getPassword() != null && r.getPassword().equals(pWord)) {
+                getSession().setAttribute("user", email);
                 getUI().getNavigator().navigateTo(MainMenuView.NAME);
             } else {
                 Notification.show("Error: Invalid password", Notification.Type.ERROR_MESSAGE);
@@ -134,6 +130,12 @@ public class LoginView extends CustomComponent implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+        while (DatabaseHandler.getUserById("test@test.com") == null) {
+            DatabaseHandler.addUser(
+                    "test@test.com", "p4ssw0rd", "La",
+                    "Tester", "Computer Science"
+            );
+        }
         emailTextField.focus();
     }
 

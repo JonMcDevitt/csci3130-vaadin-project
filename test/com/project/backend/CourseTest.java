@@ -23,18 +23,13 @@ public class CourseTest {
     public void compareTo() throws Exception {
         /** Test isLess */
         Course isLess = DatabaseHandler.addCourse("Software Engineering","CSCI3130");
-        DatabaseHandler.addStudent("CSCI3130", "B00630312", "Taylor", "Lundy", "3456789876543");
-        DatabaseHandler.addStudent("CSCI3130", "B00630315", "Tyler", "Bundy", "34345789876543");
-        List<Student> printList = DatabaseHandler.getCourseStudents("CSCI3130");
-        System.out.println(printList);
-        /** Test isMore */
+        Course isMore = DatabaseHandler.addCourse("Software Engineering","CSCI 3130");
 
-        /** Test notEqual   */
-        Course oOpSysOne = DatabaseHandler.addCourse("Operating Systems","CSCI 3120");
-
-      //  assertEquals(course.compareTo(isLess), 1);
-     //   assertEquals(course.compareTo(isMore), -1);
-    //    assertNotEquals(course.compareTo(oOpSysOne), 0);
-        //assertEquals(oOpSysOne.compareTo(oOpSysTwo), -1);
+//      This stuff doesn't really belong here, it needs to go into a DatabaseHandlerTest.java unit test.
+//        DatabaseHandler.addStudent("CSCI3130", "B00630312", "Taylor", "Lundy", "3456789876543");
+//        DatabaseHandler.addStudent("CSCI3130", "B00630315", "Tyler", "Bundy", "34345789876543");
+//        List<Student> printList = DatabaseHandler.getCourseStudents("CSCI3130");
+//        assertTrue(printList.size() > 0);
+        assertTrue(isLess.compareTo(isMore) != 0);
     }
 }

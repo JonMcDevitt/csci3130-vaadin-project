@@ -44,14 +44,7 @@ public class MainMenuView extends CustomComponent implements View {
 		//Create a courseList for testing
 		courseList = new ArrayList<>();
         DatabaseHandler.addCourse("Computer Science 1", "CSCI 1100");
-        DatabaseHandler.addCourse("Computer Science 1", "CSCI 1100");
-
-		//Display course name only in the grid
-//		courseGrid.setContainerDataSource(new BeanItemContainer<>(Course.class, courseList));
-//		courseGrid.removeColumn("studentRoster");
-
-		//Add a selectionListener to select a course and pass it to selectedCourse as a Course object
-//		courseGrid.addSelectionListener(e -> selectCourse());
+        DatabaseHandler.addCourse("Computer Science 2", "CSCI 1101");
 
 		logout = new Button("Log Out", (Button.ClickListener) clickEvent -> logOut());
 
@@ -90,14 +83,7 @@ public class MainMenuView extends CustomComponent implements View {
     MainMenuView(Course course) {
     	//Create a courseList for testing
         DatabaseHandler.addCourse("Computer Science 1", "CSCI 1100");
-        DatabaseHandler.addCourse("Computer Science 1", "CSCI 1100");
-    	
-//    	for(int i = 0; i < courseList.size(); i++){
-//    		if(courseList.get(i).getCourseName().equals(course.getCourseName())){
-//    			courseList.remove(i);
-//    			courseList.add(i, course);
-//    		}
-//    	}
+        DatabaseHandler.addCourse("Computer Science 2", "CSCI 1101");
     	
     	//Display course name only in the grid 
     	courseGrid.setContainerDataSource(new BeanItemContainer<>(Course.class, DatabaseHandler.getAllCourses()));

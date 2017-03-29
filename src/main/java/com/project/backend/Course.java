@@ -2,11 +2,8 @@ package com.project.backend;
 
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 /*
@@ -21,11 +18,11 @@ public class Course implements Comparable<Course>{
     private String courseCode;
     private String courseName;
     @ManyToMany
-    @JoinTable(name="enroll", joinColumns={
-            @JoinColumn(name="Course_ID")
-            }
-        , inverseJoinColumns={
-            @JoinColumn(name="Student_ID")
+    @JoinTable(
+            name="enroll", joinColumns={
+                    @JoinColumn(name="Course_ID")
+            }, inverseJoinColumns={
+                    @JoinColumn(name="Student_ID")
             })
     private List<Student> studentRoster;
     @OneToMany
@@ -72,7 +69,6 @@ public class Course implements Comparable<Course>{
     public String getCourseCode() {
         return courseCode;
     }
-
     
     public void addStudent(Student student){
     	studentRoster.add(student);
@@ -81,7 +77,6 @@ public class Course implements Comparable<Course>{
     public void setCourseCode(String courseCode) {
         this.courseCode = courseCode.replaceAll(" ", "_");
     }
-
 
     public void setCourseName(String courseName) {
         this.courseName = courseName;
@@ -94,9 +89,6 @@ public class Course implements Comparable<Course>{
 
     @Override
     public int compareTo(Course c) {
-        if(courseCode.equals(c.getCourseCode())) {
-            return 0;
-        }
         return courseCode.compareTo(c.getCourseCode());
     }
 }
