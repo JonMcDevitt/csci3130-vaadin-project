@@ -26,40 +26,80 @@ public class DatabaseHandler {
         ).getResultList();
     }
 
-    public static Course getCourseById(String id) {
+  /*  public static Course getCourseById(String id) {
         String[] courseId = id.split("-");
         if (courseId.length != 2) {
             return null;
         }
         return getCourseById(courseId[0], courseId[1]);
-    }
+    }*/
 
-    public static Course getCourseById(String code, String section) {
+    public static Course getCourseById(String code) {
         try {
             return em.createQuery(
-                    "SELECT c FROM Course c WHERE c.courseCode LIKE :courseCode AND c.courseSection LIKE :courseSection",
+                    "SELECT c FROM Course c WHERE c.courseCode = :courseCode",
                     Course.class
             ).setParameter("courseCode", code)
-                    .setParameter("courseSection", section)
                     .getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
     }
 
-    public static Course addCourse(String inputCourseName, String inputCourseCode, String inputCourseSection) {
+    public static Course addCourse(String inputCourseName, String inputCourseCode) {
         Course c = new Course();
         c.setCourseName(inputCourseName);
         c.setCourseCode(inputCourseCode);
-        c.setCourseSection(inputCourseSection);
         c.initLists();
-
-        if(getCourseById(inputCourseCode, inputCourseSection) == null) {
+        Course test = getCourseById(inputCourseCode);
+        if( test == null) {
             em.getTransaction().begin();
             em.persist(c);
             em.getTransaction().commit();
         }
         return c;
+    }
+    public static Student getStudentByID(String studId){
+    	try {
+            return em.createQuery(
+                    "SELECT s FROM Student s WHERE s.studentId = :studID",
+                    Student.class
+            ).setParameter("studID", studId)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+    public static  Student addStudent(String courseid, String studID, String fName, String lName, String barCode){
+    		Student stud = new Student();
+    		stud.setId(studID);
+    		stud.setBarcode(barCode);
+    		stud.setFirstName(fName);
+    		stud.setLastName(lName);
+    		stud.courseListInit();
+    		Course tempCourse =getCourseById(courseid);
+    		Student tempStud = getStudentByID(studID);
+    		if(tempCourse==null){
+    			return null;
+    		}
+    		if(tempStud==null){
+    			tempCourse.addStudent(stud);
+    			stud.addCourse(tempCourse);
+    			em.getTransaction().begin();
+    			em.persist(stud);
+    			em.getTransaction().commit();
+    			return stud;
+    		}
+    		else{
+    			tempStud.addCourse(tempCourse);
+    			tempCourse.addStudent(tempStud);
+    			return tempStud;
+    		}
+    		
+    }
+    public static List<Student> getCourseStudents(String courseID){
+    	Course testCourse = getCourseById(courseID);
+    	return testCourse.getStudentRoster();
     }
 
     /** Student database functions  */

@@ -45,7 +45,7 @@ public class AddCourseInputsView extends Window {
                 Notification.show("Invalid fields.", Notification.Type.WARNING_MESSAGE);
             }*/
 
-            DatabaseHandler.addCourse(inputCourseName.getValue(), inputCourseCode.getValue(), inputCourseSection.getValue());
+            DatabaseHandler.addCourse(inputCourseName.getValue(), inputCourseCode.getValue());
             BeanItemContainer<Course> bic = (BeanItemContainer<Course>) courseGrid.getContainerDataSource();
             bic.removeAllItems();
             bic.addAll(DatabaseHandler.getAllCourses());

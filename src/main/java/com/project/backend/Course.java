@@ -19,19 +19,22 @@ public class Course implements Comparable<Course>{
 
     @Id
     private String courseCode;
-    @Id
-    private String courseSection;
     private String courseName;
     @ManyToMany
+    @JoinTable(name="enroll", joinColumns={
+            @JoinColumn(name="Course_ID")
+            }
+        , inverseJoinColumns={
+            @JoinColumn(name="Student_ID")
+            })
     private List<Student> studentRoster;
     @OneToMany
     private List<ClassDay> classDays;
     
-    public Course(String courseName, String courseCode, String courseSection, List<String> classInfo) {
+    public Course(String courseName, String courseCode, List<String> classInfo) {
         this();
         setCourseName(courseName);
         setCourseCode(courseCode);
-        setCourseSection(courseSection);
 
         //create a test studentRoster
         studentRoster = new ArrayList<>();
@@ -70,9 +73,6 @@ public class Course implements Comparable<Course>{
         return courseCode;
     }
 
-    public String getCourseSection() {
-        return courseSection;
-    }
     
     public void addStudent(Student student){
     	studentRoster.add(student);
@@ -82,9 +82,6 @@ public class Course implements Comparable<Course>{
         this.courseCode = courseCode.replaceAll(" ", "_");
     }
 
-    public void setCourseSection(String courseSection) {
-        this.courseSection = courseSection;
-    }
 
     public void setCourseName(String courseName) {
         this.courseName = courseName;
@@ -92,13 +89,13 @@ public class Course implements Comparable<Course>{
 
     @Override
     public String toString() {
-        return "User{courseName=" + courseName + '}';
+        return "Course{courseName=" + courseName + '}';
     }
 
     @Override
     public int compareTo(Course c) {
         if(courseCode.equals(c.getCourseCode())) {
-            return courseSection.compareTo(c.getCourseSection());
+            return 0;
         }
         return courseCode.compareTo(c.getCourseCode());
     }

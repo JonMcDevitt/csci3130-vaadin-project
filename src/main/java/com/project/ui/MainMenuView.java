@@ -43,8 +43,8 @@ public class MainMenuView extends CustomComponent implements View {
 	public MainMenuView() {
 		//Create a courseList for testing
 		courseList = new ArrayList<>();
-        DatabaseHandler.addCourse("Computer Science 1", "CSCI 1100", "01");
-        DatabaseHandler.addCourse("Computer Science 1", "CSCI 1100", "02");
+        DatabaseHandler.addCourse("Computer Science 1", "CSCI 1100");
+        DatabaseHandler.addCourse("Computer Science 1", "CSCI 1100");
 
 		//Display course name only in the grid
 //		courseGrid.setContainerDataSource(new BeanItemContainer<>(Course.class, courseList));
@@ -89,8 +89,8 @@ public class MainMenuView extends CustomComponent implements View {
 	@Deprecated
     MainMenuView(Course course) {
     	//Create a courseList for testing
-        DatabaseHandler.addCourse("Computer Science 1", "CSCI 1100", "01");
-        DatabaseHandler.addCourse("Computer Science 1", "CSCI 1100", "02");
+        DatabaseHandler.addCourse("Computer Science 1", "CSCI 1100");
+        DatabaseHandler.addCourse("Computer Science 1", "CSCI 1100");
     	
 //    	for(int i = 0; i < courseList.size(); i++){
 //    		if(courseList.get(i).getCourseName().equals(course.getCourseName())){
