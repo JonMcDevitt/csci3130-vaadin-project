@@ -20,7 +20,7 @@ public class Course implements Comparable<Course>{
     @Id
     private String courseCode;
     @Id
-    private byte courseSection;
+    private String courseSection;
     private String courseName;
     @ManyToMany
     private List<Student> studentRoster;
@@ -70,7 +70,7 @@ public class Course implements Comparable<Course>{
         return courseCode;
     }
 
-    public byte getCourseSection() {
+    public String getCourseSection() {
         return courseSection;
     }
     
@@ -83,7 +83,7 @@ public class Course implements Comparable<Course>{
     }
 
     public void setCourseSection(String courseSection) {
-        this.courseSection = Byte.parseByte(courseSection);
+        this.courseSection = courseSection;
     }
 
     public void setCourseName(String courseName) {
@@ -98,8 +98,7 @@ public class Course implements Comparable<Course>{
     @Override
     public int compareTo(Course c) {
         if(courseCode.equals(c.getCourseCode())) {
-            Byte b = courseSection;
-            return b.compareTo(c.getCourseSection());
+            return courseSection.compareTo(c.getCourseSection());
         }
         return courseCode.compareTo(c.getCourseCode());
     }

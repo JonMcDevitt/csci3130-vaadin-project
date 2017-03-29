@@ -31,18 +31,20 @@ public class DatabaseHandler {
         if (courseId.length != 2) {
             return null;
         }
-        return getCourseById(courseId[0], courseId[2]);
+        return getCourseById(courseId[0], courseId[1]);
     }
 
     public static Course getCourseById(String code, String section) {
-
-        return em.createQuery(
-                "SELECT *" +
-                        " FROM Course" +
-                        " WHERE courseCode=" + code.replaceAll(" ", "_") +
-                        " AND courseSection=" + section,
-                Course.class
-        ).getSingleResult();
+        try {
+            return em.createQuery(
+                    "SELECT c FROM Course c WHERE c.courseCode LIKE :courseCode AND c.courseSection LIKE :courseSection",
+                    Course.class
+            ).setParameter("courseCode", code)
+                    .setParameter("courseSection", section)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     public static Course addCourse(String inputCourseName, String inputCourseCode, String inputCourseSection) {
@@ -51,6 +53,7 @@ public class DatabaseHandler {
         c.setCourseCode(inputCourseCode);
         c.setCourseSection(inputCourseSection);
         c.initLists();
+
         if(getCourseById(inputCourseCode, inputCourseSection) == null) {
             em.getTransaction().begin();
             em.persist(c);
