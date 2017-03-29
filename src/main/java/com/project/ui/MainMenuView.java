@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.project.backend.Course;
 import com.project.backend.RegisteredUser;
+import com.vaadin.addon.jpacontainer.JPAContainer;
+import com.vaadin.addon.jpacontainer.JPAContainerFactory;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -31,6 +33,8 @@ public class MainMenuView extends CustomComponent implements View {
     private Button addCourse;
     private Button goToCourse;
     private Button logout;
+
+    private JPAContainer<Course> courseJPAContainer;
     
     //selectedCourse is to store selected Course object from the grid
     private Course selectedCourse = null;
@@ -45,11 +49,11 @@ public class MainMenuView extends CustomComponent implements View {
 		courseList.add(new Course("TestCourse2", "CSCI 0001", "02"));
 
 		//Display course name only in the grid
-		courseGrid.setContainerDataSource(new BeanItemContainer<>(Course.class, courseList));
-		courseGrid.removeColumn("studentRoster");
+//		courseGrid.setContainerDataSource(new BeanItemContainer<>(Course.class, courseList));
+//		courseGrid.removeColumn("studentRoster");
 
 		//Add a selectionListener to select a course and pass it to selectedCourse as a Course object
-		courseGrid.addSelectionListener(e -> selectCourse());
+//		courseGrid.addSelectionListener(e -> selectCourse());
 
 		logout = new Button("Log Out", (Button.ClickListener) clickEvent -> logOut());
 
@@ -116,7 +120,20 @@ public class MainMenuView extends CustomComponent implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        String username = String.valueOf(getSession().getAttribute("user"));
+		String username = String.valueOf(getSession().getAttribute("user"));
         welcome.setValue("Welcome, " + username + ", to our application!");
+		courseJPAContainer = JPAContainerFactory.make(Course.class, "alpha_scanner_db");
+
+		courseGrid.setContainerDataSource(new BeanItemContainer<>(Course.class, getCourses(courseJPAContainer)));
+		courseGrid.removeColumn("studentRoster");
+
+		//Add a selectionListener to select a course and pass it to selectedCourse as a Course object
+		courseGrid.addSelectionListener(e -> selectCourse());
     }
+
+    private List<Course> getCourses(JPAContainer jpaContainer) {
+		List<Course> courses = new ArrayList<>();
+		jpaContainer.getItemIds().forEach(itemId -> courses.add((Course) jpaContainer.getItem(itemId).getEntity()));
+		return courses;
+	}
 }

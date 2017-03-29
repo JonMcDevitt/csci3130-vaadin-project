@@ -8,14 +8,16 @@ package com.project.backend;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Student {
     @Id
     private String id;
-    private String barcode;
-    private String firstName;
-    private String lastName;
+    @NotNull
+    @Size(min=2, max=64)
+    private String barcode, firstName, lastName;
 
     public Student(String id, String barcode, String firstName, String lastName) {
         this.id = id;
