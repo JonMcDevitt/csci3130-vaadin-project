@@ -1,18 +1,15 @@
-package com.project;
+package com.project.ui;
 
 import javax.servlet.annotation.WebServlet;
 
+import com.project.backend.RegisteredUser;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser window 
@@ -30,19 +27,20 @@ public class LoginUI extends UI {
 
         getNavigator().addView(LoginView.NAME, LoginView.class);
         getNavigator().addView(MainMenuView.NAME, MainMenuView.class);
+        getNavigator().addView(CourseView.NAME, CourseView.class);
+        getNavigator().addView(NewStudentView.NAME, NewStudentView.class);
+        getNavigator().addView(SignUpView.NAME, SignUpView.class);
 
         getNavigator().addViewChangeListener(new ViewChangeListener() {
-
-
             @Override
-            public boolean beforeViewChange(ViewChangeEvent viewChangeEvent) {
+            public boolean beforeViewChange(ViewChangeEvent viewChangeEvent) {           	
                 boolean isLoggedIn = getSession().getAttribute("user") != null;
                 boolean isLoginView = viewChangeEvent.getNewView() instanceof LoginView;
                 boolean ret = true;
-                if(!isLoggedIn && !isLoginView) {
+                if (!isLoggedIn && !isLoginView) {
                     getNavigator().navigateTo(LoginView.NAME);
                     ret = false;
-                } else if(isLoggedIn && isLoginView) {
+                } else if (isLoggedIn && isLoginView) {
                     ret = false;
                 }
 
@@ -51,7 +49,6 @@ public class LoginUI extends UI {
 
             @Override
             public void afterViewChange(ViewChangeEvent viewChangeEvent) {
-
             }
         });
     }
