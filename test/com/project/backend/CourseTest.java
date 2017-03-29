@@ -34,5 +34,4 @@ public class CourseTest {
         assertNotEquals(course.compareTo(oOpSysOne), 0);
         assertEquals(oOpSysOne.compareTo(oOpSysTwo), -1);
     }
-
 }

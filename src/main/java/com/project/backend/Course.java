@@ -79,7 +79,7 @@ public class Course implements Comparable<Course>{
     }
 
     public void setCourseCode(String courseCode) {
-        this.courseCode = courseCode;
+        this.courseCode = courseCode.replaceAll(" ", "_");
     }
 
     public void setCourseSection(String courseSection) {

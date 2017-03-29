@@ -16,19 +16,19 @@ public class DatabaseHandler {
     private static final EntityManager em = Persistence.createEntityManagerFactory("alpha_scanner_db")
             .createEntityManager();
 
-    /** Course database functions   */
+    /**
+     * Course database functions
+     */
 
     public static List<Course> getAllCourses() {
-        List<Course> courses = new ArrayList<>();
-        em.createQuery(
+        return em.createQuery(
                 "SELECT c FROM Course c", Course.class
-        );
-        return courses;
+        ).getResultList();
     }
 
     public static Course getCourseById(String id) {
         String[] courseId = id.split("-");
-        if(courseId.length != 2) {
+        if (courseId.length != 2) {
             return null;
         }
         return getCourseById(courseId[0], courseId[2]);
@@ -37,10 +37,10 @@ public class DatabaseHandler {
     public static Course getCourseById(String code, String section) {
 
         return em.createQuery(
-                "SELECT TOP 1" +
-                        " FROM Course " +
-                        " WHERE courseCode="+ code +
-                        " AND courseSection="+section,
+                "SELECT *" +
+                        " FROM Course" +
+                        " WHERE courseCode=" + code.replaceAll(" ", "_") +
+                        " AND courseSection=" + section,
                 Course.class
         ).getSingleResult();
     }
@@ -51,9 +51,11 @@ public class DatabaseHandler {
         c.setCourseCode(inputCourseCode);
         c.setCourseSection(inputCourseSection);
         c.initLists();
-        em.getTransaction().begin();
-        em.persist(c);
-        em.getTransaction().commit();
+        if(getCourseById(inputCourseCode, inputCourseSection) == null) {
+            em.getTransaction().begin();
+            em.persist(c);
+            em.getTransaction().commit();
+        }
         return c;
     }
 
