@@ -16,7 +16,7 @@ public class ClassDay {
     @Id
     private Date startTime, endTime;
     @OneToMany
-    private List<Student> attendingStudents, absentStudents;
+    private List<Student> attendingStudents, absentStudents, excusedAbsenceStudents;
     private boolean cancellation;
 
     public ClassDay(Date startTime, Date endTime, List<Student> studentsInCourse) {
@@ -24,6 +24,7 @@ public class ClassDay {
         this.endTime = endTime;
         this.absentStudents = new ArrayList<>(studentsInCourse);
         this.attendingStudents = new ArrayList<>();
+        this.excusedAbsenceStudents = new ArrayList<>();
         this.cancellation = false;
     }
 
@@ -45,6 +46,11 @@ public class ClassDay {
     public List<Student> getAbsentStudents() {
         return absentStudents;
     }
+    
+    public List<Student> getExcusedAbsentStudents() {
+        return excusedAbsenceStudents;
+    }
+   
 
     public void studentScanned(String studentId) {
         absentStudents.stream().filter(s -> s.getId().equals(studentId)).findAny().ifPresent(s -> {

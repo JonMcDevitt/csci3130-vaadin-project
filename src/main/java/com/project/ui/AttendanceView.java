@@ -139,6 +139,10 @@ public class AttendanceView extends CustomComponent implements View {
                 Item item = attendanceRecords.addItem(student.getBarcode());
                 setRecordItemProperties(item, student, AttendanceStatus.PRESENT);
             }
+            for (Student student : classDay.getExcusedAbsentStudents()) {
+                Item item = attendanceRecords.addItem(student.getBarcode());
+                setRecordItemProperties(item, student, AttendanceStatus.EXCUSED);
+            }
         }
 
         return attendanceRecords;
@@ -184,7 +188,7 @@ public class AttendanceView extends CustomComponent implements View {
     }
 
     private enum AttendanceStatus {
-        PRESENT, ABSENT;
+        PRESENT, ABSENT, EXCUSED;
 
         public String toString() {
             return name();
