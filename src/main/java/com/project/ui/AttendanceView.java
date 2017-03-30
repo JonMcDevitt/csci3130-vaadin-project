@@ -95,6 +95,10 @@ public class AttendanceView extends CustomComponent implements View {
         attendanceGrid.setContainerDataSource(attendanceRecords);
         attendanceGrid.setWidth("100%");
         attendanceGrid.setEditorEnabled(true);
+        attendanceGrid.getColumn(BANNER_NUMBER).setEditable(false);
+        attendanceGrid.getColumn(LAST_NAME).setEditable(false);
+        attendanceGrid.getColumn(FIRST_NAME).setEditable(false);
+        attendanceGrid.getColumn(BARCODE).setEditable(false);
         attendanceGrid.getEditorFieldGroup().addCommitHandler(new FieldGroup.CommitHandler() {
         Student studentToSwap;
 			@Override
@@ -114,15 +118,17 @@ public class AttendanceView extends CustomComponent implements View {
         				list.remove(i);
 					}
 				}
+				/*
 				System.out.println("PRESENT LIST");
 				for(int i=0; i<classDay.getAttendingStudents().size(); i++)
 					System.out.println(classDay.getAttendingStudents().get(i).toString());
 				System.out.println("ABSENT LIST");
-				for(int i=0; i<classDay.getAttendingStudents().size(); i++)
+				for(int i=0; i<classDay.getAbsentStudents().size(); i++)
 					System.out.println(classDay.getAbsentStudents().get(i).toString());
 				System.out.println("EXCUSED LIST");
-				for(int i=0; i<classDay.getAttendingStudents().size(); i++)
+				for(int i=0; i<classDay.getExcusedAbsentStudents().size(); i++)
 					System.out.println(classDay.getExcusedAbsentStudents().get(i).toString());
+			*/
 			}
 			
 			@Override
@@ -143,11 +149,11 @@ public class AttendanceView extends CustomComponent implements View {
 				for(int i=0; i<classDay.getAttendingStudents().size(); i++)
 					System.out.println(classDay.getAttendingStudents().get(i).toString());
 				System.out.println("ABSENT LIST");
-				for(int i=0; i<classDay.getAttendingStudents().size(); i++)
+				for(int i=0; i<classDay.getAbsentStudents().size(); i++)
 					System.out.println(classDay.getAbsentStudents().get(i).toString());
 				System.out.println("EXCUSED LIST");
-				for(int i=0; i<classDay.getAttendingStudents().size(); i++)
-					System.out.println(classDay.getExcusedAbsentStudents().get(i).toString());
+				//for(int i=0; i<classDay.getExcusedAbsentStudents().size(); i++)
+					//System.out.println(classDay.getExcusedAbsentStudents().get(i).toString());
 			}
 		});
     }
