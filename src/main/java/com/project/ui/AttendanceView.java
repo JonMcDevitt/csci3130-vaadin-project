@@ -19,6 +19,9 @@ import com.project.backend.ClassDay;
 import com.project.backend.Course;
 import com.project.backend.Student;
 import com.vaadin.data.Item;
+import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.data.fieldgroup.FieldGroup.CommitEvent;
+import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -87,6 +90,21 @@ public class AttendanceView extends CustomComponent implements View {
     private void configureGrid(ClassDay classDay) {
         attendanceGrid.setContainerDataSource(attendanceRecords);
         attendanceGrid.setWidth("100%");
+        attendanceGrid.setEditorEnabled(true);
+        attendanceGrid.getEditorFieldGroup().addCommitHandler(new FieldGroup.CommitHandler() {
+			
+			@Override
+			public void preCommit(CommitEvent commitEvent) throws CommitException {
+				// TODO Auto-generated method stub
+			}
+			
+			@Override
+			public void postCommit(CommitEvent commitEvent) throws CommitException {
+				// TODO Auto-generated method stub
+				//commitEvent.getClass();
+				
+			}
+		});
     }
 
     //configures back button, if clicked it will go to course view
