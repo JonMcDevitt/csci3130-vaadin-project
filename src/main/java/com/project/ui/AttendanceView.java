@@ -14,7 +14,10 @@
 
 package com.project.ui;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import com.project.backend.ClassDay;
 import com.project.backend.Course;
 import com.project.backend.Student;
@@ -53,8 +56,8 @@ public class AttendanceView extends CustomComponent implements View {
     AttendanceView(Course course) {
         this.course = course;
         //creates all compontents used in view
-        attendanceGrid = new Grid();
         todayClassDay = getTodayClassDay(course);
+        attendanceGrid = new Grid();
         BarcodeScannerComponent barcodeScannerComponent = new BarcodeScannerComponent();
         attendanceRecords = getAttendanceRecords(todayClassDay);
         Label label = new Label();
@@ -88,21 +91,63 @@ public class AttendanceView extends CustomComponent implements View {
 
     //configures grid, sets to width to 100%
     private void configureGrid(ClassDay classDay) {
+    	
         attendanceGrid.setContainerDataSource(attendanceRecords);
         attendanceGrid.setWidth("100%");
         attendanceGrid.setEditorEnabled(true);
         attendanceGrid.getEditorFieldGroup().addCommitHandler(new FieldGroup.CommitHandler() {
-			
+        Student studentToSwap;
 			@Override
 			public void preCommit(CommitEvent commitEvent) throws CommitException {
 				// TODO Auto-generated method stub
+				List<Student> list;
+				Item editedItem = attendanceRecords.getItem(attendanceGrid.getEditedItemId());
+				if(editedItem.getItemProperty(PRESENT).equals("Present"))
+					list=classDay.getAttendingStudents();
+				else if(editedItem.getItemProperty(PRESENT).equals("Absent"))
+					list=classDay.getAbsentStudents();
+				else
+					list=classDay.getExcusedAbsentStudents();
+				for(int i=0;i<list.size();i++){
+					if(list.get(i).getBarcode().equals(attendanceGrid.getEditedItemId())){
+        				studentToSwap=list.get(i);
+        				list.remove(i);
+					}
+				}
+				System.out.println("PRESENT LIST");
+				for(int i=0; i<classDay.getAttendingStudents().size(); i++)
+					System.out.println(classDay.getAttendingStudents().get(i).toString());
+				System.out.println("ABSENT LIST");
+				for(int i=0; i<classDay.getAttendingStudents().size(); i++)
+					System.out.println(classDay.getAbsentStudents().get(i).toString());
+				System.out.println("EXCUSED LIST");
+				for(int i=0; i<classDay.getAttendingStudents().size(); i++)
+					System.out.println(classDay.getExcusedAbsentStudents().get(i).toString());
 			}
 			
 			@Override
 			public void postCommit(CommitEvent commitEvent) throws CommitException {
 				// TODO Auto-generated method stub
-				//commitEvent.getClass();
+				//System.out.println(attendanceGrid.getEditedItemId().);
+				//String status = (String)attendanceGrid.get
+				Item editedItem = attendanceRecords.getItem(attendanceGrid.getEditedItemId());
 				
+				if(editedItem.getItemProperty(PRESENT).equals("Present"))
+					classDay.getAttendingStudents().add(studentToSwap);
+				else if(editedItem.getItemProperty(PRESENT).equals("Absent"))
+					classDay.getAbsentStudents().add(studentToSwap);
+				else
+					classDay.getExcusedAbsentStudents().add(studentToSwap);
+				System.out.println("POST!");
+				System.out.println("PRESENT LIST");
+				for(int i=0; i<classDay.getAttendingStudents().size(); i++)
+					System.out.println(classDay.getAttendingStudents().get(i).toString());
+				System.out.println("ABSENT LIST");
+				for(int i=0; i<classDay.getAttendingStudents().size(); i++)
+					System.out.println(classDay.getAbsentStudents().get(i).toString());
+				System.out.println("EXCUSED LIST");
+				for(int i=0; i<classDay.getAttendingStudents().size(); i++)
+					System.out.println(classDay.getExcusedAbsentStudents().get(i).toString());
 			}
 		});
     }
