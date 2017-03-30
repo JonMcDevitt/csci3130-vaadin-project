@@ -100,35 +100,51 @@ public class AttendanceView extends CustomComponent implements View {
         attendanceGrid.getColumn(FIRST_NAME).setEditable(false);
         attendanceGrid.getColumn(BARCODE).setEditable(false);
         attendanceGrid.getEditorFieldGroup().addCommitHandler(new FieldGroup.CommitHandler() {
-        Student studentToSwap;
+        /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+		Student studentToSwap;
 			@Override
 			public void preCommit(CommitEvent commitEvent) throws CommitException {
 				// TODO Auto-generated method stub
 				List<Student> list;
+				int listIndex=0;
 				Item editedItem = attendanceRecords.getItem(attendanceGrid.getEditedItemId());
-				if(editedItem.getItemProperty(PRESENT).equals("Present"))
-					list=classDay.getAttendingStudents();
-				else if(editedItem.getItemProperty(PRESENT).equals("Absent"))
-					list=classDay.getAbsentStudents();
-				else
-					list=classDay.getExcusedAbsentStudents();
-				for(int i=0;i<list.size();i++){
-					if(list.get(i).getBarcode().equals(attendanceGrid.getEditedItemId())){
-        				studentToSwap=list.get(i);
-        				list.remove(i);
+				System.out.println(editedItem.getItemProperty(PRESENT).getValue());
+				if(editedItem.getItemProperty(PRESENT).getValue().toString().equals("PRESENT")){
+					listIndex=1;
+				}
+				else if(editedItem.getItemProperty(PRESENT).getValue().toString().equals("ABSENT")){
+					listIndex=2;
+				}
+				else{
+					listIndex=3;
+				}
+				if(listIndex==1){
+					for(int i=0;i<classDay.getAttendingStudents().size();i++){
+						if(classDay.getAttendingStudents().get(i).getBarcode().equals(attendanceGrid.getEditedItemId())){
+							studentToSwap=classDay.getAttendingStudents().remove(i);
+						}
 					}
 				}
-				/*
-				System.out.println("PRESENT LIST");
-				for(int i=0; i<classDay.getAttendingStudents().size(); i++)
-					System.out.println(classDay.getAttendingStudents().get(i).toString());
-				System.out.println("ABSENT LIST");
-				for(int i=0; i<classDay.getAbsentStudents().size(); i++)
-					System.out.println(classDay.getAbsentStudents().get(i).toString());
-				System.out.println("EXCUSED LIST");
-				for(int i=0; i<classDay.getExcusedAbsentStudents().size(); i++)
-					System.out.println(classDay.getExcusedAbsentStudents().get(i).toString());
-			*/
+				if(listIndex==2){
+					for(int i=0;i<classDay.getAbsentStudents().size();i++){
+						if(classDay.getAbsentStudents().get(i).getBarcode().equals(attendanceGrid.getEditedItemId())){
+							studentToSwap=classDay.getAbsentStudents().remove(i);
+						}
+					}
+				}
+				if(listIndex==3){
+					for(int i=0;i<classDay.getExcusedAbsentStudents().size();i++){
+						if(classDay.getExcusedAbsentStudents().get(i).getBarcode().equals(attendanceGrid.getEditedItemId())){
+							studentToSwap=classDay.getExcusedAbsentStudents().remove(i);
+						}
+					}
+				}
+				
+				printOutAllLists(classDay);
+			
 			}
 			
 			@Override
@@ -137,25 +153,32 @@ public class AttendanceView extends CustomComponent implements View {
 				//System.out.println(attendanceGrid.getEditedItemId().);
 				//String status = (String)attendanceGrid.get
 				Item editedItem = attendanceRecords.getItem(attendanceGrid.getEditedItemId());
-				
-				if(editedItem.getItemProperty(PRESENT).equals("Present"))
+				System.out.println(editedItem.getItemProperty(PRESENT).getValue());
+				int listIndex = 0;
+				if(editedItem.getItemProperty(PRESENT).getValue().toString().equals("PRESENT")){
 					classDay.getAttendingStudents().add(studentToSwap);
-				else if(editedItem.getItemProperty(PRESENT).equals("Absent"))
+				}
+				else if(editedItem.getItemProperty(PRESENT).getValue().toString().equals("ABSENT")){
 					classDay.getAbsentStudents().add(studentToSwap);
-				else
+				}
+				else{
 					classDay.getExcusedAbsentStudents().add(studentToSwap);
-				System.out.println("POST!");
-				System.out.println("PRESENT LIST");
-				for(int i=0; i<classDay.getAttendingStudents().size(); i++)
-					System.out.println(classDay.getAttendingStudents().get(i).toString());
-				System.out.println("ABSENT LIST");
-				for(int i=0; i<classDay.getAbsentStudents().size(); i++)
-					System.out.println(classDay.getAbsentStudents().get(i).toString());
-				System.out.println("EXCUSED LIST");
-				//for(int i=0; i<classDay.getExcusedAbsentStudents().size(); i++)
-					//System.out.println(classDay.getExcusedAbsentStudents().get(i).toString());
-			}
+				}
+				printOutAllLists(classDay);
+				}
 		});
+    }
+    
+    public void printOutAllLists(ClassDay classDay){
+    	System.out.println("PRESENT LIST");
+		for(int i=0; i<classDay.getAttendingStudents().size(); i++)
+			System.out.println(classDay.getAttendingStudents().get(i).toString());
+		System.out.println("ABSENT LIST");
+		for(int i=0; i<classDay.getAbsentStudents().size(); i++)
+			System.out.println(classDay.getAbsentStudents().get(i).toString());
+		System.out.println("EXCUSED LIST");
+		for(int i=0; i<classDay.getExcusedAbsentStudents().size(); i++)
+			System.out.println(classDay.getExcusedAbsentStudents().get(i).toString());
     }
 
     //configures back button, if clicked it will go to course view
