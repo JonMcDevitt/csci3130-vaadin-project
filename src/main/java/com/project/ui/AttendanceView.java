@@ -40,6 +40,7 @@ public class AttendanceView extends CustomComponent implements View {
 
     private Course course;
     private Grid attendanceGrid;
+    private Label instructionLabel;
     private ClassDay todayClassDay;
     private IndexedContainer attendanceRecords;
     private Button toCourseViewButton;
@@ -61,10 +62,12 @@ public class AttendanceView extends CustomComponent implements View {
         BarcodeScannerComponent barcodeScannerComponent = new BarcodeScannerComponent();
         attendanceRecords = getAttendanceRecords(todayClassDay);
         Label label = new Label();
+        instructionLabel = new Label("* To manually update attendance, double click the student's attendance status and select an option from the menu.");
         toCourseViewButton = new Button();
 
         //configures components
         configureGrid(todayClassDay);
+        //configureInstructionLabel();
         configureLabel(label);
         configureBackButton(toCourseViewButton);
 
@@ -75,7 +78,7 @@ public class AttendanceView extends CustomComponent implements View {
             updateAttendanceGrid(s, AttendanceStatus.PRESENT);
         });
 
-        VerticalLayout layout = new VerticalLayout(label, attendanceGrid, barcodeScannerComponent, toCourseViewButton);
+        VerticalLayout layout = new VerticalLayout(label, instructionLabel,attendanceGrid, barcodeScannerComponent,toCourseViewButton);
         layout.setMargin(true);
         
         //adds components to layout and alligns them.
@@ -84,11 +87,16 @@ public class AttendanceView extends CustomComponent implements View {
         layout.setComponentAlignment(label, Alignment.MIDDLE_CENTER);
         layout.setComponentAlignment(attendanceGrid, Alignment.MIDDLE_CENTER);
         layout.setComponentAlignment(barcodeScannerComponent, Alignment.MIDDLE_CENTER);
+        layout.setComponentAlignment(instructionLabel, Alignment.MIDDLE_CENTER);
         layout.setComponentAlignment(toCourseViewButton, Alignment.MIDDLE_CENTER);
 
         setCompositionRoot(layout);
     }
 
+    private void configureInstructionLabel(){
+    	
+    }
+    
     //configures grid, sets to width to 100%
     private void configureGrid(ClassDay classDay) {
     	
