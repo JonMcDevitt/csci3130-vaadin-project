@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  */
 public class AddCourseInputsView extends Window {
     private Button save;
-    private TextField inputCourseCode, inputCourseName, inputCourseSection;
+    private TextField inputCourseCode, inputCourseName;
 
     public AddCourseInputsView(List<Course> courseList, Grid courseGrid) {
         super();
@@ -28,7 +28,7 @@ public class AddCourseInputsView extends Window {
         /** TODO:   Make all this pretty
          * */
         HorizontalLayout buttons = new HorizontalLayout(save);
-        VerticalLayout layout = new VerticalLayout(inputCourseCode, inputCourseName, inputCourseSection, buttons);
+        VerticalLayout layout = new VerticalLayout(inputCourseCode, inputCourseName, buttons);
         setContent(layout);
     }
 
@@ -71,7 +71,5 @@ public class AddCourseInputsView extends Window {
         inputCourseCode.setInputPrompt("Course Code (e.g. CSCI 1101)");
         inputCourseName = new TextField();
         inputCourseName.setInputPrompt("Course Name (e.g. Software Engineering)");
-        inputCourseSection = new TextField();
-        inputCourseSection.setInputPrompt("Course Section (e.g. 01)");
     }
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.project.backend.Course;
+import com.project.backend.DatabaseHandler;
 import com.project.backend.Student;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -41,21 +42,12 @@ public class NewStudentView extends CustomComponent implements View {
     public NewStudentView() {
     }
 
-    public NewStudentView(Course course) {
+    public NewStudentView(String courseID) {
         setSizeFull();
-
-        id = new TextField("ID: ");
-
-        firstName = new TextField("First Name: ");
-        lastName = new TextField("Last Name: ");
-        barcode = new TextField("Barcode: ");
-        addButton = new Button("Add Student");
-        clearButton = new Button("Clear");
-        cancelButton = new Button("Cancel");
         components = new ArrayList<>();
 
         configureComponents();
-        configureActions(course);
+        configureActions(courseID);
         setCompositionRoot(createLayout());
     }
 
@@ -65,7 +57,7 @@ public class NewStudentView extends CustomComponent implements View {
         id = new TextField("ID: ");
         firstName = new TextField("First Name: ");
         lastName = new TextField("Last Name: ");
-
+        barcode = new TextField("Barcode: ");
         addButton = new Button("Add Student");
         clearButton = new Button("Clear");
         cancelButton = new Button("Cancel");
@@ -88,18 +80,18 @@ public class NewStudentView extends CustomComponent implements View {
         UserInterfaceHelperFunctions.setTextFieldsInvalidAllowed(components, false);
     }
 
-    private void configureActions(Course course) {
+    private void configureActions(String courseID) {
 
         clearButton.addClickListener((Button.ClickListener) clickEvent -> clearFields());
 
         cancelButton.addClickListener(e -> cancel());
 
-        addButton.addClickListener(e -> addStudent(course));
+        addButton.addClickListener(e -> addStudent(courseID));
     }
 
-    private void addStudent(Course course) {
-        course.addStudent(new Student(id.getValue(), barcode.getValue(), firstName.getValue(), lastName.getValue()));
-        getUI().getNavigator().addView(CourseView.NAME, new CourseView(course));
+    private void addStudent(String courseID) {
+        DatabaseHandler.addStudent(courseID, id.getValue(),  firstName.getValue(), lastName.getValue(),barcode.getValue());
+        getUI().getNavigator().addView(CourseView.NAME, new CourseView(courseID));
         getUI().getNavigator().navigateTo(CourseView.NAME);
     }
 
@@ -120,7 +112,7 @@ public class NewStudentView extends CustomComponent implements View {
         buttons.setSpacing(true);
         buttons.setMargin(new MarginInfo(true, true));
         VerticalLayout fields = new VerticalLayout(
-                id, firstName, lastName, buttons);
+                id, firstName, lastName,barcode, buttons);
         fields.setSpacing(true);
         fields.setMargin(new MarginInfo(true, true, true, true));
         fields.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);

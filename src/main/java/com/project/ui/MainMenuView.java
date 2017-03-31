@@ -76,31 +76,10 @@ public class MainMenuView extends CustomComponent implements View {
 
 	private void selectCourse() {
 		selectedCourse = (Course) courseGrid.getSelectedRow();
-		getUI().getNavigator().addView(CourseView.NAME, new CourseView(selectedCourse));
+		if(selectedCourse!=null){
+			getUI().getNavigator().addView(CourseView.NAME, new CourseView(selectedCourse.getCourseCode()));
+		}
 	}
-
-	@Deprecated
-    MainMenuView(Course course) {
-    	//Create a courseList for testing
-        DatabaseHandler.addCourse("Computer Science 1", "CSCI 1100");
-        DatabaseHandler.addCourse("Computer Science 2", "CSCI 1101");
-    	
-    	//Display course name only in the grid 
-    	courseGrid.setContainerDataSource(new BeanItemContainer<>(Course.class, DatabaseHandler.getAllCourses()));
-    	courseGrid.removeColumn("studentRoster");
-    	
-    	//Add a selectionListener to select a course and pass it to selectedCourse as a Course object
-    	courseGrid.addSelectionListener(e -> selectCourse());
-
-		logout = new Button("Log Out", (Button.ClickListener) clickEvent -> logOut());
-
-    	goToCourse = new Button("Go to Course", (Button.ClickListener) clickEvent -> goToCourse());
-
-        goToCourse.setId(GO_TO_COURSE_BUTTON_ID);
-
-        addCourse = new Button("Add new course", (Button.ClickListener) clickEvent -> addCourse());
-        setCompositionRoot(new CssLayout(welcome, goToCourse, addCourse, logout, courseGrid));
-    }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {

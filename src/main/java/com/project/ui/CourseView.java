@@ -1,6 +1,7 @@
 package com.project.ui;
 
 import com.project.backend.Course;
+import com.project.backend.DatabaseHandler;
 import com.project.backend.Student;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
@@ -22,7 +23,7 @@ public class CourseView extends CustomComponent implements View {
     private static final String WIDTH_TEXTFIELD_DEFAULT = "300px";
     public static final String TAKE_ATTENDANCE_FOR_TODAY_BUTTON_ID = "takeAttendanceForTodayButton";
 
-    private Course course;
+    private String courseID;
     private Button goToMain;
     private Button addStudent;
     private Button editStudent;
@@ -36,16 +37,16 @@ public class CourseView extends CustomComponent implements View {
     }
 
     //a overloading constructor uses a Course type parameter to set up the UI content
-    CourseView(Course course) {
-        this.course = course;
+    public CourseView(String courseID) {
+        this.courseID=courseID;
         setSizeFull();
 
-        configureComponents(course);
+        configureComponents(courseID);
         createLayout();
     }
 
-    private void configureComponents(Course course) {
-
+    private void configureComponents(String courseID) {
+    	Course course = DatabaseHandler.getCourseById(courseID);
         goToMain = new Button("Back to main page",
                 (Button.ClickListener) clickEvent -> goToMain());
         addStudent = new Button("Add Student",
@@ -58,8 +59,9 @@ public class CourseView extends CustomComponent implements View {
 
         configurePopup();
         //Display the parameter -- course's student roaster
-        studentGrid.setContainerDataSource(new BeanItemContainer<>(Student.class, course.getStudentRoster()));
+        studentGrid.setContainerDataSource(new BeanItemContainer<>(Student.class, DatabaseHandler.getCourseStudents(courseID)));
         studentGrid.setColumnOrder("id");
+        studentGrid.removeColumn("courseList");
         goToTakeAttendance.setId(TAKE_ATTENDANCE_FOR_TODAY_BUTTON_ID);
     }
 
@@ -69,7 +71,7 @@ public class CourseView extends CustomComponent implements View {
     }
 
     private void goToStudent() {
-        getUI().getNavigator().addView(NewStudentView.NAME, new NewStudentView(course));
+        getUI().getNavigator().addView(NewStudentView.NAME, new NewStudentView(courseID));
         getUI().getNavigator().navigateTo(NewStudentView.NAME);
     }
 
@@ -82,7 +84,7 @@ public class CourseView extends CustomComponent implements View {
     }
 
     private void takeAttendance() {
-        getUI().setContent(new AttendanceView(course));
+        getUI().setContent(new AttendanceView(DatabaseHandler.getCourseById(courseID)));
     }
 
     private void createLayout() {
