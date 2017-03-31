@@ -1,13 +1,10 @@
 package com.project.backend;
 
-import com.vaadin.addon.jpacontainer.JPAContainer;
-import com.vaadin.addon.jpacontainer.JPAContainerFactory;
-import org.eclipse.persistence.internal.jpa.JPAQuery;
-import org.eclipse.persistence.queries.JPAQueryBuilder;
-
-import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.Persistence;
 
 /**
  * Created by Jonathan McDevitt on 2017-03-29.
@@ -105,7 +102,7 @@ public class DatabaseHandler {
         }
     }
 
-    public static  Student addStudent(String courseid, String studID, String fName, String lName, String barCode){
+    public static Student addStudent(String courseid, String studID, String fName, String lName, String barCode){
         Student stud = new Student();
         stud.setId(studID);
         stud.setBarcode(barCode);
@@ -137,4 +134,48 @@ public class DatabaseHandler {
         Course testCourse = getCourseById(courseID);
         return testCourse.getStudentRoster();
     }
+    
+    /*
+     * AttendanceRecord database functions
+     */
+    
+    public static AttendanceRecord getRecordById(String courseCode, String studentId) {
+        try {
+            return em.createQuery(
+                      "select r "
+                    + "from AttendanceRecord r "
+                    + "where r.courseCode like :courseCode and r.studentId like :studentId",
+                    AttendanceRecord.class)
+            .setParameter("courseCode", courseCode)
+            .setParameter("studentId", studentId)
+            .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
+        
+    }
+    
+    public static List<AttendanceRecord> getAllRecords() {
+            return em.createQuery(
+                      "select r "
+                    + "from AttendanceRecord r",
+                    AttendanceRecord.class)
+            .getResultList();
+    }
+    
+    public static AttendanceRecord addRecord(String courseCode, String studentId) {
+        AttendanceRecord record = new AttendanceRecord();
+        record.setCourseCode(courseCode);
+        record.setStudentId(studentId);
+        
+        if (getRecordById(courseCode, studentId) == null) {
+            em.getTransaction().begin();
+            em.persist(record);
+            em.getTransaction().commit();
+        }
+        
+        return record;
+    }
+    
 }
