@@ -14,9 +14,7 @@
 
 package com.project.ui;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import com.project.backend.ClassDay;
 import com.project.backend.Course;
@@ -92,10 +90,6 @@ public class AttendanceView extends CustomComponent implements View {
 
         setCompositionRoot(layout);
     }
-
-    private void configureInstructionLabel(){
-    	
-    }
     
     //configures grid, sets to width to 100%
     private void configureGrid(ClassDay classDay) {
@@ -116,7 +110,6 @@ public class AttendanceView extends CustomComponent implements View {
 			@Override
 			public void preCommit(CommitEvent commitEvent) throws CommitException {
 				// TODO Auto-generated method stub
-				List<Student> list;
 				int listIndex=0;
 				Item editedItem = attendanceRecords.getItem(attendanceGrid.getEditedItemId());
 				System.out.println(editedItem.getItemProperty(PRESENT).getValue());
@@ -162,7 +155,6 @@ public class AttendanceView extends CustomComponent implements View {
 				//String status = (String)attendanceGrid.get
 				Item editedItem = attendanceRecords.getItem(attendanceGrid.getEditedItemId());
 				System.out.println(editedItem.getItemProperty(PRESENT).getValue());
-				int listIndex = 0;
 				if(editedItem.getItemProperty(PRESENT).getValue().toString().equals("PRESENT")){
 					classDay.getAttendingStudents().add(studentToSwap);
 				}

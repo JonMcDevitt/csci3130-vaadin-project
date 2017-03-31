@@ -1,20 +1,21 @@
 package com.project.ui;
 
 import com.project.backend.Course;
-import com.vaadin.data.Validator;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.*;
 
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * Created by Owner on 2017-03-16.
  */
 public class AddCourseInputsView extends Window {
-    private Button save;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Button save;
     private TextField inputCourseCode, inputCourseName, inputCourseSection;
 
     public AddCourseInputsView(List<Course> courseList, Grid courseGrid) {

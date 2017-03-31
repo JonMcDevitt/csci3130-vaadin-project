@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.project.backend.Course;
-import com.project.backend.RegisteredUser;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;

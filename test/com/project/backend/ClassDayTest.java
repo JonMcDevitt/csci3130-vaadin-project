@@ -13,7 +13,8 @@ import static org.junit.Assert.*;
 public class ClassDayTest {
     private ClassDay classDay;
 
-    @Before
+    @SuppressWarnings("deprecation")
+	@Before
     public void setUp() throws Exception {
         List<Student> students = new ArrayList<>();
         students.add(new Student("B00123123", "5667887678", "Bob", "Barker"));

@@ -69,7 +69,8 @@ public class BarcodeScannerComponent extends CustomComponent {
     }
 
     //Sets up the textfield, and toggle the component to be deactivated if focus is lost.
-    private void setupTextField(TextField tf) {
+    @SuppressWarnings("deprecation")
+	private void setupTextField(TextField tf) {
     	tf.setInputPrompt("Input barcodes here");
         tf.setVisible(true);
         tf.setImmediate(true);
@@ -106,7 +107,8 @@ public class BarcodeScannerComponent extends CustomComponent {
 
     //Sets up the activate button (caption, enabled, width, click listener). If this button is pushed, the 
     //textfield will have focus, and this button will be disabled, and the deactivate button will be enabled
-    private void setupActivateButton(Button activateButton) {
+    @SuppressWarnings("deprecation")
+	private void setupActivateButton(Button activateButton) {
     	activateButton.setCaption("Start scanning");
         activateButton.setEnabled(true);
         activateButton.setDisableOnClick(true);
@@ -120,7 +122,8 @@ public class BarcodeScannerComponent extends CustomComponent {
 
     //Sets up the deactivate button (caption, enabled, width, click listener). If this button is pushed, the 
     //textfield will lose focus, and this button will be disabled, and the activate button will be enabled
-    private void setupDeactivateButton(Button deactivateButton) {
+    @SuppressWarnings("deprecation")
+	private void setupDeactivateButton(Button deactivateButton) {
         deactivateButton.setCaption("Stop scanning");
         deactivateButton.setEnabled(false);
         deactivateButton.setDisableOnClick(true);
