@@ -141,10 +141,12 @@ public class CourseView extends CustomComponent implements View {
     }
 
     private void changeStudent(TextField idnum, TextField barcode, TextField firstname, TextField lastname) {
-        currStudent.setId(idnum.getValue());
-        currStudent.setBarcode(barcode.getValue());
-        currStudent.setFirstName(firstname.getValue());
-        currStudent.setLastName(lastname.getValue());
+    	String currID = currStudent.getId();
+    	String newID = idnum.getValue();
+    	String barcodes = barcode.getValue();
+    	String fname = firstname.getValue();
+    	String lname = lastname.getValue();
+    	DatabaseHandler.changeStudent(currID,newID,barcodes,fname,lname);
         popupContent.setVisible(false);
         Notification saved = new Notification("Saved edit");
         saved.setDelayMsec(5000);

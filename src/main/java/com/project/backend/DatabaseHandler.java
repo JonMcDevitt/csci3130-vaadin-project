@@ -177,5 +177,24 @@ public class DatabaseHandler {
         
         return record;
     }
+    public static void removeStudent(String courseID,String studentID){
+    	Student toBeRemove = DatabaseHandler.getStudentByID(studentID);
+    	Course toRemoveFrom = DatabaseHandler.getCourseById(courseID);
+    	if(toBeRemove!=null&&toRemoveFrom!=null){
+    		em.getTransaction().begin();
+    		toBeRemove.getCourseList().remove(toRemoveFrom);
+    		toRemoveFrom.getStudentRoster().remove(toBeRemove);
+    		em.getTransaction().commit();
+    	}
+    }
+    public static void changeStudent(String currid, String newID, String barcode, String fname,String lname){
+    	Student toChange = getStudentByID(currid);
+    	em.getTransaction().begin();
+    	toChange.setId(newID);
+    	toChange.setFirstName(fname);
+    	toChange.setLastName(lname);
+    	toChange.setBarcode(barcode);
+    	em.getTransaction().commit();
+    }
     
 }
