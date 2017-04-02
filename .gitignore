@@ -42,3 +42,4 @@ ignore
 /src/main/webapp/VAADIN/themes/mytheme/styles.scss
 /src/main/webapp/VAADIN/themes/mytheme/styles.css
 /src/main/webapp/VAADIN/themes/mytheme/addons.scss
+/**/*.db

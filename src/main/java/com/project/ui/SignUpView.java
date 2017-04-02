@@ -3,8 +3,8 @@ package com.project.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.project.backend.RegisteredUser;
-import com.project.backend.RegisteredUserDatabase;
+import com.project.backend.DatabaseHandler;
+import com.project.backend.Validator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.MarginInfo;
@@ -81,9 +81,7 @@ public class SignUpView extends CustomComponent implements View {
     }
 
     private void configureActions() {
-        RegisteredUserDatabase userDatabase = RegisteredUserDatabase.getInstance();
-
-        signUpButton.addClickListener((Button.ClickListener) clickEvent -> signUp(userDatabase));
+        signUpButton.addClickListener((Button.ClickListener) clickEvent -> signUp());
 
         clearButton.addClickListener((Button.ClickListener) clickEvent -> clear());
 
@@ -103,22 +101,20 @@ public class SignUpView extends CustomComponent implements View {
         confirmPassword.clear();
     }
 
-    private void signUp(RegisteredUserDatabase userDatabase) {
-        RegisteredUser newUser = new RegisteredUser(userEmail.getValue(), password.getValue(),
-                firstName.getValue(), lastName.getValue(), department.getValue());
+    private void signUp() {
 
-        boolean isValidUser = newUser.isValidUser();
-        boolean isValid = newUser.isValid(userDatabase);
+        boolean isValidUser = Validator.validateUser(userEmail.getValue());
         boolean passwordConfirm = password.getValue().equals(confirmPassword.getValue());
 
-        if (isValidUser && isValid && passwordConfirm) {
+        if (isValidUser && passwordConfirm) {
             this.getUI().setContent(new LoginView());
             Notification.show("Signed up with email: " + userEmail.getValue());
-            userDatabase.save(newUser);
-        } else if (isValidUser) {
-            Notification.show("Missing fields.");
-        } else {
-            Notification.show(userEmail.getValue() + " already in use.");
+            DatabaseHandler.addUser(userEmail.getValue(), password.getValue(),
+                    firstName.getValue(), lastName.getValue(), department.getValue());
+        } else if (!isValidUser) {
+            Notification.show("Invalid email.");
+        } else if(!passwordConfirm) {
+            Notification.show("Passwords do not match.");
         }
     }
 

@@ -2,11 +2,8 @@ package com.project.backend;
 
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 /*
@@ -19,22 +16,22 @@ public class Course implements Comparable<Course>{
 
     @Id
     private String courseCode;
-    @Id
-    private byte courseSection;
     private String courseName;
     @ManyToMany
+    @JoinTable(
+            name="enroll", joinColumns={
+                    @JoinColumn(name="Course_ID")
+            }, inverseJoinColumns={
+                    @JoinColumn(name="Student_ID")
+            })
     private List<Student> studentRoster;
     @OneToMany
     private List<ClassDay> classDays;
     
-    public Course(String courseName, String courseCode, String courseSection) {
-        this(courseName, courseCode, courseSection, null);
-    }
-
-    public Course(String courseName, String courseCode, String courseSection, List<String> classInfo) {
-        this.courseName = courseName;
-        this.courseCode = courseCode;
-        this.courseSection = Byte.parseByte(courseSection);
+    public Course(String courseName, String courseCode, List<String> classInfo) {
+        this();
+        setCourseName(courseName);
+        setCourseCode(courseCode);
 
         //create a test studentRoster
         studentRoster = new ArrayList<>();
@@ -56,6 +53,11 @@ public class Course implements Comparable<Course>{
 	public Course() {
     }
 
+    public void initLists() {
+        studentRoster = new ArrayList<>();
+        classDays = new ArrayList<>();
+    }
+
     public String getCourseName(){
     	return courseName;
     }
@@ -67,26 +69,26 @@ public class Course implements Comparable<Course>{
     public String getCourseCode() {
         return courseCode;
     }
-
-    public byte getCourseSection() {
-        return courseSection;
-    }
     
     public void addStudent(Student student){
     	studentRoster.add(student);
     }
 
+    public void setCourseCode(String courseCode) {
+        this.courseCode = courseCode.replaceAll(" ", "_");
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
     @Override
     public String toString() {
-        return "RegisteredUser{courseName=" + courseName + '}';
+        return "Course{courseName=" + courseName + '}';
     }
 
     @Override
     public int compareTo(Course c) {
-        if(courseCode.equals(c.getCourseCode())) {
-            Byte b = courseSection;
-            return b.compareTo(c.getCourseSection());
-        }
         return courseCode.compareTo(c.getCourseCode());
     }
 }

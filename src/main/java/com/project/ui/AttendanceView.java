@@ -94,7 +94,7 @@ public class AttendanceView extends CustomComponent implements View {
         toCourseViewButton.setId(BACK_BUTTON_ID);
         toCourseViewButton.setCaption("Back to Course View");
         toCourseViewButton.addClickListener(e -> {
-            getUI().setContent(new CourseView(course));
+            getUI().setContent(new CourseView(course.getCourseCode()));
         });
     }
 

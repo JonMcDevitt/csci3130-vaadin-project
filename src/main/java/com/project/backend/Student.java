@@ -1,67 +1,85 @@
 package com.project.backend;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 /*
  * Created by Jili on 2017-03-01
- * 
+ *
  * Temporary Student class for creating Student objects for "Go to class" function test
  */
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Student {
     @Id
-    private String id;
-    private String barcode;
-    private String firstName;
-    private String lastName;
+    private String studentId;
+    @NotNull
+    @Size(min=2, max=64)
+    private String barcode, firstName, lastName;
+    @ManyToMany(mappedBy="studentRoster")
+    private List<Course> courseList;
 
     public Student(String id, String barcode, String firstName, String lastName) {
-        this.id = id;
+        this.studentId = id;
         this.barcode = barcode;
-    	this.firstName = firstName;
-    	this.lastName = lastName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        courseList = new ArrayList<>();
     }
 
     public String getBarcode() {
-		return barcode;
-	}
+        return barcode;
+    }
+    public void courseListInit(){
+        courseList = new ArrayList<>();
+    }
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
 
-	public void setBarcode(String barcode) {
-		this.barcode = barcode;
-	}
-
-	public Student() {
+    public Student() {
     }
 
     public String getId() {
-        return id;
+        return studentId;
     }
-    
+
     public String getFirstName(){
-    	return firstName;
+        return firstName;
     }
-    
+
     public String getLastName(){
-    	return lastName;
+        return lastName;
     }
-    
+    public List<Course> getCourseList(){
+        return courseList;
+    }
+
     public void setId(String id) {
-    	this.id =  id;
+        this.studentId =  id;
     }
-    
+    public void addCourse(Course newCourse){
+        courseList.add(newCourse);
+    }
+
     public void setFirstName(String firstname) {
-    	this.firstName = firstname;
+        this.firstName = firstname;
     }
-    
+
     public void setLastName (String lastname) {
-    	this.lastName = lastname;
+        this.lastName = lastname;
     }
     @Override
     public String toString() {
-        return "RegisteredUser{firstName=" + firstName
-                + ", lastName=" + lastName + ", id=" + id +'}';
+        return "User{firstName=" + firstName
+                + ", lastName=" + lastName + ", id=" + studentId +'}';
     }
 }
 
