@@ -1,42 +1,74 @@
 package com.project.backend;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.OneToOne;
 
 @Entity
-@IdClass(AttendanceKey.class)
 public class AttendanceRecord {
     
     @Id
-    private String courseCode, studentId;
+    private String attendanceID;
+    @OneToOne
+    private Course course;
+    @OneToOne
+    private Student student;
+    private LocalDateTime timestamp;
+   private Status status;
+    public enum Status {
+        PRESENT, ABSENT;
+
+        public String toString() {
+            return name();
+        }
+    }
+    public AttendanceRecord(){
     
-    private Date timestamp;
+    }
+    
     
     public void stampDate() {
-        timestamp = new Date();
+        timestamp = LocalDateTime.now();
+        timestamp = timestamp.truncatedTo(ChronoUnit.DAYS);
+    }
+    public Status getStatus(){
+    		return status;
+    }
+    public void setStatus(Status status){
+    	this.status=status;
+    }
+    
+    public Course getCourseCode() {
+        return course;
+    }
+    
+
+    public void setCourseCode(Course course) {
+        this.course = course;
+    }
+    public void setAttendanceID(){
+    	attendanceID=course.getCourseCode()+student.getId();
+    }
+    public String getAttendanceID(){
+    	return attendanceID;
+    }
+    public Student getStudentId() {
+        return student;
     }
 
-    public String getCourseCode() {
-        return courseCode;
+    public void setStudentId(Student student) {
+        this.student = student;
     }
 
-    public void setCourseCode(String courseCode) {
-        this.courseCode = courseCode;
-    }
-
-    public String getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
-    }
-
-    public Date getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
     
 }
+
