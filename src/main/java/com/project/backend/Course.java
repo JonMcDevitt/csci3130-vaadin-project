@@ -62,6 +62,9 @@ public class Course implements Comparable<Course>{
     public List<Student> getStudentRoster(){
     	return studentRoster;
     }
+    public void addAttendanceTable(AttendanceTable at){
+    	attendance.add(at);
+    }
 
     public String getCourseCode() {
         return courseCode;

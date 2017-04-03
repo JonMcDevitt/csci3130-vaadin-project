@@ -75,7 +75,7 @@ public class AttendanceView extends CustomComponent implements View {
 
         barcodeScannerComponent.onBarcodeScanned(s -> {
             DatabaseHandler.studentScanned(s,course);
-            updateAttendanceGrid(s, AttendanceStatus.PRESENT);
+            updateAttendanceGrid(s);
         });
 
         VerticalLayout layout = new VerticalLayout(label, attendanceGrid, barcodeScannerComponent, toCourseViewButton);
@@ -117,10 +117,10 @@ public class AttendanceView extends CustomComponent implements View {
 
     //accepts a barcode, if the barcode is found it will mark the status for that student as present
     @SuppressWarnings("unchecked")
-    private void updateAttendanceGrid(String barcode, AttendanceStatus status) {
+    private void updateAttendanceGrid(String barcode) {
         Item record = attendanceRecords.getItem(barcode);
         if (record != null) {
-            record.getItemProperty(PRESENT).setValue(status);
+            record.getItemProperty(PRESENT).setValue(AttendanceRecord.Status.PRESENT);
         }
     }
 
@@ -143,11 +143,11 @@ public class AttendanceView extends CustomComponent implements View {
         Optional<AttendanceTable> attendanceTableOp = currCourse.getAttedance().stream()
         		.filter(ar -> ar.getDate().truncatedTo(ChronoUnit.DAYS).equals(now))
         		.findAny();
-        
+        AttendanceTable table;
         if (!attendanceTableOp.isPresent()) {
         	AttendanceTable at = new AttendanceTable();
         	List<Student> roster = currCourse.getStudentRoster();
-        	
+        	at.setDate(LocalDateTime.now());
         	roster.forEach(s -> {
         		AttendanceRecord ar = new AttendanceRecord();
         		ar.setCourseCode(currCourse);
@@ -156,12 +156,16 @@ public class AttendanceView extends CustomComponent implements View {
         		at.addAttendanceRecord(ar);
         	});
         	
-        	at.setRecords(roster);
+        	DatabaseHandler.addTabletoCourse(currCourse, at);
+        	table=at;
         }
-        
+        else{
+        	table=attendanceTableOp.get();
+        }
         for (Student student : currCourse.getStudentRoster()) {
             Item item = attendanceRecords.addItem(student.getBarcode());
-            setRecordItemProperties(item, student, DatabaseHandler.getRecordById( currCourse.getCourseCode(),student.getId()));
+            
+            setRecordItemProperties(item, student, table.getRecordById( currCourse,student));
         }
 
         return attendanceRecords;

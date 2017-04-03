@@ -29,7 +29,7 @@ public class AttendanceRecord {
         }
     }
     public AttendanceRecord(){
-    
+    	status = Status.ABSENT;
     }
     
     

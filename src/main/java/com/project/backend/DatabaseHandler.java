@@ -89,7 +89,11 @@ public class DatabaseHandler {
         }
     }
     public static void studentScanned(String barcode, Course course){
-    	
+    	Student stud = getStudentbyBarcode(barcode);
+    	AttendanceRecord rec = getRecordById(course, stud);
+    	em.getTransaction().begin();
+    	rec.setStatus(AttendanceRecord.Status.PRESENT);
+    	em.getTransaction().commit();
     	
     }
 
@@ -154,7 +158,14 @@ public class DatabaseHandler {
     /*
      * AttendanceRecord database functions
      */
-    
+    public static void addTabletoCourse(Course currCourse,AttendanceTable at){
+    	em.getTransaction().begin();
+    	Course toAdd = getCourseById(currCourse.getCourseCode());
+    	em.persist(at);
+    	at.getRecords().forEach(em::persist);
+    	toAdd.addAttendanceTable(at);
+    	em.getTransaction().commit();
+    }
     public static AttendanceRecord getRecordById(Course course, Student student) {
         try {
         	String courseCode = course.getCourseCode();
@@ -207,10 +218,9 @@ public class DatabaseHandler {
     		em.getTransaction().commit();
     	}
     }
-    public static void changeStudent(String currid, String newID, String barcode, String fname,String lname){
+    public static void changeStudent(String currid, String barcode, String fname,String lname){
     	Student toChange = getStudentByID(currid);
     	em.getTransaction().begin();
-    	toChange.setId(newID);
     	toChange.setFirstName(fname);
     	toChange.setLastName(lname);
     	toChange.setBarcode(barcode);
