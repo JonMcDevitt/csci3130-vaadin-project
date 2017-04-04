@@ -95,8 +95,20 @@ public class DatabaseHandler {
         	rec.setStatus(AttendanceRecord.Status.PRESENT);
         	em.getTransaction().commit();
     	});
-    	
-    	
+    }
+    
+    public static void studentChangedManually(String barcode, Course course, String status){
+    	getStudentbyBarcode(barcode).stream().forEach(s -> {
+    		AttendanceRecord rec = getRecordById(course, s);
+        	em.getTransaction().begin();
+        	if(status.equals("PRESENT"))
+        		rec.setStatus(AttendanceRecord.Status.PRESENT);
+        	else if(status.equals("ABSENT"))
+        		rec.setStatus(AttendanceRecord.Status.ABSENT);
+        	else
+        		rec.setStatus(AttendanceRecord.Status.EXCUSED);
+        	em.getTransaction().commit();
+    	});
     }
 
     public static User getUserById(String email) {
