@@ -32,7 +32,12 @@ public class AttendanceRecord {
     	status = Status.ABSENT;
     }
     
-    
+    public void setStudent(Student student){
+    	this.student = student;
+    }
+    public Student getStudent(){
+    	return student;
+    }
     public void stampDate() {
         timestamp = LocalDateTime.now();
         timestamp = timestamp.truncatedTo(ChronoUnit.DAYS);

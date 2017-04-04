@@ -111,7 +111,7 @@ public class AttendanceView extends CustomComponent implements View {
     private void configureLabel(Label label) {
         String courseCode = course.getCourseCode();
         String courseName = course.getCourseName();
-        String caption = String.format("Attendance for: %s - %s", courseCode, courseName);
+        String caption = String.format("Attendance for: %s - %s on %s", courseCode, courseName, LocalDateTime.now().truncatedTo(ChronoUnit.DAYS).toString());
         label.setCaption(caption);
     }
 
@@ -152,6 +152,7 @@ public class AttendanceView extends CustomComponent implements View {
         		AttendanceRecord ar = new AttendanceRecord();
         		ar.setCourseCode(currCourse);
         		ar.setStudentId(s);
+        		ar.setStudent(s);
         		ar.setAttendanceID();
         		at.addAttendanceRecord(ar);
         	});
@@ -162,10 +163,10 @@ public class AttendanceView extends CustomComponent implements View {
         else{
         	table=attendanceTableOp.get();
         }
-        for (Student student : currCourse.getStudentRoster()) {
-            Item item = attendanceRecords.addItem(student.getBarcode());
+        for (AttendanceRecord record : table.getRecords()) {
+            Item item = attendanceRecords.addItem(record.getStudent().getBarcode());
             
-            setRecordItemProperties(item, student, table.getRecordById( currCourse,student));
+            setRecordItemProperties(item, record.getStudent(), record);
         }
 
         return attendanceRecords;

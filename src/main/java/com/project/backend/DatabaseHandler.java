@@ -163,6 +163,7 @@ public class DatabaseHandler {
     	Course toAdd = getCourseById(currCourse.getCourseCode());
     	em.persist(at);
     	at.getRecords().forEach(em::persist);
+    	at.getRecords().forEach(r -> em.persist(r.getStudent()));
     	toAdd.addAttendanceTable(at);
     	em.getTransaction().commit();
     }
