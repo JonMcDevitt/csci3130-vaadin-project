@@ -23,7 +23,6 @@ import java.util.Optional;
 import com.project.backend.DatabaseHandler;
 import com.project.backend.AttendanceRecord;
 import com.project.backend.AttendanceTable;
-import com.project.backend.ClassDay;
 import com.project.backend.Course;
 import com.project.backend.Student;
 import com.vaadin.data.Item;
@@ -118,10 +117,8 @@ public class AttendanceView extends CustomComponent implements View {
     //accepts a barcode, if the barcode is found it will mark the status for that student as present
     @SuppressWarnings("unchecked")
     private void updateAttendanceGrid(String barcode) {
-        Item record = attendanceRecords.getItem(barcode);
-        if (record != null) {
-            record.getItemProperty(PRESENT).setValue(AttendanceRecord.Status.PRESENT);
-        }
+    	attendanceRecords = getAttendanceRecords(todayClassDay,course);
+    	 attendanceGrid.setContainerDataSource(attendanceRecords);
     }
 
     
@@ -164,7 +161,7 @@ public class AttendanceView extends CustomComponent implements View {
         	table=attendanceTableOp.get();
         }
         for (AttendanceRecord record : table.getRecords()) {
-            Item item = attendanceRecords.addItem(record.getStudent().getBarcode());
+            Item item = attendanceRecords.addItem(record.getStudent().getId());
             
             setRecordItemProperties(item, record.getStudent(), record);
         }

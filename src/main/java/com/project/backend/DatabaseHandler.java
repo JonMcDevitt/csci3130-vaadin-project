@@ -77,23 +77,25 @@ public class DatabaseHandler {
 
         return u;
     }
-    public static Student getStudentbyBarcode(String barcode){
+    public static List<Student> getStudentbyBarcode(String barcode){
     	try {
             return em.createQuery(
                     "SELECT s FROM Student s WHERE s.barcode = :bcode",
                     Student.class
             ).setParameter("bcode", barcode)
-                    .getSingleResult();
+                    .getResultList();
         } catch (NoResultException e) {
             return null;
         }
     }
     public static void studentScanned(String barcode, Course course){
-    	Student stud = getStudentbyBarcode(barcode);
-    	AttendanceRecord rec = getRecordById(course, stud);
-    	em.getTransaction().begin();
-    	rec.setStatus(AttendanceRecord.Status.PRESENT);
-    	em.getTransaction().commit();
+    	getStudentbyBarcode(barcode).stream().forEach(s -> {
+    		AttendanceRecord rec = getRecordById(course, s);
+        	em.getTransaction().begin();
+        	rec.setStatus(AttendanceRecord.Status.PRESENT);
+        	em.getTransaction().commit();
+    	});
+    	
     	
     }
 
