@@ -1,5 +1,6 @@
 package com.project.backend;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -34,7 +35,7 @@ public class DatabaseHandler {
             return null;
         }
     }
-
+    
     public static Course addCourse(String inputCourseName, String inputCourseCode) {
         Course c = new Course();
         c.setCourseName(inputCourseName);
@@ -75,6 +76,27 @@ public class DatabaseHandler {
         }
 
         return u;
+    }
+    public static List<Student> getStudentbyBarcode(String barcode){
+    	try {
+            return em.createQuery(
+                    "SELECT s FROM Student s WHERE s.barcode = :bcode",
+                    Student.class
+            ).setParameter("bcode", barcode)
+                    .getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+    public static void studentScanned(String barcode, Course course){
+    	getStudentbyBarcode(barcode).stream().forEach(s -> {
+    		AttendanceRecord rec = getRecordById(course, s);
+        	em.getTransaction().begin();
+        	rec.setStatus(AttendanceRecord.Status.PRESENT);
+        	em.getTransaction().commit();
+    	});
+    	
+    	
     }
 
     public static User getUserById(String email) {
@@ -138,16 +160,26 @@ public class DatabaseHandler {
     /*
      * AttendanceRecord database functions
      */
-    
-    public static AttendanceRecord getRecordById(String courseCode, String studentId) {
+    public static void addTabletoCourse(Course currCourse,AttendanceTable at){
+    	em.getTransaction().begin();
+    	Course toAdd = getCourseById(currCourse.getCourseCode());
+    	em.persist(at);
+    	at.getRecords().forEach(em::persist);
+    	at.getRecords().forEach(r -> em.persist(r.getStudent()));
+    	toAdd.addAttendanceTable(at);
+    	em.getTransaction().commit();
+    }
+    public static AttendanceRecord getRecordById(Course course, Student student) {
         try {
+        	String courseCode = course.getCourseCode();
+        	String studentId = student.getId();
+        	String searchKey = courseCode+studentId;
             return em.createQuery(
                       "select r "
                     + "from AttendanceRecord r "
-                    + "where r.courseCode like :courseCode and r.studentId like :studentId",
+                    + "where r.attendanceID = :attendanceID",
                     AttendanceRecord.class)
-            .setParameter("courseCode", courseCode)
-            .setParameter("studentId", studentId)
+            .setParameter("attendanceID", searchKey)
             .getSingleResult();
         }
         catch (NoResultException e) {
@@ -164,12 +196,14 @@ public class DatabaseHandler {
             .getResultList();
     }
     
-    public static AttendanceRecord addRecord(String courseCode, String studentId) {
+    public static AttendanceRecord addRecord(Course course, Student student) {
         AttendanceRecord record = new AttendanceRecord();
-        record.setCourseCode(courseCode);
-        record.setStudentId(studentId);
+        record.setCourseCode(course);
+        record.setStudentId(student);
+        record.setStatus(AttendanceRecord.Status.PRESENT);
+        record.setAttendanceID();
         
-        if (getRecordById(courseCode, studentId) == null) {
+        if (getRecordById(course, student) == null) {
             em.getTransaction().begin();
             em.persist(record);
             em.getTransaction().commit();
@@ -187,10 +221,9 @@ public class DatabaseHandler {
     		em.getTransaction().commit();
     	}
     }
-    public static void changeStudent(String currid, String newID, String barcode, String fname,String lname){
+    public static void changeStudent(String currid, String barcode, String fname,String lname){
     	Student toChange = getStudentByID(currid);
     	em.getTransaction().begin();
-    	toChange.setId(newID);
     	toChange.setFirstName(fname);
     	toChange.setLastName(lname);
     	toChange.setBarcode(barcode);

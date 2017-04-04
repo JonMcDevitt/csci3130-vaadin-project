@@ -26,7 +26,7 @@ public class Course implements Comparable<Course>{
             })
     private List<Student> studentRoster;
     @OneToMany
-    private List<ClassDay> classDays;
+    private List<AttendanceTable> attendance;
     
     public Course(String courseName, String courseCode, List<String> classInfo) {
         this();
@@ -37,17 +37,14 @@ public class Course implements Comparable<Course>{
         studentRoster = new ArrayList<>();
         studentRoster.add(new Student("B00123456", "21264084453726", "TestFN1", "TestLN1"));
         studentRoster.add(new Student("B00987654", "234567898765432", "TestFN2", "TestLN2"));
-        LocalDate today = LocalDate.of(2017, 3, 15);
-        
-        
-        classDays = new ArrayList<>();
+        attendance = new ArrayList<>();
 
         /** TODO:   parse classInfo to construct the ClassDay object (create Dates)
          * */
     }
 
-    public List<ClassDay> getClassDays() {
-		return classDays;
+    public List<AttendanceTable> getAttedance() {
+		return attendance;
 	}
 
 	public Course() {
@@ -55,7 +52,7 @@ public class Course implements Comparable<Course>{
 
     public void initLists() {
         studentRoster = new ArrayList<>();
-        classDays = new ArrayList<>();
+        attendance = new ArrayList<>();
     }
 
     public String getCourseName(){
@@ -64,6 +61,9 @@ public class Course implements Comparable<Course>{
     
     public List<Student> getStudentRoster(){
     	return studentRoster;
+    }
+    public void addAttendanceTable(AttendanceTable at){
+    	attendance.add(at);
     }
 
     public String getCourseCode() {

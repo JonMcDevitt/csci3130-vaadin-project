@@ -106,18 +106,18 @@ public class CourseView extends CustomComponent implements View {
         popupContent = new VerticalLayout();
         HorizontalLayout popButtons = new HorizontalLayout();
 
-        TextField id = new TextField("ID");
+        //TextField id = new TextField("ID");
         TextField barcode = new TextField("Barcode");
         TextField fname = new TextField("First Name");
         TextField lname = new TextField("Last Name");
 
-        popupContent.addComponent(id);
+        //popupContent.addComponent(id);
         popupContent.addComponent(barcode);
         popupContent.addComponent(fname);
         popupContent.addComponent(lname);
 
         Button saveButton = new Button("Save",
-                (Button.ClickListener) clickEvent -> changeStudent(id, barcode, fname, lname));
+                (Button.ClickListener) clickEvent -> changeStudent( barcode, fname, lname));
         Button cancelButton = new Button("Cancel",
                 (Button.ClickListener) clickEvent -> popupContent.setVisible(false));
 
@@ -128,25 +128,23 @@ public class CourseView extends CustomComponent implements View {
     }
 
     private void editStudentButton(Student student) {
-        TextField idEdit = (TextField) popupContent.getComponent(0);
-        TextField barcodeEdit = (TextField) popupContent.getComponent(1);
-        TextField firstEdit = (TextField) popupContent.getComponent(2);
-        TextField lastEdit = (TextField) popupContent.getComponent(3);
+        TextField barcodeEdit = (TextField) popupContent.getComponent(0);
+        TextField firstEdit = (TextField) popupContent.getComponent(1);
+        TextField lastEdit = (TextField) popupContent.getComponent(2);
 
-        idEdit.setValue(student.getId());
         barcodeEdit.setValue(student.getBarcode());
         firstEdit.setValue(student.getFirstName());
         lastEdit.setValue(student.getLastName());
 
     }
 
-    private void changeStudent(TextField idnum, TextField barcode, TextField firstname, TextField lastname) {
+    private void changeStudent( TextField barcode, TextField firstname, TextField lastname) {
     	String currID = currStudent.getId();
-    	String newID = idnum.getValue();
+    	System.out.println("Current Student ID: "+currID+"\n");
     	String barcodes = barcode.getValue();
     	String fname = firstname.getValue();
     	String lname = lastname.getValue();
-    	DatabaseHandler.changeStudent(currID,newID,barcodes,fname,lname);
+    	DatabaseHandler.changeStudent(currID,barcodes,fname,lname);
         popupContent.setVisible(false);
         Notification saved = new Notification("Saved edit");
         saved.setDelayMsec(5000);
