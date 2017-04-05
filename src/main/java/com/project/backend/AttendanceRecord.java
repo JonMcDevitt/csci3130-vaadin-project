@@ -20,7 +20,8 @@ public class AttendanceRecord {
     @OneToOne
     private Student student;
     private LocalDateTime timestamp;
-   private Status status;
+    private Status status;
+    
     public enum Status {
         PRESENT, ABSENT;
 
