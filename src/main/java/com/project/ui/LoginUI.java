@@ -2,7 +2,6 @@ package com.project.ui;
 
 import javax.servlet.annotation.WebServlet;
 
-import com.project.backend.RegisteredUser;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;

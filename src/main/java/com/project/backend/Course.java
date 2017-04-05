@@ -2,11 +2,8 @@ package com.project.backend;
 
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 /*
@@ -19,41 +16,43 @@ public class Course implements Comparable<Course>{
 
     @Id
     private String courseCode;
-    @Id
-    private byte courseSection;
     private String courseName;
     @ManyToMany
+    @JoinTable(
+            name="enroll", joinColumns={
+                    @JoinColumn(name="Course_ID")
+            }, inverseJoinColumns={
+                    @JoinColumn(name="Student_ID")
+            })
     private List<Student> studentRoster;
     @OneToMany
-    private List<ClassDay> classDays;
+    private List<AttendanceTable> attendance;
     
-    public Course(String courseName, String courseCode, String courseSection) {
-        this(courseName, courseCode, courseSection, null);
-    }
-
-    public Course(String courseName, String courseCode, String courseSection, List<String> classInfo) {
-        this.courseName = courseName;
-        this.courseCode = courseCode;
-        this.courseSection = Byte.parseByte(courseSection);
+    public Course(String courseName, String courseCode, List<String> classInfo) {
+        this();
+        setCourseName(courseName);
+        setCourseCode(courseCode);
 
         //create a test studentRoster
         studentRoster = new ArrayList<>();
         studentRoster.add(new Student("B00123456", "21264084453726", "TestFN1", "TestLN1"));
         studentRoster.add(new Student("B00987654", "234567898765432", "TestFN2", "TestLN2"));
-        LocalDate today = LocalDate.of(2017, 3, 15);
-        
-        
-        classDays = new ArrayList<>();
+        attendance = new ArrayList<>();
 
         /** TODO:   parse classInfo to construct the ClassDay object (create Dates)
          * */
     }
 
-    public List<ClassDay> getClassDays() {
-		return classDays;
+    public List<AttendanceTable> getAttedance() {
+		return attendance;
 	}
 
 	public Course() {
+    }
+
+    public void initLists() {
+        studentRoster = new ArrayList<>();
+        attendance = new ArrayList<>();
     }
 
     public String getCourseName(){
@@ -63,30 +62,33 @@ public class Course implements Comparable<Course>{
     public List<Student> getStudentRoster(){
     	return studentRoster;
     }
+    public void addAttendanceTable(AttendanceTable at){
+    	attendance.add(at);
+    }
 
     public String getCourseCode() {
         return courseCode;
-    }
-
-    public byte getCourseSection() {
-        return courseSection;
     }
     
     public void addStudent(Student student){
     	studentRoster.add(student);
     }
 
+    public void setCourseCode(String courseCode) {
+        this.courseCode = courseCode.replaceAll(" ", "_");
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
     @Override
     public String toString() {
-        return "RegisteredUser{courseName=" + courseName + '}';
+        return "Course{courseName=" + courseName + '}';
     }
 
     @Override
     public int compareTo(Course c) {
-        if(courseCode.equals(c.getCourseCode())) {
-            Byte b = courseSection;
-            return b.compareTo(c.getCourseSection());
-        }
         return courseCode.compareTo(c.getCourseCode());
     }
 }
