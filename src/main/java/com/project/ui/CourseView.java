@@ -28,6 +28,7 @@ public class CourseView extends CustomComponent implements View {
     private Button addStudent;
     private Button editStudent;
     private Button goToTakeAttendance;
+    private Button deleteStudent;
     private Student currStudent;
     private Label courseName;
     private VerticalLayout popupContent;
@@ -56,6 +57,8 @@ public class CourseView extends CustomComponent implements View {
                 (Button.ClickListener) clickEvent -> editStudent());
         goToTakeAttendance = new Button("Take Attendance For Today",
                 (Button.ClickListener) clickEvent -> takeAttendance());
+        deleteStudent = new Button("Delete Student",
+                (Button.ClickListener) clickEvent -> deleteStudent(courseID));
 
         configurePopup();
         //Display the parameter -- course's student roaster
@@ -88,7 +91,7 @@ public class CourseView extends CustomComponent implements View {
     }
 
     private void createLayout() {
-        HorizontalLayout buttons = new HorizontalLayout(goToMain, addStudent, editStudent, goToTakeAttendance);
+        HorizontalLayout buttons = new HorizontalLayout(goToMain, addStudent, editStudent, deleteStudent, goToTakeAttendance);
         buttons.setSpacing(true);
         buttons.setMargin(new MarginInfo(true, true));
         VerticalLayout mainLayout = new VerticalLayout(courseName, buttons, studentGrid);
@@ -136,6 +139,15 @@ public class CourseView extends CustomComponent implements View {
         firstEdit.setValue(student.getFirstName());
         lastEdit.setValue(student.getLastName());
 
+    }
+
+    private void deleteStudent(String courseID) {
+        if (studentGrid.getSelectedRow() != null) {
+            currStudent = (Student) studentGrid.getSelectedRow();
+        }
+        DatabaseHandler.removeStudent(courseID, currStudent.getId());
+        getUI().getNavigator().addView(CourseView.NAME, new CourseView(courseID));
+        getUI().getNavigator().navigateTo(CourseView.NAME);
     }
 
     private void changeStudent( TextField barcode, TextField firstname, TextField lastname) {
