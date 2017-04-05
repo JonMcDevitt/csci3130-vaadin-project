@@ -23,7 +23,7 @@ public class AttendanceRecord {
     private Status status;
     
     public enum Status {
-        PRESENT, ABSENT,EXCUSED;
+        PRESENT, ABSENT, EXCUSED;
 
         public String toString() {
             return name();
