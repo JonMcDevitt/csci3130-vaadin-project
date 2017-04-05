@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.project.backend.AttendanceRecord;
-import com.project.backend.AttendanceRecord.Status;
 import com.project.backend.AttendanceTable;
 import com.project.backend.Course;
 import com.project.backend.DatabaseHandler;
@@ -128,7 +127,7 @@ public class AttendanceView extends CustomComponent implements View {
             public void postCommit(CommitEvent commitEvent) throws CommitException {
                 Item editedItem = attendanceRecords.getItem(attendanceGrid.getEditedItemId());
                 String barcodeValue = editedItem.getItemProperty(BARCODE).getValue().toString();
-                AttendanceRecord.Status status = (Status) editedItem.getItemProperty(STATUS).getValue();
+                AttendanceRecord.Status status = (AttendanceRecord.Status) editedItem.getItemProperty(STATUS).getValue();
                 DatabaseHandler.updateStudentAttendanceStatus(barcodeValue, course, status);
             }
 
