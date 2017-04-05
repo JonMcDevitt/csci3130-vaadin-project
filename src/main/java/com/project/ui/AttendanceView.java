@@ -119,6 +119,7 @@ public class AttendanceView extends CustomComponent implements View {
 			public void postCommit(CommitEvent commitEvent) throws CommitException {
 				Item editedItem = attendanceRecords.getItem(attendanceGrid.getEditedItemId());
 				DatabaseHandler.studentChangedManually(editedItem.getItemProperty(BARCODE).getValue().toString(), course, editedItem.getItemProperty(PRESENT).getValue().toString());
+				//updateAttendanceStatus(editedItem.getItemProperty(BARCODE).getValue().toString(), editedItem.getItemProperty(STATUS).getValue());
 			}
         	
         });
