@@ -49,6 +49,13 @@ public class DatabaseHandler {
         }
         return c;
     }
+    
+    public static void removeCourse(Course course)
+    {
+    	em.getTransaction().begin();
+    	em.remove(course);
+    	em.getTransaction().commit();
+    }
 
     /** User database functions */
 
