@@ -28,6 +28,9 @@ import com.project.backend.Course;
 import com.project.backend.DatabaseHandler;
 import com.project.backend.Student;
 import com.vaadin.data.Item;
+import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.data.fieldgroup.FieldGroup.CommitEvent;
+import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -105,6 +108,30 @@ public class AttendanceView extends CustomComponent implements View {
     private void configureAttendanceGrid(Grid attendanceGrid) {
         attendanceGrid.setContainerDataSource(attendanceRecords);
         attendanceGrid.setWidth("100%");
+        attendanceGrid.setEditorEnabled(true);
+        attendanceGrid.getColumn(BANNER_NUMBER).setEditable(false);
+        attendanceGrid.getColumn(LAST_NAME).setEditable(false);
+        attendanceGrid.getColumn(FIRST_NAME).setEditable(false);
+        attendanceGrid.getColumn(BARCODE).setEditable(false);
+        attendanceGrid.getEditorFieldGroup().addCommitHandler(new FieldGroup.CommitHandler() {
+        	
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void preCommit(CommitEvent commitEvent) throws CommitException {
+				
+			}
+
+			@Override
+			public void postCommit(CommitEvent commitEvent) throws CommitException {
+				Item editedItem = attendanceRecords.getItem(attendanceGrid.getEditedItemId());
+				DatabaseHandler.studentChangedManually(editedItem.getItemProperty(BARCODE).getValue().toString(), course, editedItem.getItemProperty(PRESENT).getValue().toString());
+			}
+        	
+        });
     }
 
     // configures back button, if clicked it will go to course view
