@@ -12,7 +12,7 @@ import javax.persistence.OneToOne;
 
 @Entity
 public class AttendanceRecord {
-    
+
     @Id
     private String attendanceID;
     @OneToOne
@@ -20,7 +20,8 @@ public class AttendanceRecord {
     @OneToOne
     private Student student;
     private LocalDateTime timestamp;
-   private Status status;
+    private Status status;
+
     public enum Status {
         PRESENT, ABSENT;
 
@@ -28,41 +29,49 @@ public class AttendanceRecord {
             return name();
         }
     }
-    public AttendanceRecord(){
-    	status = Status.ABSENT;
+
+    public AttendanceRecord() {
+        status = Status.ABSENT;
     }
-    
-    public void setStudent(Student student){
-    	this.student = student;
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
-    public Student getStudent(){
-    	return student;
+
+    public Student getStudent() {
+        return student;
     }
+
     public void stampDate() {
         timestamp = LocalDateTime.now();
         timestamp = timestamp.truncatedTo(ChronoUnit.DAYS);
     }
-    public Status getStatus(){
-    		return status;
+
+    public Status getStatus() {
+        return status;
     }
-    public void setStatus(Status status){
-    	this.status=status;
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
-    
+
     public Course getCourseCode() {
         return course;
     }
-    
+
 
     public void setCourseCode(Course course) {
         this.course = course;
     }
-    public void setAttendanceID(){
-    	attendanceID=course.getCourseCode()+student.getId();
+
+    public void setAttendanceID() {
+        attendanceID = course.getCourseCode() + student.getId();
     }
-    public String getAttendanceID(){
-    	return attendanceID;
+
+    public String getAttendanceID() {
+        return attendanceID;
     }
+
     public Student getStudentId() {
         return student;
     }
@@ -74,6 +83,6 @@ public class AttendanceRecord {
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
-    
+
 }
 

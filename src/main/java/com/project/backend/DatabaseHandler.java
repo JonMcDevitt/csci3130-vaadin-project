@@ -35,29 +35,31 @@ public class DatabaseHandler {
             return null;
         }
     }
-    
+
     public static Course addCourse(String inputCourseName, String inputCourseCode) {
         Course c = new Course();
         c.setCourseName(inputCourseName);
         c.setCourseCode(inputCourseCode);
         c.initLists();
 
-        if(getCourseById(inputCourseCode) == null) {
+        if (getCourseById(inputCourseCode) == null) {
             em.getTransaction().begin();
             em.persist(c);
             em.getTransaction().commit();
         }
         return c;
     }
-    
-    public static void removeCourse(Course course)
-    {
-    	em.getTransaction().begin();
-    	em.remove(course);
-    	em.getTransaction().commit();
+
+    public static void removeCourse(Course course) {
+        Course c = getCourseById(course.getCourseCode());
+        em.getTransaction().begin();
+        em.remove(c);
+        em.getTransaction().commit();
     }
 
-    /** User database functions */
+    /**
+     * User database functions
+     */
 
     public static List<User> getAllUsers() {
         return em.createQuery(
@@ -67,7 +69,7 @@ public class DatabaseHandler {
     }
 
     public static User addUser(String email, String password, String firstName,
-                        String lastName, String department) {
+                               String lastName, String department) {
         User u = new User();
         u.setEmail(email);
         u.setPassword(password);
@@ -76,7 +78,7 @@ public class DatabaseHandler {
         u.setDepartment(department);
         u.initCourses();
 
-        if(getUserById(email) == null) {
+        if (getUserById(email) == null) {
             em.getTransaction().begin();
             em.persist(u);
             em.getTransaction().commit();
@@ -84,8 +86,9 @@ public class DatabaseHandler {
 
         return u;
     }
-    public static List<Student> getStudentbyBarcode(String barcode){
-    	try {
+
+    public static List<Student> getStudentbyBarcode(String barcode) {
+        try {
             return em.createQuery(
                     "SELECT s FROM Student s WHERE s.barcode = :bcode",
                     Student.class
@@ -95,15 +98,16 @@ public class DatabaseHandler {
             return null;
         }
     }
-    public static void studentScanned(String barcode, Course course){
-    	getStudentbyBarcode(barcode).stream().forEach(s -> {
-    		AttendanceRecord rec = getRecordById(course, s);
-        	em.getTransaction().begin();
-        	rec.setStatus(AttendanceRecord.Status.PRESENT);
-        	em.getTransaction().commit();
-    	});
-    	
-    	
+
+    public static void studentScanned(String barcode, Course course) {
+        getStudentbyBarcode(barcode).stream().forEach(s -> {
+            AttendanceRecord rec = getRecordById(course, s);
+            em.getTransaction().begin();
+            rec.setStatus(AttendanceRecord.Status.PRESENT);
+            em.getTransaction().commit();
+        });
+
+
     }
 
     public static User getUserById(String email) {
@@ -112,14 +116,16 @@ public class DatabaseHandler {
                     "SELECT u FROM User u WHERE u.email LIKE :email",
                     User.class
             ).setParameter("email", email).getSingleResult();
-        } catch(NoResultException e) {
+        } catch (NoResultException e) {
             return null;
         }
     }
 
-    /** Student database functions  */
+    /**
+     * Student database functions
+     */
 
-    public static Student getStudentByID(String studId){
+    public static Student getStudentByID(String studId) {
         try {
             return em.createQuery(
                     "SELECT s FROM Student s WHERE s.studentId = :studID",
@@ -131,27 +137,26 @@ public class DatabaseHandler {
         }
     }
 
-    public static Student addStudent(String courseid, String studID, String fName, String lName, String barCode){
+    public static Student addStudent(String courseid, String studID, String fName, String lName, String barCode) {
         Student stud = new Student();
         stud.setId(studID);
         stud.setBarcode(barCode);
         stud.setFirstName(fName);
         stud.setLastName(lName);
         stud.courseListInit();
-        Course tempCourse =getCourseById(courseid);
+        Course tempCourse = getCourseById(courseid);
         Student tempStud = getStudentByID(studID);
-        if(tempCourse==null){
+        if (tempCourse == null) {
             return null;
         }
-        if(tempStud==null){
+        if (tempStud == null) {
             tempCourse.addStudent(stud);
             stud.addCourse(tempCourse);
             em.getTransaction().begin();
             em.persist(stud);
             em.getTransaction().commit();
             return stud;
-        }
-        else{
+        } else {
             tempStud.addCourse(tempCourse);
             tempCourse.addStudent(tempStud);
             return tempStud;
@@ -159,82 +164,84 @@ public class DatabaseHandler {
 
     }
 
-    public static List<Student> getCourseStudents(String courseID){
+    public static List<Student> getCourseStudents(String courseID) {
         Course testCourse = getCourseById(courseID);
         return testCourse.getStudentRoster();
     }
-    
+
     /*
      * AttendanceRecord database functions
      */
-    public static void addTabletoCourse(Course currCourse,AttendanceTable at){
-    	em.getTransaction().begin();
-    	Course toAdd = getCourseById(currCourse.getCourseCode());
-    	em.persist(at);
-    	at.getRecords().forEach(em::persist);
-    	at.getRecords().forEach(r -> em.persist(r.getStudent()));
-    	toAdd.addAttendanceTable(at);
-    	em.getTransaction().commit();
+    public static void addTabletoCourse(Course currCourse, AttendanceTable at) {
+        em.getTransaction().begin();
+        Course toAdd = getCourseById(currCourse.getCourseCode());
+        em.persist(at);
+        at.getRecords().forEach(em::persist);
+        at.getRecords().forEach(r -> em.persist(r.getStudent()));
+        toAdd.addAttendanceTable(at);
+        em.getTransaction().commit();
     }
+
     public static AttendanceRecord getRecordById(Course course, Student student) {
         try {
-        	String courseCode = course.getCourseCode();
-        	String studentId = student.getId();
-        	String searchKey = courseCode+studentId;
+            String courseCode = course.getCourseCode();
+            String studentId = student.getId();
+            String searchKey = courseCode + studentId;
             return em.createQuery(
-                      "select r "
-                    + "from AttendanceRecord r "
-                    + "where r.attendanceID = :attendanceID",
+                    "select r "
+                            + "from AttendanceRecord r "
+                            + "where r.attendanceID = :attendanceID",
                     AttendanceRecord.class)
-            .setParameter("attendanceID", searchKey)
-            .getSingleResult();
-        }
-        catch (NoResultException e) {
+                    .setParameter("attendanceID", searchKey)
+                    .getSingleResult();
+        } catch (NoResultException e) {
             return null;
         }
-        
+
     }
-    
+
     public static List<AttendanceRecord> getAllRecords() {
-            return em.createQuery(
-                      "select r "
-                    + "from AttendanceRecord r",
-                    AttendanceRecord.class)
-            .getResultList();
+        return em.createQuery(
+                "select r "
+                        + "from AttendanceRecord r",
+                AttendanceRecord.class)
+                .getResultList();
     }
-    
+
     public static AttendanceRecord addRecord(Course course, Student student) {
         AttendanceRecord record = new AttendanceRecord();
         record.setCourseCode(course);
         record.setStudentId(student);
         record.setStatus(AttendanceRecord.Status.PRESENT);
         record.setAttendanceID();
-        
+
         if (getRecordById(course, student) == null) {
             em.getTransaction().begin();
             em.persist(record);
             em.getTransaction().commit();
         }
-        
+
         return record;
     }
-    public static void removeStudent(String courseID,String studentID){
-    	Student toBeRemove = DatabaseHandler.getStudentByID(studentID);
-    	Course toRemoveFrom = DatabaseHandler.getCourseById(courseID);
-    	if(toBeRemove!=null&&toRemoveFrom!=null){
-    		em.getTransaction().begin();
-    		toBeRemove.getCourseList().remove(toRemoveFrom);
-    		toRemoveFrom.getStudentRoster().remove(toBeRemove);
-    		em.getTransaction().commit();
-    	}
+
+    public static void removeStudent(String courseID, String studentID) {
+        Student toBeRemove = DatabaseHandler.getStudentByID(studentID);
+        Course toRemoveFrom = DatabaseHandler.getCourseById(courseID);
+        if (toBeRemove != null && toRemoveFrom != null) {
+            em.getTransaction().begin();
+            toBeRemove.getCourseList().remove(toRemoveFrom);
+            toRemoveFrom.getStudentRoster().remove(toBeRemove);
+            em.getTransaction().commit();
+        }
     }
-    public static void changeStudent(String currid, String barcode, String fname,String lname){
-    	Student toChange = getStudentByID(currid);
-    	em.getTransaction().begin();
-    	toChange.setFirstName(fname);
-    	toChange.setLastName(lname);
-    	toChange.setBarcode(barcode);
-    	em.getTransaction().commit();
+
+    public static void changeStudent(String currid, String barcode, String fname, String lname) {
+        Student toChange = getStudentByID(currid);
+        em.getTransaction().begin();
+        toChange.setFirstName(fname);
+        toChange.setLastName(lname);
+        toChange.setBarcode(barcode);
+        em.getTransaction().commit();
     }
-    
+
 }
