@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.project.backend.AttendanceRecord;
+import com.project.backend.AttendanceRecord.Status;
 import com.project.backend.AttendanceTable;
 import com.project.backend.Course;
 import com.project.backend.DatabaseHandler;
@@ -80,9 +81,9 @@ public class AttendanceView extends CustomComponent implements View {
         attendanceGrid.setContainerDataSource(attendanceRecords);
         barcodeToItemMap = makeBarcodeToItemMap(attendanceRecords);
 
-        barcodeScannerComponent.onBarcodeScanned(s -> {
-            DatabaseHandler.studentScanned(s, course);
-            updateAttendanceStatus(s, AttendanceRecord.Status.PRESENT);
+        barcodeScannerComponent.onBarcodeScanned(barcode -> {
+            DatabaseHandler.updateStudentAttendanceStatus(barcode, course, AttendanceRecord.Status.PRESENT);
+            updateAttendanceGrid(barcode, AttendanceRecord.Status.PRESENT);
         });
 
         // configures components
@@ -113,24 +114,24 @@ public class AttendanceView extends CustomComponent implements View {
         attendanceGrid.getColumn(LAST_NAME).setEditable(false);
         attendanceGrid.getColumn(FIRST_NAME).setEditable(false);
         attendanceGrid.getColumn(BARCODE).setEditable(false);
+        
         attendanceGrid.getEditorFieldGroup().addCommitHandler(new FieldGroup.CommitHandler() {
-        	
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void preCommit(CommitEvent commitEvent) throws CommitException {
-				
-			}
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void postCommit(CommitEvent commitEvent) throws CommitException {
-				Item editedItem = attendanceRecords.getItem(attendanceGrid.getEditedItemId());
-				DatabaseHandler.studentChangedManually(editedItem.getItemProperty(BARCODE).getValue().toString(), course, editedItem.getItemProperty(PRESENT).getValue().toString());
-			}
-        	
+            @Override
+            public void preCommit(CommitEvent commitEvent) throws CommitException {
+
+            }
+
+            @Override
+            public void postCommit(CommitEvent commitEvent) throws CommitException {
+                Item editedItem = attendanceRecords.getItem(attendanceGrid.getEditedItemId());
+                String barcodeValue = editedItem.getItemProperty(BARCODE).getValue().toString();
+                AttendanceRecord.Status status = (Status) editedItem.getItemProperty(STATUS).getValue();
+                DatabaseHandler.updateStudentAttendanceStatus(barcodeValue, course, status);
+            }
+
         });
     }
 
@@ -177,8 +178,7 @@ public class AttendanceView extends CustomComponent implements View {
     }
 
     private Map<String, List<Item>> makeBarcodeToItemMap(IndexedContainer attendanceRecords) {
-        return attendanceRecords.getItemIds().stream()
-                .map(attendanceRecords::getItem)
+        return attendanceRecords.getItemIds().stream().map(attendanceRecords::getItem)
                 .collect(groupingBy(item -> (String) item.getItemProperty(BARCODE).getValue()));
     }
 
@@ -219,7 +219,7 @@ public class AttendanceView extends CustomComponent implements View {
     }
 
     @SuppressWarnings("unchecked")
-    private void updateAttendanceStatus(String barcode, AttendanceRecord.Status status) {
+    private void updateAttendanceGrid(String barcode, AttendanceRecord.Status status) {
         Optional.ofNullable(barcodeToItemMap.get(barcode))
                 .ifPresent(items -> items.forEach(item -> item.getItemProperty(STATUS).setValue(status)));
     }

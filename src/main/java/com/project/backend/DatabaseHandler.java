@@ -95,25 +95,12 @@ public class DatabaseHandler {
             return null;
         }
     }
-    public static void studentScanned(String barcode, Course course){
-    	getStudentbyBarcode(barcode).stream().forEach(s -> {
-    		AttendanceRecord rec = getRecordById(course, s);
-        	em.getTransaction().begin();
-        	rec.setStatus(AttendanceRecord.Status.PRESENT);
-        	em.getTransaction().commit();
-    	});
-    }
     
-    public static void studentChangedManually(String barcode, Course course, String status){
+    public static void updateStudentAttendanceStatus(String barcode, Course course, AttendanceRecord.Status status) {
     	getStudentbyBarcode(barcode).stream().forEach(s -> {
     		AttendanceRecord rec = getRecordById(course, s);
         	em.getTransaction().begin();
-        	if(status.equals("PRESENT"))
-        		rec.setStatus(AttendanceRecord.Status.PRESENT);
-        	else if(status.equals("ABSENT"))
-        		rec.setStatus(AttendanceRecord.Status.ABSENT);
-        	else
-        		rec.setStatus(AttendanceRecord.Status.EXCUSED);
+        	rec.setStatus(status);
         	em.getTransaction().commit();
     	});
     }
