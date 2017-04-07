@@ -19,8 +19,8 @@ public class AttendanceRecord {
     private Course course;
     @OneToOne
     private Student student;
-    private LocalDateTime timestamp;
     private Status status;
+
     public enum Status {
         PRESENT, ABSENT, EXCUSED;
 
@@ -41,11 +41,6 @@ public class AttendanceRecord {
         return student;
     }
 
-    public void stampDate() {
-        timestamp = LocalDateTime.now();
-        timestamp = timestamp.truncatedTo(ChronoUnit.DAYS);
-    }
-
     public Status getStatus() {
         return status;
     }
@@ -53,11 +48,6 @@ public class AttendanceRecord {
     public void setStatus(Status status) {
         this.status = status;
     }
-
-    public Course getCourseCode() {
-        return course;
-    }
-
 
     public void setCourseCode(Course course) {
         this.course = course;
@@ -71,17 +61,8 @@ public class AttendanceRecord {
         return attendanceID;
     }
 
-    public Student getStudentId() {
-        return student;
+    public String getStudentId() {
+        return student.getId();
     }
-
-    public void setStudentId(Student student) {
-        this.student = student;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
 }
 
