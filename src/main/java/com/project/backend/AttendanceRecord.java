@@ -21,9 +21,8 @@ public class AttendanceRecord {
     private Student student;
     private LocalDateTime timestamp;
     private Status status;
-
     public enum Status {
-        PRESENT, ABSENT;
+        PRESENT, ABSENT, EXCUSED;
 
         public String toString() {
             return name();
