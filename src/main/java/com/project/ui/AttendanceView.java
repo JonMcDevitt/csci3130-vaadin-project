@@ -186,7 +186,7 @@ public class AttendanceView extends CustomComponent implements View {
 
             roster.forEach(s -> {
                 AttendanceRecord ar = new AttendanceRecord();
-                ar.setCourseCode(currCourse);
+                ar.setCourse(currCourse);
                 ar.setStudent(s);
                 ar.setAttendanceID();
 

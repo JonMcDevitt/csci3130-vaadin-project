@@ -49,8 +49,12 @@ public class AttendanceRecord {
         this.status = status;
     }
 
-    public void setCourseCode(Course course) {
+    public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public Course getCourse() {
+        return course;
     }
 
     public void setAttendanceID() {

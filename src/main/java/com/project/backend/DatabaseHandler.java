@@ -207,7 +207,7 @@ public class DatabaseHandler {
 
     public static AttendanceRecord addRecord(Course course, Student student) {
         AttendanceRecord record = new AttendanceRecord();
-        record.setCourseCode(course);
+        record.setCourse(course);
         record.setStudent(student);
         record.setStatus(AttendanceRecord.Status.PRESENT);
         record.setAttendanceID();
