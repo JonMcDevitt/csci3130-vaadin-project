@@ -16,7 +16,6 @@ package com.project.ui;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,7 +45,7 @@ public class AttendanceView extends CustomComponent implements View {
     private Button toCourseViewButton;
 
     private static final String BACK_BUTTON_ID = "backButton";
-    
+
     private static final String FIRST_NAME = "First Name";
     private static final String LAST_NAME = "Last Name";
     private static final String BANNER_NUMBER = "Banner Number";
@@ -61,7 +60,7 @@ public class AttendanceView extends CustomComponent implements View {
         todayClassDay = LocalDateTime.now();
         todayClassDay = todayClassDay.truncatedTo(ChronoUnit.DAYS);
         BarcodeScannerComponent barcodeScannerComponent = new BarcodeScannerComponent();
-        attendanceRecords = getAttendanceRecords(todayClassDay,course);
+        attendanceRecords = getAttendanceRecords(todayClassDay, course);
         Label label = new Label();
         toCourseViewButton = new Button();
 
@@ -73,13 +72,13 @@ public class AttendanceView extends CustomComponent implements View {
         attendanceGrid.setContainerDataSource(attendanceRecords);
 
         barcodeScannerComponent.onBarcodeScanned(s -> {
-            DatabaseHandler.studentScanned(s,course);
+            DatabaseHandler.studentScanned(s, course);
             updateAttendanceGrid(s);
         });
 
         VerticalLayout layout = new VerticalLayout(label, attendanceGrid, barcodeScannerComponent, toCourseViewButton);
         layout.setMargin(true);
-        
+
         //adds components to layout and alligns them.
         layout.setSizeFull();
         layout.setSpacing(true);
@@ -117,11 +116,11 @@ public class AttendanceView extends CustomComponent implements View {
     //accepts a barcode, if the barcode is found it will mark the status for that student as present
     @SuppressWarnings("unchecked")
     private void updateAttendanceGrid(String barcode) {
-    	attendanceRecords = getAttendanceRecords(todayClassDay,course);
-    	 attendanceGrid.setContainerDataSource(attendanceRecords);
+        attendanceRecords = getAttendanceRecords(todayClassDay, course);
+        attendanceGrid.setContainerDataSource(attendanceRecords);
     }
 
-    
+
     //sets the content of each grid. If the students are coming from the absent list, they will
     //be marked as absent, and if they are coming from the attending list, they will be
     //marked as present
@@ -135,34 +134,33 @@ public class AttendanceView extends CustomComponent implements View {
         attendanceRecords.addContainerProperty(BANNER_NUMBER, String.class, "");
         attendanceRecords.addContainerProperty(BARCODE, String.class, "");
         attendanceRecords.addContainerProperty(PRESENT, AttendanceRecord.Status.class, AttendanceRecord.Status.ABSENT);
-        
+
         LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
-        Optional<AttendanceTable> attendanceTableOp = currCourse.getAttedance().stream()
-        		.filter(ar -> ar.getDate().truncatedTo(ChronoUnit.DAYS).equals(now))
-        		.findAny();
+        Optional<AttendanceTable> attendanceTableOp = currCourse.getAttendance().stream()
+                .filter(ar -> ar.getDate().truncatedTo(ChronoUnit.DAYS).equals(now))
+                .findAny();
         AttendanceTable table;
         if (!attendanceTableOp.isPresent()) {
-        	AttendanceTable at = new AttendanceTable();
-        	List<Student> roster = currCourse.getStudentRoster();
-        	at.setDate(LocalDateTime.now());
-        	roster.forEach(s -> {
-        		AttendanceRecord ar = new AttendanceRecord();
-        		ar.setCourseCode(currCourse);
-        		ar.setStudentId(s);
-        		ar.setStudent(s);
-        		ar.setAttendanceID();
-        		at.addAttendanceRecord(ar);
-        	});
-        	
-        	DatabaseHandler.addTabletoCourse(currCourse, at);
-        	table=at;
-        }
-        else{
-        	table=attendanceTableOp.get();
+            AttendanceTable at = new AttendanceTable();
+            List<Student> roster = currCourse.getStudentRoster();
+            at.setDate(LocalDateTime.now());
+            roster.forEach(s -> {
+                AttendanceRecord ar = new AttendanceRecord();
+                ar.setCourseCode(currCourse);
+                ar.setStudentId(s);
+                ar.setStudent(s);
+                ar.setAttendanceID();
+                at.addAttendanceRecord(ar);
+            });
+
+            DatabaseHandler.addTabletoCourse(currCourse, at);
+            table = at;
+        } else {
+            table = attendanceTableOp.get();
         }
         for (AttendanceRecord record : table.getRecords()) {
             Item item = attendanceRecords.addItem(record.getStudent().getId());
-            
+
             setRecordItemProperties(item, record.getStudent(), record);
         }
 
@@ -189,7 +187,6 @@ public class AttendanceView extends CustomComponent implements View {
 
     //Returns ClassDay object for today. If one isn't already existing, it gets created and uploaded
     //to database.
- 
 
-   
+
 }

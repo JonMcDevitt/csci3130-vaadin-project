@@ -1,6 +1,5 @@
 package com.project.backend;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -235,13 +234,24 @@ public class DatabaseHandler {
         }
     }
 
-    public static void changeStudent(String currid, String barcode, String fname, String lname) {
+    public static void changeStudent(String currid, String barcode, String fname, String lname, List<Course> courseList) {
         Student toChange = getStudentByID(currid);
+        assert toChange != null;
         em.getTransaction().begin();
         toChange.setFirstName(fname);
         toChange.setLastName(lname);
         toChange.setBarcode(barcode);
+        if(courseList != null) {
+            toChange.setCourseList(courseList);
+        }
         em.getTransaction().commit();
     }
 
+    public static void updateStudentList(String studentid, List<Course> courseList) {
+        Student s = getStudentByID(studentid);
+        assert s != null;
+        em.getTransaction().begin();
+        s.setCourseList(courseList);
+        em.getTransaction().commit();
+    }
 }

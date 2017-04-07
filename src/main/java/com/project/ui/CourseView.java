@@ -144,7 +144,7 @@ public class CourseView extends CustomComponent implements View {
     	String barcodes = barcode.getValue();
     	String fname = firstname.getValue();
     	String lname = lastname.getValue();
-    	DatabaseHandler.changeStudent(currID,barcodes,fname,lname);
+    	DatabaseHandler.changeStudent(currID,barcodes,fname,lname, null);
         popupContent.setVisible(false);
         Notification saved = new Notification("Saved edit");
         saved.setDelayMsec(5000);

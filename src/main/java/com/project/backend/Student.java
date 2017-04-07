@@ -21,9 +21,9 @@ public class Student {
     @Id
     private String studentId;
     @NotNull
-    @Size(min=2, max=64)
+    @Size(min = 2, max = 64)
     private String barcode, firstName, lastName;
-    @ManyToMany(mappedBy="studentRoster")
+    @ManyToMany(mappedBy = "studentRoster")
     private List<Course> courseList;
 
     public Student(String id, String barcode, String firstName, String lastName) {
@@ -37,9 +37,11 @@ public class Student {
     public String getBarcode() {
         return barcode;
     }
-    public void courseListInit(){
+
+    public void courseListInit() {
         courseList = new ArrayList<>();
     }
+
     public void setBarcode(String barcode) {
         this.barcode = barcode;
     }
@@ -51,21 +53,23 @@ public class Student {
         return studentId;
     }
 
-    public String getFirstName(){
+    public String getFirstName() {
         return firstName;
     }
 
-    public String getLastName(){
+    public String getLastName() {
         return lastName;
     }
-    public List<Course> getCourseList(){
+
+    public List<Course> getCourseList() {
         return courseList;
     }
 
     public void setId(String id) {
-        this.studentId =  id;
+        this.studentId = id;
     }
-    public void addCourse(Course newCourse){
+
+    public void addCourse(Course newCourse) {
         courseList.add(newCourse);
     }
 
@@ -73,13 +77,18 @@ public class Student {
         this.firstName = firstname;
     }
 
-    public void setLastName (String lastname) {
+    public void setLastName(String lastname) {
         this.lastName = lastname;
     }
+
     @Override
     public String toString() {
         return "User{firstName=" + firstName
-                + ", lastName=" + lastName + ", id=" + studentId +'}';
+                + ", lastName=" + lastName + ", id=" + studentId + '}';
+    }
+
+    public void setCourseList(List<Course> courseList) {
+        this.courseList = courseList;
     }
 }
 
