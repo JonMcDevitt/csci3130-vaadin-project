@@ -6,12 +6,14 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class AttendanceTable {
-    private List<AttendanceRecord> records;
     @Id
     private LocalDateTime date;
+    @OneToMany
+    private List<AttendanceRecord> records;
 
     public AttendanceTable() {
         records = new ArrayList<>();
@@ -45,6 +47,4 @@ public class AttendanceTable {
     public void addAttendanceRecord(AttendanceRecord ar) {
         records.add(ar);
     }
-
-
 }
