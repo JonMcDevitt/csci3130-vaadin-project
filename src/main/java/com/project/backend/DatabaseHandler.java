@@ -241,7 +241,7 @@ public class DatabaseHandler {
         toChange.setFirstName(fname);
         toChange.setLastName(lname);
         toChange.setBarcode(barcode);
-        if(courseList != null) {
+        if (courseList != null) {
             toChange.setCourseList(courseList);
         }
         em.getTransaction().commit();

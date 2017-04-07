@@ -20,16 +20,33 @@ public class CourseTest {
     }
 
     @Test
+    public void addStudent() {
+        int currSize = course.getStudentRoster().size();
+        Student s = new Student("B00123456", "12345678987654321", "Test", "McGee");
+        course.addStudent(s);
+        assertTrue(currSize < course.getStudentRoster().size());
+    }
+
+    @Test
+    public void addAttendanceTable() {
+        int currSize = course.getAttendance().size();
+        course.addAttendanceTable(new AttendanceTable());
+        assertTrue(currSize < course.getAttendance().size());
+    }
+
+    @Test
+    public void initLists() {
+        Course c = new Course();
+        c.initLists();
+        assertNotNull(c.getStudentRoster());
+        assertNotNull(c.getAttendance());
+    }
+
+    @Test
     public void compareTo() throws Exception {
         /** Test isLess */
         Course isLess = DatabaseHandler.addCourse("Software Engineering","CSCI3130");
         Course isMore = DatabaseHandler.addCourse("Software Engineering","CSCI 3130");
-
-//      This stuff doesn't really belong here, it needs to go into a DatabaseHandlerTest.java unit test.
-//        DatabaseHandler.addStudent("CSCI3130", "B00630312", "Taylor", "Lundy", "3456789876543");
-//        DatabaseHandler.addStudent("CSCI3130", "B00630315", "Tyler", "Bundy", "34345789876543");
-//        List<Student> printList = DatabaseHandler.getCourseStudents("CSCI3130");
-//        assertTrue(printList.size() > 0);
         assertTrue(isLess.compareTo(isMore) != 0);
     }
 }
