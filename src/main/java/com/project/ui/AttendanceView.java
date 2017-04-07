@@ -46,10 +46,7 @@ public class AttendanceView extends CustomComponent implements View {
 
     private Course course;
 
-    private Grid attendanceGrid;
     private Button toCourseViewButton;
-    private Label header;
-    private BarcodeScannerComponent barcodeScannerComponent;
 
     private IndexedContainer attendanceRecords;
     private Map<String, List<Item>> barcodeToItemMap;
@@ -62,7 +59,7 @@ public class AttendanceView extends CustomComponent implements View {
     private static final String BARCODE = "Barcode";
     private static final String STATUS = "Attendance Status";
 
-    public AttendanceView(Course course) {
+    AttendanceView(Course course) {
         this(course, LocalDateTime.now().truncatedTo(ChronoUnit.DAYS));
     }
 
@@ -71,10 +68,10 @@ public class AttendanceView extends CustomComponent implements View {
         this.course = course;
 
         // creates all components used in view
-        attendanceGrid = new Grid();
+        Grid attendanceGrid = new Grid();
         toCourseViewButton = new Button();
-        header = new Label();
-        barcodeScannerComponent = new BarcodeScannerComponent();
+        Label header = new Label();
+        BarcodeScannerComponent barcodeScannerComponent = new BarcodeScannerComponent();
 
         attendanceRecords = makeAttendanceRecordContainer(classDate, course);
         attendanceGrid.setContainerDataSource(attendanceRecords);
@@ -88,7 +85,7 @@ public class AttendanceView extends CustomComponent implements View {
         // configures components
         configureAttendanceGrid(attendanceGrid);
         configureLabel(header, classDate);
-        configureBackButton(toCourseViewButton);
+        configureBackButton();
 
         VerticalLayout layout = new VerticalLayout(header, attendanceGrid, barcodeScannerComponent, toCourseViewButton);
         layout.setMargin(true);
@@ -135,12 +132,10 @@ public class AttendanceView extends CustomComponent implements View {
     }
 
     // configures back button, if clicked it will go to course view
-    private void configureBackButton(Button backButton) {
+    private void configureBackButton() {
         toCourseViewButton.setId(BACK_BUTTON_ID);
         toCourseViewButton.setCaption("Back to Course View");
-        toCourseViewButton.addClickListener(e -> {
-            getUI().setContent(new CourseView(course.getCourseCode()));
-        });
+        toCourseViewButton.addClickListener(e -> getUI().setContent(new CourseView(course.getCourseCode())));
     }
 
     // Configures label, it displays "courseCode - courseName" at the top of the
@@ -182,7 +177,7 @@ public class AttendanceView extends CustomComponent implements View {
     }
 
     private AttendanceTable getAttendanceTable(Course currCourse, LocalDateTime classDate) {
-        Optional<AttendanceTable> attendanceTableOp = currCourse.getAttedance().stream()
+        Optional<AttendanceTable> attendanceTableOp = currCourse.getAttendance().stream()
                 .filter(ar -> ar.getDate().truncatedTo(ChronoUnit.DAYS).equals(classDate)).findAny();
 
         if (!attendanceTableOp.isPresent()) {

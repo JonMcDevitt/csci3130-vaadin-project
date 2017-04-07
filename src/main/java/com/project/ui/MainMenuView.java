@@ -113,7 +113,7 @@ public class MainMenuView extends CustomComponent implements View {
 
         courseGrid.setContainerDataSource(new BeanItemContainer<>(Course.class, DatabaseHandler.getAllCourses()));
         courseGrid.removeColumn("studentRoster");
-        courseGrid.removeColumn("attedance");
+        courseGrid.removeColumn("attendance");
         // Add a selectionListener to select a course and pass it to
         // selectedCourse as a Course object
         courseGrid.addSelectionListener(e -> selectCourse());

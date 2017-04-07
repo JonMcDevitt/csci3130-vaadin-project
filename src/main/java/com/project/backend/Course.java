@@ -1,7 +1,6 @@
 package com.project.backend;
 
 
-import java.time.LocalDate;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,42 +11,37 @@ import java.util.List;
  */
 
 @Entity
-public class Course implements Comparable<Course>{
+public class Course implements Comparable<Course> {
 
     @Id
     private String courseCode;
     private String courseName;
     @ManyToMany
     @JoinTable(
-            name="enroll", joinColumns={
-                    @JoinColumn(name="Course_ID")
-            }, inverseJoinColumns={
-                    @JoinColumn(name="Student_ID")
-            })
+            name = "enroll", joinColumns = {
+            @JoinColumn(name = "Course_ID")
+    }, inverseJoinColumns = {
+            @JoinColumn(name = "Student_ID")
+    })
     private List<Student> studentRoster;
     @OneToMany
     private List<AttendanceTable> attendance;
-    
-    public Course(String courseName, String courseCode, List<String> classInfo) {
+
+    public Course(String courseName, String courseCode) {
         this();
         setCourseName(courseName);
         setCourseCode(courseCode);
 
         //create a test studentRoster
         studentRoster = new ArrayList<>();
-        studentRoster.add(new Student("B00123456", "21264084453726", "TestFN1", "TestLN1"));
-        studentRoster.add(new Student("B00987654", "234567898765432", "TestFN2", "TestLN2"));
         attendance = new ArrayList<>();
-
-        /** TODO:   parse classInfo to construct the ClassDay object (create Dates)
-         * */
     }
 
-    public List<AttendanceTable> getAttedance() {
-		return attendance;
-	}
+    public List<AttendanceTable> getAttendance() {
+        return attendance;
+    }
 
-	public Course() {
+    public Course() {
     }
 
     public void initLists() {
@@ -55,23 +49,24 @@ public class Course implements Comparable<Course>{
         attendance = new ArrayList<>();
     }
 
-    public String getCourseName(){
-    	return courseName;
+    public String getCourseName() {
+        return courseName;
     }
-    
-    public List<Student> getStudentRoster(){
-    	return studentRoster;
+
+    public List<Student> getStudentRoster() {
+        return studentRoster;
     }
-    public void addAttendanceTable(AttendanceTable at){
-    	attendance.add(at);
+
+    public void addAttendanceTable(AttendanceTable at) {
+        attendance.add(at);
     }
 
     public String getCourseCode() {
         return courseCode;
     }
-    
-    public void addStudent(Student student){
-    	studentRoster.add(student);
+
+    public void addStudent(Student student) {
+        studentRoster.add(student);
     }
 
     public void setCourseCode(String courseCode) {

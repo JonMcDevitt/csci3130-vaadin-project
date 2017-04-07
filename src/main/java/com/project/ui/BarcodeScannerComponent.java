@@ -63,14 +63,14 @@ public class BarcodeScannerComponent extends CustomComponent {
         verticalLayout.addComponents(textField, horizontalLayout);
 
         callbackOptional = Optional.empty();
-        
+
         setCompositionRoot(verticalLayout);
         setSizeUndefined();
     }
 
     //Sets up the textfield, and toggle the component to be deactivated if focus is lost.
     private void setupTextField(TextField tf) {
-    	tf.setInputPrompt("Input barcodes here");
+        tf.setInputPrompt("Input barcodes here");
         tf.setVisible(true);
         tf.setImmediate(true);
         tf.setWidth(300, UNITS_PIXELS);
@@ -92,26 +92,26 @@ public class BarcodeScannerComponent extends CustomComponent {
                 });
             }
         };
-        
+
         onEnterKeyHandler.installOn(textField);
-        
+
         //toggles the component to be 'active' if focus is gained.
         tf.addFocusListener(e -> {
-        	if (!deactivateButton.isEnabled() && activateButton.isEnabled()) {
-        		activateButton.setEnabled(false);
-        		deactivateButton.setEnabled(true);
-        	}
+            if (!deactivateButton.isEnabled() && activateButton.isEnabled()) {
+                activateButton.setEnabled(false);
+                deactivateButton.setEnabled(true);
+            }
         });
     }
 
     //Sets up the activate button (caption, enabled, width, click listener). If this button is pushed, the 
     //textfield will have focus, and this button will be disabled, and the deactivate button will be enabled
     private void setupActivateButton(Button activateButton) {
-    	activateButton.setCaption("Start scanning");
+        activateButton.setCaption("Start scanning");
         activateButton.setEnabled(true);
         activateButton.setDisableOnClick(true);
         activateButton.setWidth(150, UNITS_PIXELS);
-        
+
         activateButton.addClickListener(e -> {
             deactivateButton.setEnabled(true);
             textField.focus();
@@ -125,7 +125,7 @@ public class BarcodeScannerComponent extends CustomComponent {
         deactivateButton.setEnabled(false);
         deactivateButton.setDisableOnClick(true);
         deactivateButton.setWidth(150, UNITS_PIXELS);
-        
+
         deactivateButton.addClickListener(e -> {
             activateButton.setEnabled(true);
         });
@@ -133,15 +133,15 @@ public class BarcodeScannerComponent extends CustomComponent {
 
     //Allows for the listening of an enter key being pressed
     private abstract class OnEnterKeyHandler {
-        
+
         @SuppressWarnings("serial")
         final ShortcutListener enterShortCut
                 = new ShortcutListener("EnterOnTextAreaShorcut", ShortcutAction.KeyCode.ENTER, null) {
-                    @Override
-                    public void handleAction(Object sender, Object target) {
-                        onEnterKeyPressed();
-                    }
-                };
+            @Override
+            public void handleAction(Object sender, Object target) {
+                onEnterKeyPressed();
+            }
+        };
 
         @SuppressWarnings("serial")
         public void installOn(final TextField component) {
@@ -164,12 +164,12 @@ public class BarcodeScannerComponent extends CustomComponent {
         public abstract void onEnterKeyPressed();
 
     }
-    
+
     // Register the callback to be executed when a barcode is scanned
     public void onBarcodeScanned(Consumer<String> onBarcodeScanned) {
         callbackOptional = Optional.of(onBarcodeScanned);
     }
-    
+
     // Simulates a barcode being scanned.
     public void simulateBarcodeScan(String barcode) {
         textField.setValue(barcode);
@@ -183,7 +183,7 @@ public class BarcodeScannerComponent extends CustomComponent {
     public Button getDeactivateButton() {
         return deactivateButton;
     }
-    
+
     public TextField getTextField() {
         return textField;
     }

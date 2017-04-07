@@ -90,7 +90,7 @@ public class NewStudentView extends CustomComponent implements View {
     }
 
     private void addStudent(String courseID) {
-        DatabaseHandler.addStudent(courseID, id.getValue(),  firstName.getValue(), lastName.getValue(),barcode.getValue());
+        DatabaseHandler.addStudent(courseID, id.getValue(), firstName.getValue(), lastName.getValue(), barcode.getValue());
         getUI().getNavigator().addView(CourseView.NAME, new CourseView(courseID));
         getUI().getNavigator().navigateTo(CourseView.NAME);
     }
@@ -112,7 +112,7 @@ public class NewStudentView extends CustomComponent implements View {
         buttons.setSpacing(true);
         buttons.setMargin(new MarginInfo(true, true));
         VerticalLayout fields = new VerticalLayout(
-                id, firstName, lastName,barcode, buttons);
+                id, firstName, lastName, barcode, buttons);
         fields.setSpacing(true);
         fields.setMargin(new MarginInfo(true, true, true, true));
         fields.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
