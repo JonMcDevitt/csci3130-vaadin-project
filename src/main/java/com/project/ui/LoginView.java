@@ -5,14 +5,22 @@ import com.project.backend.User;
 import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.event.FieldEvents;
+import com.vaadin.event.FieldEvents.BlurEvent;
+import com.vaadin.event.FieldEvents.BlurListener;
+import com.vaadin.event.FieldEvents.FocusListener;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.FontAwesome;
+import com.vaadin.server.Page;
+import com.vaadin.server.Resource;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
@@ -34,6 +42,7 @@ public class LoginView extends CustomComponent implements View {
     
     
     private final TextField emailTextField = new TextField();
+    private final TextField tmpPassword = new TextField();
     private final PasswordField passwordField = new PasswordField();
     private final Button loginButton = new Button();
     private final Button signUpButton = new Button();
@@ -42,7 +51,7 @@ public class LoginView extends CustomComponent implements View {
 
     public LoginView() {
         initUsernameTextField(emailTextField);
-        initPasswordField(passwordField);
+        initPasswordField(passwordField,tmpPassword);
         initLoginButton(loginButton);
         initSignUpButton(signUpButton);
         
@@ -51,10 +60,12 @@ public class LoginView extends CustomComponent implements View {
     }
 
     private final void initUsernameTextField(TextField usernameTextField) {
-        usernameTextField.setId(EMAIL_TEXT_FIELD_ID);
+    	usernameTextField.setIcon(FontAwesome.USER);
+    	usernameTextField.setId(EMAIL_TEXT_FIELD_ID);
         usernameTextField.addValidator(new EmailValidator("Username must be an email address."));
         usernameTextField.setWidth("300px");
-        usernameTextField.setRequired(true);
+        usernameTextField.addStyleName("requiredField");
+        //usernameTextField.setRequired(true);
         usernameTextField.setInputPrompt("Email address or username");
         usernameTextField.setInvalidAllowed(false);
         usernameTextField.addShortcutListener(new ShortcutListener("Login", ShortcutAction.KeyCode.ENTER, null) {
@@ -65,13 +76,14 @@ public class LoginView extends CustomComponent implements View {
         });
     }
     
-    private final void initPasswordField(PasswordField passwordField) {
-        passwordField.setId(PASSWORD_TEXT_FIELD_ID);
-        passwordField.addValidator(new PasswordValidator());
+    private final void initPasswordField(PasswordField passwordField, TextField tmpPassword) {
+    	tmpPassword.setInputPrompt("Password");
+    	tmpPassword.setIcon(FontAwesome.LOCK);
+    	tmpPassword.setWidth("300px");
+    	passwordField.setIcon(FontAwesome.LOCK);
+    	passwordField.setId(PASSWORD_TEXT_FIELD_ID);
+        //passwordField.addValidator(new PasswordValidator());
         passwordField.setWidth("300px");
-        passwordField.setRequired(true);
-        passwordField.setValue("");
-        passwordField.setNullRepresentation("");
         passwordField.addFocusListener((FieldEvents.FocusListener) focusEvent -> LoginView.this.focus());
         passwordField.addShortcutListener(new ShortcutListener("Login", ShortcutAction.KeyCode.ENTER, null) {
             @Override
@@ -99,26 +111,49 @@ public class LoginView extends CustomComponent implements View {
                 passwordField.focus();
             }
         };
-        
+        loginButton.setWidth("300px");
         loginButton.setId(LOGIN_BUTTON_ID);
         loginButton.setCaption("Login");
         loginButton.addClickListener(onLoginClicked);
     }
     
     private final void initSignUpButton(Button signUpButton) {
+    	signUpButton.setWidth("300px");
         signUpButton.setCaption("Sign up");
         signUpButton.addClickListener((Button.ClickListener) clickEvent -> getUI().setContent(new SignUpView()));
     }
     
+    /*private void configurePasswordButtons(FormLayout fields){
+    	fields.getComponent(2).addFocusListener(new FocusListen(){
+    		
+    	});
+    }*/
+    
     private final void setupLayout() {
-        HorizontalLayout buttons = new HorizontalLayout(loginButton, signUpButton);
+    	Embedded image = new Embedded(null, new ThemeResource("../Barcode-scanner.jpg"));
+        VerticalLayout buttons = new VerticalLayout(loginButton, signUpButton);
         buttons.setSpacing(true);
-        buttons.setMargin(new MarginInfo(true, true));
+        //buttons.setMargin(new MarginInfo(true, true));
 
-        FormLayout fields = new FormLayout(emailTextField, passwordField, buttons);
+        FormLayout fields = new FormLayout(image, emailTextField, tmpPassword, buttons);
+        tmpPassword.addFocusListener(new FocusListener(){
+        	public void focus(FieldEvents.FocusEvent event){
+        		fields.replaceComponent(tmpPassword, passwordField);
+        		passwordField.focus();
+        		System.out.println("focus!");
+        	}
+        });
+        passwordField.addBlurListener(new BlurListener(){
+			public void blur(BlurEvent event) {
+				if(passwordField.getValue().equals(""))
+					fields.replaceComponent(passwordField, tmpPassword);
+			}
+        });
+        //passwordField.addBlurListener(listener);
         fields.setSpacing(true);
         fields.setWidth("400px");
         fields.setMargin(new MarginInfo(true, true));
+        //configurePasswordButtons(fields);
 
         VerticalLayout viewLayout = new VerticalLayout(fields);
         viewLayout.setStyleName(Reindeer.LAYOUT_BLACK);
@@ -136,7 +171,7 @@ public class LoginView extends CustomComponent implements View {
                     "Tester", "Computer Science"
             );
         }
-        emailTextField.focus();
+       // emailTextField.focus();
     }
 
     @Override
@@ -146,7 +181,7 @@ public class LoginView extends CustomComponent implements View {
         }
     }
 
-    private static class PasswordValidator extends AbstractValidator<String> {
+    /*private static class PasswordValidator extends AbstractValidator<String> {
         
         private static final String errorMessage = "Invalid password.";
         
@@ -169,5 +204,5 @@ public class LoginView extends CustomComponent implements View {
         public Class<String> getType() {
             return String.class;
         }
-    }
+    }*/
 }
