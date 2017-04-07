@@ -110,7 +110,7 @@ public class AttendanceView extends CustomComponent implements View {
         attendanceGrid.getColumn(LAST_NAME).setEditable(false);
         attendanceGrid.getColumn(FIRST_NAME).setEditable(false);
         attendanceGrid.getColumn(BARCODE).setEditable(false);
-        
+
         attendanceGrid.getEditorFieldGroup().addCommitHandler(new FieldGroup.CommitHandler() {
 
             private static final long serialVersionUID = 1L;
@@ -127,7 +127,6 @@ public class AttendanceView extends CustomComponent implements View {
                 AttendanceRecord.Status status = (AttendanceRecord.Status) editedItem.getItemProperty(STATUS).getValue();
                 DatabaseHandler.updateStudentAttendanceStatus(barcodeValue, course, status);
             }
-
         });
     }
 
@@ -187,8 +186,7 @@ public class AttendanceView extends CustomComponent implements View {
 
             roster.forEach(s -> {
                 AttendanceRecord ar = new AttendanceRecord();
-                ar.setCourseCode(currCourse);
-                ar.setStudentId(s);
+                ar.setCourse(currCourse);
                 ar.setStudent(s);
                 ar.setAttendanceID();
 

@@ -43,3 +43,4 @@ ignore
 /src/main/webapp/VAADIN/themes/mytheme/styles.css
 /src/main/webapp/VAADIN/themes/mytheme/addons.scss
 /**/*.db
+!/src/main/java/com/project/ui/LoginView.java
