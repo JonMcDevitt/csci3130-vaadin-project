@@ -130,7 +130,7 @@ public class LoginView extends CustomComponent implements View {
     }*/
     
     private final void setupLayout() {
-    	Embedded image = new Embedded(null, new ThemeResource("../Barcode-scanner.jpg"));
+    	Embedded image = new Embedded(null, new ThemeResource("../barcodewithstring1.png"));
         VerticalLayout buttons = new VerticalLayout(loginButton, signUpButton);
         buttons.setSpacing(true);
         //buttons.setMargin(new MarginInfo(true, true));
@@ -140,7 +140,8 @@ public class LoginView extends CustomComponent implements View {
         	public void focus(FieldEvents.FocusEvent event){
         		fields.replaceComponent(tmpPassword, passwordField);
         		passwordField.focus();
-        		System.out.println("focus!");
+        		if(emailTextField.getValue().equals(""))
+        			emailTextField.setInputPrompt("Email address or username");
         	}
         });
         passwordField.addBlurListener(new BlurListener(){
