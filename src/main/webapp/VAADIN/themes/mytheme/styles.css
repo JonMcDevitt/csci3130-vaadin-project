@@ -12984,3 +12984,32 @@ div.v-layout.v-horizontal.v-widget {
 	width: 19px;
 	overflow: hidden;
 }
+
+.mytheme .v-button-red {
+	color: #F2E9C2;
+	background-color: #B93A33;
+	background-image: none;
+	font-size: 16px;
+	font-family: Verdana, Geneva, sans-serif;
+	position: relative;
+	text-align: center;
+	white-space: nowrap;
+	outline: none;
+	cursor: pointer;
+	border-radius: 4px;
+	border: 2px solid #B93A33;
+}
+
+.mytheme .v-verticallayout-background {
+	background: #F9F9F9;
+}
+
+.mytheme .v-formlayout-formBackground {
+	background: #F9F9F9;
+}
+
+.mytheme .v-window-header-windowHeader {
+	background: #F9F9F9;
+	color: #101920;
+	font-family: Verdana, Geneva, sans-serif;
+}
