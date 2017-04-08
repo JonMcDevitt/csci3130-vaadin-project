@@ -23,6 +23,7 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
@@ -46,6 +47,7 @@ public class LoginView extends CustomComponent implements View {
     private final PasswordField passwordField = new PasswordField();
     private final Button loginButton = new Button();
     private final Button signUpButton = new Button();
+    private final Label padding = new Label();
     
     private static final int MINIMUM_PASSWORD_LENGTH = 8;
 
@@ -94,6 +96,8 @@ public class LoginView extends CustomComponent implements View {
     }
 
     private final void initLoginButton(Button loginButton) {
+    	padding.setHeight("5px");
+    	//padding.
         Button.ClickListener onLoginClicked = event -> 
         {
             String email = emailTextField.getValue();
@@ -128,12 +132,14 @@ public class LoginView extends CustomComponent implements View {
     	});
     }*/
     
-    private final void setupLayout() {
+    @SuppressWarnings("deprecation")
+	private final void setupLayout() {
     	Embedded image = new Embedded(null, new ThemeResource("../barcodewithstring1.png"));
         VerticalLayout buttons = new VerticalLayout(loginButton, signUpButton);
-        buttons.setSpacing(true);
-        //buttons.setMargin(new MarginInfo(true, true));
-
+        //buttons.addStyleName("margintop");
+        //buttons.setMargin(true);
+         buttons.setSpacing(true);
+       // buttons.setMargin(new MarginInfo(true, false));
         FormLayout fields = new FormLayout(image, emailTextField, tmpPassword, buttons);
         tmpPassword.addFocusListener(new FocusListener(){
         	public void focus(FieldEvents.FocusEvent event){

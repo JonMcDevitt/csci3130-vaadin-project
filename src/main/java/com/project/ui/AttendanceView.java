@@ -114,9 +114,9 @@ public class AttendanceView extends CustomComponent implements View {
         attendanceGrid.getColumn(LAST_NAME).setEditable(false);
         attendanceGrid.getColumn(FIRST_NAME).setEditable(false);
         attendanceGrid.getColumn(BARCODE).setEditable(false);
-
         attendanceGrid.getEditorFieldGroup().addCommitHandler(new FieldGroup.CommitHandler() {
 
+        	
             private static final long serialVersionUID = 1L;
 
             @Override

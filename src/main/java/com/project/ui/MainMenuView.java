@@ -9,15 +9,21 @@ import com.project.backend.Student;
 import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.addon.jpacontainer.JPAContainerFactory;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.event.ItemClickEvent;
+import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.VerticalLayout;
 
 import static javax.swing.JOptionPane.*;
 //import static javax.lang.System.*;
@@ -61,21 +67,39 @@ public class MainMenuView extends CustomComponent implements View {
         // use of it's attributes in CourseView
         goToCourse = new Button("Go To Course", (Button.ClickListener) clickEvent -> goToCourse());
 
-        addCourse = new Button("Add new course", (Button.ClickListener) clickEvent -> addCourse());
+        addCourse = new Button("", (Button.ClickListener) clickEvent -> addCourse());
+        addCourse.setIcon(FontAwesome.PLUS);
         delete = new Button("Delete", (ClickListener) clickEvent -> delete());
+        if(selectedCourse==null){
+        	delete.setEnabled(false);
+        	goToCourse.setEnabled(false);
+        }
         initStyles();
-        setCompositionRoot(new CssLayout(welcome, goToCourse, addCourse, delete, logout, courseGrid));
+        HorizontalLayout hl = new HorizontalLayout(goToCourse, delete);
+        hl.setSpacing(true);
+        HorizontalLayout topLayout = new HorizontalLayout(welcome, logout);
+        HorizontalLayout middleLayout = new HorizontalLayout(courseGrid, addCourse);
+        topLayout.setComponentAlignment(welcome, Alignment.TOP_CENTER);
+        topLayout.setComponentAlignment(logout, Alignment.TOP_CENTER);
+        VerticalLayout mainLayout = new VerticalLayout(topLayout, middleLayout,hl);
+        mainLayout.setSizeFull();
+        mainLayout.setSpacing(true);
+        mainLayout.setComponentAlignment(topLayout, Alignment.TOP_CENTER);
+        mainLayout.setComponentAlignment(hl, Alignment.BOTTOM_CENTER);
+        mainLayout.setComponentAlignment(middleLayout, Alignment.MIDDLE_CENTER);
+        setCompositionRoot(mainLayout);
 
     }
 
     private void initStyles(){
         logout.addStyleName("alphabutton");
         goToCourse.addStyleName("alphabutton");
-        addCourse.addStyleName("alphabutton");
         delete .addStyleName("alphabutton");
     }
 
     private void addCourse() {
+    	delete.setEnabled(false);
+    	goToCourse.setEnabled(false);
         getUI().addWindow(new AddCourseInputsView(courseList, courseGrid));
     }
 
@@ -84,11 +108,13 @@ public class MainMenuView extends CustomComponent implements View {
             Notification.show("Please select a course from the course table");
         } else {
             getUI().getNavigator().navigateTo(CourseView.NAME);
+            delete.setEnabled(false);
+            goToCourse.setEnabled(true);
         }
     }
 
     private void logOut() {
-        getUI().setSession(null);
+        getUI().getSession().close();
         getUI().getNavigator().navigateTo(NAME);
     }
 
@@ -96,6 +122,8 @@ public class MainMenuView extends CustomComponent implements View {
         selectedCourse = (Course) courseGrid.getSelectedRow();
         if (selectedCourse != null) {
             getUI().getNavigator().addView(CourseView.NAME, new CourseView(selectedCourse.getCourseCode()));
+            delete.setEnabled(true);
+            goToCourse.setEnabled(true);
         }
     }
 
@@ -111,6 +139,8 @@ public class MainMenuView extends CustomComponent implements View {
             BeanItemContainer<Course> bic = (BeanItemContainer<Course>) courseGrid.getContainerDataSource();
             bic.removeAllItems();
             bic.addAll(DatabaseHandler.getAllCourses());
+            delete.setEnabled(false);
+            goToCourse.setEnabled(false);
         }
     }
 

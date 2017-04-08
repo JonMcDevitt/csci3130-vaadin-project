@@ -7,6 +7,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Grid;
@@ -91,22 +92,33 @@ public class CourseView extends CustomComponent implements View {
     }
 
     private void createLayout() {
+    	//
         HorizontalLayout buttons = new HorizontalLayout(goToMain, addStudent, editStudent, deleteStudent, goToTakeAttendance);
         buttons.setSpacing(true);
-        buttons.setMargin(new MarginInfo(true, true));
+        //buttons.setMargin(new MarginInfo(true, true));
         VerticalLayout mainLayout = new VerticalLayout(courseName, buttons, studentGrid);
         mainLayout.setSpacing(true);
         HorizontalLayout horizontalLayout = new HorizontalLayout(mainLayout, popupContent);
+        horizontalLayout.setSizeFull();
         horizontalLayout.setSpacing(true);
+        buttons.setComponentAlignment(goToTakeAttendance, Alignment.MIDDLE_CENTER);
+        buttons.setComponentAlignment(addStudent, Alignment.MIDDLE_CENTER);
+        buttons.setComponentAlignment(editStudent, Alignment.MIDDLE_CENTER);
+        buttons.setComponentAlignment(goToMain, Alignment.MIDDLE_CENTER);
+        buttons.setComponentAlignment(deleteStudent, Alignment.MIDDLE_CENTER);
+        mainLayout.setComponentAlignment(courseName, Alignment.MIDDLE_CENTER);
+        mainLayout.setComponentAlignment(buttons, Alignment.MIDDLE_CENTER);
+        mainLayout.setComponentAlignment(studentGrid, Alignment.MIDDLE_CENTER);
+        horizontalLayout.setComponentAlignment(mainLayout, Alignment.MIDDLE_CENTER);
         setCompositionRoot(horizontalLayout);
     }
 
     private void initStyles(){
-        goToMain.addStyleName("alphabutton");
-        addStudent.addStyleName("alphabutton");
-        editStudent.addStyleName("alphabutton");
-        goToTakeAttendance.addStyleName("alphabutton");
-        deleteStudent.addStyleName("alphabutton");
+       // goToMain.addStyleName("alphabutton");
+        //addStudent.addStyleName("alphabutton");
+        //editStudent.addStyleName("alphabutton");
+        //goToTakeAttendance.addStyleName("alphabutton");
+        //deleteStudent.addStyleName("alphabutton");
     }
 
     @Override

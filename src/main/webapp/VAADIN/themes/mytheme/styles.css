@@ -13004,6 +13004,10 @@ div.v-layout.v-horizontal.v-widget {
 	background: #F9F9F9;
 }
 
+.mytheme .margintop {
+	margin-top: 32px;
+}
+
 .mytheme .v-formlayout-formBackground {
 	background: #F9F9F9;
 }
