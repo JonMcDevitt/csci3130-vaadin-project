@@ -35,7 +35,7 @@
   @include valo;
 
   .v-button-alphabutton {
-    color: #F2E9C2;
+    color: #F9F9F9;
     background-color: #B93A33;
     background-image: none;
     font-size:16px;
@@ -45,8 +45,7 @@
     white-space: nowrap;
     outline: none;
     cursor: pointer;
-    border-radius: 4px;
-    border: 2px solid #B93A33;
+    border:none;
   }
 
   .v-verticallayout-background {
