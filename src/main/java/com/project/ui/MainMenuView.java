@@ -108,8 +108,9 @@ public class MainMenuView extends CustomComponent implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        String username = String.valueOf(getSession().getAttribute("user"));
-        welcome.setValue("Welcome, " + username + ", to our application!");
+        String email = String.valueOf(getSession().getAttribute("user"));
+        String firstName = DatabaseHandler.getUserById(email).getFirstName();
+        welcome.setValue("Welcome, " + firstName + ", to Alpha Scanner!");
 
         courseGrid.setContainerDataSource(new BeanItemContainer<>(Course.class, DatabaseHandler.getAllCourses()));
         courseGrid.removeColumn("studentRoster");
