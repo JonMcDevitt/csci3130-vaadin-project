@@ -54,9 +54,9 @@ public class LoginView extends CustomComponent implements View {
         initPasswordField(passwordField,tmpPassword);
         initLoginButton(loginButton);
         initSignUpButton(signUpButton);
-        
         setSizeFull();
         setupLayout();
+        initStyles();
     }
 
     private final void initUsernameTextField(TextField usernameTextField) {
@@ -96,7 +96,6 @@ public class LoginView extends CustomComponent implements View {
     private final void initLoginButton(Button loginButton) {
         Button.ClickListener onLoginClicked = event -> 
         {
-
             String email = emailTextField.getValue();
             String pWord = passwordField.getValue();
             User r = DatabaseHandler.getUserById(email);
@@ -155,13 +154,17 @@ public class LoginView extends CustomComponent implements View {
         fields.setWidth("400px");
         fields.setMargin(new MarginInfo(true, true));
         //configurePasswordButtons(fields);
-
         VerticalLayout viewLayout = new VerticalLayout(fields);
-        viewLayout.setStyleName(Reindeer.LAYOUT_BLACK);
-        viewLayout.setStyleName("centre-panel", true);
+        //viewLayout.setStyleName(Reindeer.LAYOUT_BLACK);
+        //viewLayout.setStyleName("centre-panel", true);
         viewLayout.setSizeFull();
         viewLayout.setComponentAlignment(fields, Alignment.MIDDLE_CENTER);
         setCompositionRoot(viewLayout);
+    }
+
+    private void initStyles(){
+        signUpButton.addStyleName("alphabutton");
+        loginButton.addStyleName("alphabutton");
     }
 
     @Override

@@ -48,6 +48,7 @@ public class NewStudentView extends CustomComponent implements View {
 
         configureComponents();
         configureActions(courseID);
+        initStyles();
         setCompositionRoot(createLayout());
     }
 
@@ -87,6 +88,12 @@ public class NewStudentView extends CustomComponent implements View {
         cancelButton.addClickListener(e -> cancel());
 
         addButton.addClickListener(e -> addStudent(courseID));
+    }
+
+    private void initStyles(){
+        addButton.addStyleName("alphabutton");
+        clearButton.addStyleName("alphabutton");
+        cancelButton.addStyleName("alphabutton");
     }
 
     private void addStudent(String courseID) {

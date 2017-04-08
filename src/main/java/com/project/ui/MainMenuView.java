@@ -63,8 +63,16 @@ public class MainMenuView extends CustomComponent implements View {
 
         addCourse = new Button("Add new course", (Button.ClickListener) clickEvent -> addCourse());
         delete = new Button("Delete", (ClickListener) clickEvent -> delete());
+        initStyles();
         setCompositionRoot(new CssLayout(welcome, goToCourse, addCourse, delete, logout, courseGrid));
 
+    }
+
+    private void initStyles(){
+        logout.addStyleName("alphabutton");
+        goToCourse.addStyleName("alphabutton");
+        addCourse.addStyleName("alphabutton");
+        delete .addStyleName("alphabutton");
     }
 
     private void addCourse() {

@@ -24,6 +24,7 @@ public class AddCourseInputsView extends Window {
 
         initButtons(courseGrid);
         initInputs();
+        initStyles();
 
         /** TODO:   Make all this pretty
          * */
@@ -71,5 +72,9 @@ public class AddCourseInputsView extends Window {
         inputCourseCode.setInputPrompt("Course Code (e.g. CSCI 1101)");
         inputCourseName = new TextField();
         inputCourseName.setInputPrompt("Course Name (e.g. Software Engineering)");
+    }
+
+    private void initStyles(){
+        save.addStyleName("alphabutton");
     }
 }

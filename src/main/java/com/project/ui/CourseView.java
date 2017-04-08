@@ -41,9 +41,9 @@ public class CourseView extends CustomComponent implements View {
     public CourseView(String courseID) {
         this.courseID=courseID;
         setSizeFull();
-
         configureComponents(courseID);
         createLayout();
+        initStyles();
     }
 
     private void configureComponents(String courseID) {
@@ -99,6 +99,14 @@ public class CourseView extends CustomComponent implements View {
         HorizontalLayout horizontalLayout = new HorizontalLayout(mainLayout, popupContent);
         horizontalLayout.setSpacing(true);
         setCompositionRoot(horizontalLayout);
+    }
+
+    private void initStyles(){
+        goToMain.addStyleName("alphabutton");
+        addStudent.addStyleName("alphabutton");
+        editStudent.addStyleName("alphabutton");
+        goToTakeAttendance.addStyleName("alphabutton");
+        deleteStudent.addStyleName("alphabutton");
     }
 
     @Override
