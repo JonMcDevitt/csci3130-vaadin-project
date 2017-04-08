@@ -163,8 +163,8 @@ public class LoginView extends CustomComponent implements View {
     }
 
     private void initStyles(){
-        signUpButton.addStyleName("red");
-        loginButton.addStyleName("red");
+        signUpButton.addStyleName("alphabutton");
+        loginButton.addStyleName("alphabutton");
     }
 
     @Override
