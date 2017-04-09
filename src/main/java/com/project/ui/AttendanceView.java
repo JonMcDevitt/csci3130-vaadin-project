@@ -152,7 +152,8 @@ public class AttendanceView extends CustomComponent implements View {
         String courseCode = course.getCourseCode();
         String courseName = course.getCourseName();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
-        String caption = String.format("<h6>Attendance for: <span style=\\\"font-weight:bold\\\">%s</span> - %s on %s</h6>", courseCode, courseName, classDate.format(formatter).toString());
+        String caption = String.format("<h6>Attendance for: <span style=\"font-weight:bold\">%s - %s</span> on %s</h6>",
+                courseCode, courseName, classDate.format(formatter).toString());
         header= new Label(caption);
         header.setContentMode(ContentMode.HTML);
     }
