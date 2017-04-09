@@ -115,15 +115,15 @@ public class LoginView extends CustomComponent implements View {
             String email = emailTextField.getValue();
             String pWord = passwordField.getValue();
             User r = DatabaseHandler.getInstance().getUserById(email);
-            if(r == null) {
+            if (r == null) {
                 showFailedSignInNotification();
-            } else if(r.getPassword() != null && r.getPassword().equals(pWord)) {
+                clearPasswordField();
+            } else if (r.getPassword() != null && r.getPassword().equals(pWord)) {
                 getSession().setAttribute("user", email);
                 getUI().getNavigator().navigateTo(MainMenuView.NAME);
             } else {
                 showFailedSignInNotification();
-                passwordField.setValue("");
-                passwordField.focus();
+                clearPasswordField();
             }
         };
         loginButton.setWidth("300px");
@@ -131,7 +131,11 @@ public class LoginView extends CustomComponent implements View {
         loginButton.setCaption("Login");
         loginButton.addClickListener(onLoginClicked);
     }
-    
+
+    private void clearPasswordField() {
+        passwordField.setValue("");
+    }
+
     private void showNotification(String message) {
         Notification notification = new Notification(message, Notification.Type.ERROR_MESSAGE);
         notification.setDelayMsec(NOTIFICATION_DELAY_MSEC);
