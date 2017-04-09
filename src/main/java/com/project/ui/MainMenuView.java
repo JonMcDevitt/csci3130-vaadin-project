@@ -14,6 +14,7 @@ import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -48,6 +49,9 @@ public class MainMenuView extends CustomComponent implements View {
     private Button goToCourse;
     private Button logout;
     private Button delete;
+    private String firstNameGlobal;
+    private String lastNameGlobal;
+    private String departmentGlobal;
 
     // selectedCourse is to store selected Course object from the grid
     private Course selectedCourse = null;
@@ -128,7 +132,7 @@ public class MainMenuView extends CustomComponent implements View {
     private void selectCourse() {
         selectedCourse = (Course) courseGrid.getSelectedRow();
         if (selectedCourse != null) {
-            getUI().getNavigator().addView(CourseView.NAME, new CourseView(selectedCourse.getCourseCode()));
+            getUI().getNavigator().addView(CourseView.NAME, new CourseView(selectedCourse.getCourseCode(),firstNameGlobal, lastNameGlobal, departmentGlobal));
             delete.setEnabled(true);
             goToCourse.setEnabled(true);
         }
@@ -155,6 +159,9 @@ public class MainMenuView extends CustomComponent implements View {
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
         String email = String.valueOf(getSession().getAttribute("user"));
         String firstName = DatabaseHandler.getInstance().getUserById(email).getFirstName();
+        firstNameGlobal = firstName;
+        lastNameGlobal = DatabaseHandler.getInstance().getUserById(email).getLastName();
+        departmentGlobal = DatabaseHandler.getInstance().getUserById(email).getDepartment();
         welcome.setContentMode(ContentMode.HTML);
         welcome.setValue("<h6>Welcome, <span style=\"font-weight:bold\">" + firstName + "</span>, to Alpha Scanner!</h6>");
         courseGrid.setContainerDataSource(new BeanItemContainer<>(Course.class, DatabaseHandler.getInstance().getAllCourses()));

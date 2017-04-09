@@ -57,18 +57,27 @@ public class AttendanceView extends CustomComponent implements View {
     private static final String STATUS = "Attendance Status";
     private HorizontalLayout topLayout;
     private Button logout;
+    private String firstNameGlobal;
+    private String lastNameGlobal;
+    private String departmentGlobal;
+    private Label title;
     Label header;
 
     AttendanceView() {}
     
-    AttendanceView(Course course) {
-        this(course, LocalDateTime.now().truncatedTo(ChronoUnit.DAYS));
+    AttendanceView(Course course, String firstName, String lastName, String department) {
+        this(course, LocalDateTime.now().truncatedTo(ChronoUnit.DAYS), firstName, lastName, department);
     }
 
     // Creates the view
-    public AttendanceView(Course course, LocalDateTime classDate) {
+    
+    public AttendanceView(Course course, LocalDateTime classDate, String firstName, String lastName, String department) {
         this.course = course;
-
+        	
+        firstNameGlobal = firstName;
+        lastNameGlobal = lastName;
+        departmentGlobal = department;
+        
         // creates all components used in view
         Grid attendanceGrid = new Grid();
 
@@ -89,19 +98,21 @@ public class AttendanceView extends CustomComponent implements View {
         configureAttendanceGrid(attendanceGrid);
         configureLabel(classDate);
         configureBackButton();
-
-        topLayout = new HorizontalLayout(header, toCourseViewButton, logout);
+        title = new Label("<h6>"+firstNameGlobal+" "+lastNameGlobal+", "+departmentGlobal+"</h6");
+        title.setContentMode(ContentMode.HTML);
+        
+        topLayout = new HorizontalLayout(title, toCourseViewButton, logout);
 
         topLayout.setWidth("100%");
-        topLayout.setComponentAlignment(header, Alignment.TOP_LEFT);
+        topLayout.setComponentAlignment(title, Alignment.TOP_LEFT);
         topLayout.setComponentAlignment(logout, Alignment.TOP_RIGHT);
         topLayout.setComponentAlignment(toCourseViewButton, Alignment.TOP_RIGHT);
-        topLayout.setExpandRatio(header, 4f);
+        topLayout.setExpandRatio(title, 4f);
         topLayout.setExpandRatio(logout, 1f);
         topLayout.setExpandRatio(toCourseViewButton, 2f);
         topLayout.addStyleName("topbar");
 
-        VerticalLayout layout = new VerticalLayout(topLayout, attendanceGrid, barcodeScannerComponent);
+        VerticalLayout layout = new VerticalLayout(topLayout, header, attendanceGrid, barcodeScannerComponent);
 
         // adds components to layout and alligns them.
         layout.setSizeFull();
@@ -144,7 +155,7 @@ public class AttendanceView extends CustomComponent implements View {
     private void configureBackButton() {
        // toCourseViewButton.setId(BACK_BUTTON_ID);
         toCourseViewButton = new Button("Back to Course View");
-        toCourseViewButton.addClickListener(e -> getUI().setContent(new CourseView(course.getCourseCode())));
+        toCourseViewButton.addClickListener(e -> getUI().setContent(new CourseView(course.getCourseCode(),firstNameGlobal,lastNameGlobal, departmentGlobal)));
         toCourseViewButton.setStyleName("plainbutton");
     }
 
@@ -154,7 +165,7 @@ public class AttendanceView extends CustomComponent implements View {
         String courseCode = course.getCourseCode();
         String courseName = course.getCourseName();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
-        String caption = String.format("<h6>Attendance for: <span style=\"font-weight:bold\">%s - %s</span> on %s</h6>",
+        String caption = String.format("<center><h2>Attendance for: <span style=\"font-weight:bold\">%s - %s</span> on %s</h2></center>",
                 courseCode, courseName, classDate.format(formatter).toString());
         header= new Label(caption);
         header.setContentMode(ContentMode.HTML);

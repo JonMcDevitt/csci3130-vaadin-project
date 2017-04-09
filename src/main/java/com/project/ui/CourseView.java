@@ -5,6 +5,7 @@ import com.project.backend.AttendanceTable;
 import com.project.backend.Course;
 import com.project.backend.DatabaseHandler;
 import com.project.backend.Student;
+import com.project.backend.User;
 import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitEvent;
@@ -14,6 +15,7 @@ import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
@@ -39,13 +41,36 @@ public class CourseView extends CustomComponent implements View {
     private Label welcome;
     private Label title;
     private Button logout;
+    private String firstNameGlobal;
+    private String lastNameGlobal;
+    private String departmentGlobal;
+    private VaadinSession session;
 
     public CourseView() {
     }
 
     //a overloading constructor uses a Course type parameter to set up the UI content
+    public CourseView(String courseID, VaadinSession session) {
+        this.courseID=courseID;
+        setSizeFull();
+        configureComponents(courseID);
+        createLayout();
+        this.session = session;
+    }
+    
     public CourseView(String courseID) {
         this.courseID=courseID;
+        setSizeFull();
+        configureComponents(courseID);
+        createLayout();
+    }
+    
+    
+    public CourseView(String courseID,String firstName, String lastName, String department) {
+        this.courseID=courseID;
+        this.firstNameGlobal=firstName;
+        this.lastNameGlobal=lastName;
+        this.departmentGlobal=department;
         setSizeFull();
         configureComponents(courseID);
         createLayout();
@@ -71,7 +96,8 @@ public class CourseView extends CustomComponent implements View {
         goToTakeAttendance.setId(TAKE_ATTENDANCE_FOR_TODAY_BUTTON_ID);
         logout = new Button("Log Out", (Button.ClickListener) clickEvent -> logOut());
         welcome = new Label("<center><h2>"+DatabaseHandler.getInstance().getCourseById(courseID).getCourseName()+"</h2></center>");
-        title = new Label();
+        title = new Label("<h6>"+firstNameGlobal+" "+lastNameGlobal+", "+departmentGlobal+"</h6>");
+        title.setContentMode(ContentMode.HTML);
     }
     
     private void editStudentGrid(Grid studentGrid){
@@ -102,7 +128,7 @@ public class CourseView extends CustomComponent implements View {
     }
 
     private void takeAttendance() {
-        getUI().setContent(new AttendanceView(DatabaseHandler.getInstance().getCourseById(courseID)));
+        getUI().setContent(new AttendanceView(DatabaseHandler.getInstance().getCourseById(courseID),firstNameGlobal,lastNameGlobal,departmentGlobal));
     }
 
     private void createLayout() {
@@ -113,9 +139,11 @@ public class CourseView extends CustomComponent implements View {
         topLayout = new HorizontalLayout( title, goToMain, logout);
 
         topLayout.setWidth("100%");
+        topLayout.setComponentAlignment(title, Alignment.TOP_LEFT);
         topLayout.setComponentAlignment(logout, Alignment.TOP_RIGHT);
         topLayout.setComponentAlignment(goToMain, Alignment.TOP_RIGHT);
         topLayout.addStyleName("topbar");
+        topLayout.setExpandRatio(title, 4f);
         topLayout.setExpandRatio(logout, 1f);
         topLayout.setExpandRatio(goToMain, 2f);
         addStudent.setIcon(FontAwesome.PLUS_SQUARE);
@@ -164,5 +192,4 @@ public class CourseView extends CustomComponent implements View {
         getUI().getNavigator().addView(CourseView.NAME, new CourseView(courseID));
         getUI().getNavigator().navigateTo(CourseView.NAME);
     }
-    
 }
