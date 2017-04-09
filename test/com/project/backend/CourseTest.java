@@ -15,7 +15,7 @@ public class CourseTest {
 
     @Before
     public void setUp() {
-        course = DatabaseHandler.addCourse("Software Engineering","CSCI3130");
+        course = DatabaseHandler.getInstance().addCourse("Software Engineering","CSCI3130");
         assertNotNull(course);
     }
 
@@ -45,8 +45,8 @@ public class CourseTest {
     @Test
     public void compareTo() throws Exception {
         /** Test isLess */
-        Course isLess = DatabaseHandler.addCourse("Software Engineering","CSCI3130");
-        Course isMore = DatabaseHandler.addCourse("Software Engineering","CSCI 3130");
+        Course isLess = DatabaseHandler.getInstance().addCourse("Software Engineering", "CSCI3130");
+        Course isMore = DatabaseHandler.getInstance().addCourse("Software Engineering", "CSCI 3130");
         assertTrue(isLess.compareTo(isMore) != 0);
     }
 }

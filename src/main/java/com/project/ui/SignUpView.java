@@ -145,7 +145,7 @@ public class SignUpView extends CustomComponent implements View {
         if (isValidUser && passwordConfirm&&!areAnyEmpty()) {
             this.getUI().setContent(new LoginView());
             Notification.show("Signed up with email: " + userEmail.getValue());
-            DatabaseHandler.addUser(userEmail.getValue(), password.getValue(),
+            DatabaseHandler.getInstance().addUser(userEmail.getValue(), password.getValue(),
                     firstName.getValue(), lastName.getValue(), department.getValue());
         } else if (!isValidUser&&!areAnyEmpty()) {
             Notification.show("Invalid email.");

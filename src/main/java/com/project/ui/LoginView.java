@@ -102,7 +102,7 @@ public class LoginView extends CustomComponent implements View {
         {
             String email = emailTextField.getValue();
             String pWord = passwordField.getValue();
-            User r = DatabaseHandler.getUserById(email);
+            User r = DatabaseHandler.getInstance().getUserById(email);
             if(r == null) {
                 Notification.show("Invalid username", Notification.Type.ERROR_MESSAGE);
             } else if(r.getPassword() != null && r.getPassword().equals(pWord)) {
@@ -177,12 +177,12 @@ public class LoginView extends CustomComponent implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        while (DatabaseHandler.getUserById("test@test.com") == null) {
-            DatabaseHandler.addUser(
+        while (DatabaseHandler.getInstance().getUserById("test@test.com") == null) {
+            DatabaseHandler.getInstance().addUser(
                     "test@test.com", "p4ssw0rd", "La",
                     "Tester", "Computer Science"
             );
-            DatabaseHandler.addUser(
+            DatabaseHandler.getInstance().addUser(
                     "a@a.ca", "a", "LaDeletMe",
                     "Tester", "Computer Science"
             );

@@ -58,8 +58,8 @@ public class MainMenuView extends CustomComponent implements View {
     public MainMenuView() {
         // Create a courseList for testing
         courseList = new ArrayList<>();
-        DatabaseHandler.addCourse("Computer Science 1", "CSCI 1100");
-        DatabaseHandler.addCourse("Computer Science 2", "CSCI 1101");
+        DatabaseHandler.getInstance().addCourse("Computer Science 1", "CSCI 1100");
+        DatabaseHandler.getInstance().addCourse("Computer Science 2", "CSCI 1101");
 
         logout = new Button("Log Out", (Button.ClickListener) clickEvent -> logOut());
 
@@ -132,14 +132,14 @@ public class MainMenuView extends CustomComponent implements View {
         if (selectedCourse == null) {
             Notification.show("Please select a course from the course table");
         } else {
-            List<Student> courseStudents = DatabaseHandler.getCourseStudents(selectedCourse.getCourseCode());
+            List<Student> courseStudents = DatabaseHandler.getInstance().getCourseStudents(selectedCourse.getCourseCode());
             for (Student s : courseStudents) {
-                DatabaseHandler.removeStudent(selectedCourse.getCourseCode(), s.getId());
+                DatabaseHandler.getInstance().removeStudent(selectedCourse.getCourseCode(), s.getId());
             }
-            DatabaseHandler.removeCourse(selectedCourse);
+            DatabaseHandler.getInstance().removeCourse(selectedCourse);
             BeanItemContainer<Course> bic = (BeanItemContainer<Course>) courseGrid.getContainerDataSource();
             bic.removeAllItems();
-            bic.addAll(DatabaseHandler.getAllCourses());
+            bic.addAll(DatabaseHandler.getInstance().getAllCourses());
             delete.setEnabled(false);
             goToCourse.setEnabled(false);
         }
@@ -148,10 +148,10 @@ public class MainMenuView extends CustomComponent implements View {
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
         String email = String.valueOf(getSession().getAttribute("user"));
-        String firstName = DatabaseHandler.getUserById(email).getFirstName();
+        String firstName = DatabaseHandler.getInstance().getUserById(email).getFirstName();
         welcome.setContentMode(ContentMode.HTML);
         welcome.setValue("<h6>Welcome, <span style=\"font-weight:bold\">" + firstName + "</span>, to Alpha Scanner!</h6>");
-        courseGrid.setContainerDataSource(new BeanItemContainer<>(Course.class, DatabaseHandler.getAllCourses()));
+        courseGrid.setContainerDataSource(new BeanItemContainer<>(Course.class, DatabaseHandler.getInstance().getAllCourses()));
         courseGrid.removeColumn("studentRoster");
         courseGrid.removeColumn("attendance");
         // Add a selectionListener to select a course and pass it to

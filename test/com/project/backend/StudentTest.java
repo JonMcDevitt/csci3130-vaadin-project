@@ -14,15 +14,15 @@ public class StudentTest {
 
     @Before
     public void setUp() throws Exception {
-        DatabaseHandler.addCourse("TestCourse 1", "TEST 0001");
-        test = DatabaseHandler.addStudent("TEST 0001", "B00123456", "Test", "McGee", "12345678987654321");
+        DatabaseHandler.getInstance().addCourse("TestCourse 1", "TEST 0001");
+        test = DatabaseHandler.getInstance().addStudent("TEST 0001", "B00123456", "Test", "McGee", "12345678987654321");
         assertNotNull(test);
     }
 
     @After
     public void tearDown() throws Exception {
-        DatabaseHandler.removeStudent("TEST 0001", "B00123456");
-        DatabaseHandler.removeCourse(DatabaseHandler.getCourseById("TEST 0001"));
+        DatabaseHandler.getInstance().removeStudent("TEST 0001", "B00123456");
+        DatabaseHandler.getInstance().removeCourse(DatabaseHandler.getInstance().getCourseById("TEST 0001"));
     }
 
     @Test

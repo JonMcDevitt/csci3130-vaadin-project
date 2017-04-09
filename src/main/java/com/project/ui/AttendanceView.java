@@ -59,6 +59,8 @@ public class AttendanceView extends CustomComponent implements View {
     private static final String BARCODE = "Barcode";
     private static final String STATUS = "Attendance Status";
 
+    AttendanceView() {}
+    
     AttendanceView(Course course) {
         this(course, LocalDateTime.now().truncatedTo(ChronoUnit.DAYS));
     }
@@ -78,7 +80,7 @@ public class AttendanceView extends CustomComponent implements View {
         barcodeToItemMap = makeBarcodeToItemMap(attendanceRecords);
 
         barcodeScannerComponent.onBarcodeScanned(barcode -> {
-            DatabaseHandler.updateStudentAttendanceStatus(barcode, course, AttendanceRecord.Status.PRESENT);
+            DatabaseHandler.getInstance().updateStudentAttendanceStatus(barcode, course, AttendanceRecord.Status.PRESENT);
             updateAttendanceGrid(barcode, AttendanceRecord.Status.PRESENT);
         });
 
@@ -124,7 +126,7 @@ public class AttendanceView extends CustomComponent implements View {
                 Item editedItem = attendanceRecords.getItem(attendanceGrid.getEditedItemId());
                 String barcodeValue = editedItem.getItemProperty(BARCODE).getValue().toString();
                 AttendanceRecord.Status status = (AttendanceRecord.Status) editedItem.getItemProperty(STATUS).getValue();
-                DatabaseHandler.updateStudentAttendanceStatus(barcodeValue, course, status);
+                DatabaseHandler.getInstance().updateStudentAttendanceStatus(barcodeValue, course, status);
             }
         });
     }
@@ -192,7 +194,7 @@ public class AttendanceView extends CustomComponent implements View {
                 at.addAttendanceRecord(ar);
             });
 
-            DatabaseHandler.addTabletoCourse(currCourse, at);
+            DatabaseHandler.getInstance().addTabletoCourse(currCourse, at);
             return at;
         } else {
             return attendanceTableOp.get();
@@ -217,7 +219,9 @@ public class AttendanceView extends CustomComponent implements View {
 
     @Override
     public void enter(ViewChangeEvent event) {
-
+        if (course == null) {
+            getUI().getNavigator().navigateTo(MainMenuView.NAME);
+        }
     }
 
 }

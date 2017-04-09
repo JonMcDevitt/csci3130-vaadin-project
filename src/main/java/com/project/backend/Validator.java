@@ -13,7 +13,7 @@ public class Validator {
             "@[_A-Za-z0-9-+]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
     public static boolean validateUser(String email) {
-        return validateEmail(email) && DatabaseHandler.getUserById(email) == null;
+        return validateEmail(email) && DatabaseHandler.getInstance().getUserById(email) == null;
     }
 
     private static boolean validateEmail(String email) {
