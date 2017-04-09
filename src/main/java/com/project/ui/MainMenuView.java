@@ -78,18 +78,22 @@ public class MainMenuView extends CustomComponent implements View {
         	goToCourse.setEnabled(false);
         }
 
-        HorizontalLayout hl = new HorizontalLayout(goToCourse, delete);
-        hl.setSpacing(true);
+        HorizontalLayout bottomButtons = new HorizontalLayout(goToCourse, delete);
+        bottomButtons.setWidth("500px");
+        bottomButtons.setSpacing(true);
+        bottomButtons.setComponentAlignment(goToCourse, Alignment.MIDDLE_RIGHT);
+        bottomButtons.setComponentAlignment(delete, Alignment.MIDDLE_LEFT);
+
         HorizontalLayout topLayout = new HorizontalLayout(welcome, logout);
         HorizontalLayout middleLayout = new HorizontalLayout(courseGrid, addCourse);
         topLayout.setWidth("100%");
         topLayout.setComponentAlignment(welcome, Alignment.TOP_LEFT);
         topLayout.setComponentAlignment(logout, Alignment.TOP_RIGHT);
-        VerticalLayout mainLayout = new VerticalLayout(topLayout, middleLayout,hl);
+        VerticalLayout mainLayout = new VerticalLayout(topLayout, middleLayout,bottomButtons);
         mainLayout.setSizeFull();
         mainLayout.setSpacing(true);
         mainLayout.setComponentAlignment(topLayout, Alignment.TOP_CENTER);
-        mainLayout.setComponentAlignment(hl, Alignment.BOTTOM_CENTER);
+        mainLayout.setComponentAlignment(bottomButtons, Alignment.BOTTOM_CENTER);
         mainLayout.setComponentAlignment(middleLayout, Alignment.MIDDLE_CENTER);
         logout.addStyleName("plainbutton");
         goToCourse.addStyleName("alphabutton");
