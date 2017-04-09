@@ -6,6 +6,7 @@ import com.project.backend.Student;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
@@ -47,9 +48,9 @@ public class CourseView extends CustomComponent implements View {
     private void configureComponents(String courseID) {
         goToMain = new Button("Back to main page",
                 (Button.ClickListener) clickEvent -> goToMain());
-        addStudent = new Button("Add Student",
+        addStudent = new Button("",
                 (Button.ClickListener) clickEvent -> goToStudent());
-        editStudent = new Button("Edit selected Student",
+        editStudent = new Button("Edit Student",
                 (Button.ClickListener) clickEvent -> editStudent());
         goToTakeAttendance = new Button("Take Attendance For Today",
                 (Button.ClickListener) clickEvent -> takeAttendance());
@@ -100,23 +101,25 @@ public class CourseView extends CustomComponent implements View {
         topLayout.setComponentAlignment(logout, Alignment.TOP_RIGHT);
         topLayout.setComponentAlignment(goToMain, Alignment.TOP_RIGHT);
         topLayout.addStyleName("topbar");
+        addStudent.setIcon(FontAwesome.PLUS_SQUARE);
+        addStudent.addStyleName("tinybutton");
 
-        HorizontalLayout buttons = new HorizontalLayout(addStudent, editStudent, deleteStudent, goToTakeAttendance);
+        HorizontalLayout buttons = new HorizontalLayout(editStudent, deleteStudent, goToTakeAttendance);
         buttons.setSpacing(true);
         //buttons.setMargin(new MarginInfo(true, true));
-        VerticalLayout mainLayout = new VerticalLayout(buttons, studentGrid);
+        VerticalLayout mainLayout = new VerticalLayout(studentGrid,buttons);
         //mainLayout.setSpacing(true);
-        HorizontalLayout horizontalLayout = new HorizontalLayout(topLayout, mainLayout, popupContent);
+        HorizontalLayout horizontalLayout = new HorizontalLayout(topLayout, mainLayout, addStudent,popupContent);
         //horizontalLayout.setSizeFull();
         //horizontalLayout.setSpacing(true);
         buttons.setComponentAlignment(goToTakeAttendance, Alignment.MIDDLE_CENTER);
-        buttons.setComponentAlignment(addStudent, Alignment.MIDDLE_CENTER);
         buttons.setComponentAlignment(editStudent, Alignment.MIDDLE_CENTER);
         buttons.setComponentAlignment(deleteStudent, Alignment.MIDDLE_CENTER);
         mainLayout.setComponentAlignment(buttons, Alignment.MIDDLE_CENTER);
         mainLayout.setComponentAlignment(studentGrid, Alignment.MIDDLE_CENTER);
         horizontalLayout.setComponentAlignment(mainLayout, Alignment.MIDDLE_CENTER);
         VerticalLayout layout = new VerticalLayout(topLayout, horizontalLayout);
+        layout.setComponentAlignment(horizontalLayout, Alignment.MIDDLE_CENTER);
         setCompositionRoot(layout);
     }
     private void logOut() {
