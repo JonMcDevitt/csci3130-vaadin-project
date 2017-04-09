@@ -7,15 +7,10 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.*;
+
+import javax.swing.*;
 
 public class CourseView extends CustomComponent implements View {
 
@@ -34,6 +29,9 @@ public class CourseView extends CustomComponent implements View {
     private Label courseName;
     private VerticalLayout popupContent;
     private Grid studentGrid = new Grid();
+    private HorizontalLayout topLayout;
+    private Label welcome;
+    private Button logout;
 
     public CourseView() {
     }
@@ -47,12 +45,10 @@ public class CourseView extends CustomComponent implements View {
     }
 
     private void configureComponents(String courseID) {
-    	Course course = DatabaseHandler.getCourseById(courseID);
         goToMain = new Button("Back to main page",
                 (Button.ClickListener) clickEvent -> goToMain());
         addStudent = new Button("Add Student",
                 (Button.ClickListener) clickEvent -> goToStudent());
-        courseName = new Label(course.getCourseName());
         editStudent = new Button("Edit selected Student",
                 (Button.ClickListener) clickEvent -> editStudent());
         goToTakeAttendance = new Button("Take Attendance For Today",
@@ -66,6 +62,8 @@ public class CourseView extends CustomComponent implements View {
         studentGrid.setColumnOrder("id");
         studentGrid.removeColumn("courseList");
         goToTakeAttendance.setId(TAKE_ATTENDANCE_FOR_TODAY_BUTTON_ID);
+        logout = new Button("Log Out", (Button.ClickListener) clickEvent -> logOut());
+        welcome = new Label("<h6>"+DatabaseHandler.getCourseById(courseID).getCourseName()+"</h6>");
     }
 
     private void goToMain() {
@@ -91,25 +89,39 @@ public class CourseView extends CustomComponent implements View {
     }
 
     private void createLayout() {
-    	//
-        HorizontalLayout buttons = new HorizontalLayout(goToMain, addStudent, editStudent, deleteStudent, goToTakeAttendance);
+
+        welcome.setContentMode(ContentMode.HTML);
+        logout.setStyleName("plainbutton");
+        goToMain.addStyleName("plainbutton");
+        topLayout = new HorizontalLayout(welcome, goToMain, logout);
+
+        topLayout.setWidth("100%");
+        topLayout.setComponentAlignment(welcome, Alignment.TOP_LEFT);
+        topLayout.setComponentAlignment(logout, Alignment.TOP_RIGHT);
+        topLayout.setComponentAlignment(goToMain, Alignment.TOP_RIGHT);
+        topLayout.addStyleName("topbar");
+
+        HorizontalLayout buttons = new HorizontalLayout(addStudent, editStudent, deleteStudent, goToTakeAttendance);
         buttons.setSpacing(true);
         //buttons.setMargin(new MarginInfo(true, true));
-        VerticalLayout mainLayout = new VerticalLayout(courseName, buttons, studentGrid);
-        mainLayout.setSpacing(true);
-        HorizontalLayout horizontalLayout = new HorizontalLayout(mainLayout, popupContent);
-        horizontalLayout.setSizeFull();
-        horizontalLayout.setSpacing(true);
+        VerticalLayout mainLayout = new VerticalLayout(buttons, studentGrid);
+        //mainLayout.setSpacing(true);
+        HorizontalLayout horizontalLayout = new HorizontalLayout(topLayout, mainLayout, popupContent);
+        //horizontalLayout.setSizeFull();
+        //horizontalLayout.setSpacing(true);
         buttons.setComponentAlignment(goToTakeAttendance, Alignment.MIDDLE_CENTER);
         buttons.setComponentAlignment(addStudent, Alignment.MIDDLE_CENTER);
         buttons.setComponentAlignment(editStudent, Alignment.MIDDLE_CENTER);
-        buttons.setComponentAlignment(goToMain, Alignment.MIDDLE_CENTER);
         buttons.setComponentAlignment(deleteStudent, Alignment.MIDDLE_CENTER);
-        mainLayout.setComponentAlignment(courseName, Alignment.MIDDLE_CENTER);
         mainLayout.setComponentAlignment(buttons, Alignment.MIDDLE_CENTER);
         mainLayout.setComponentAlignment(studentGrid, Alignment.MIDDLE_CENTER);
         horizontalLayout.setComponentAlignment(mainLayout, Alignment.MIDDLE_CENTER);
-        setCompositionRoot(horizontalLayout);
+        VerticalLayout layout = new VerticalLayout(topLayout, horizontalLayout);
+        setCompositionRoot(layout);
+    }
+    private void logOut() {
+        getUI().getSession().close();
+        getUI().getNavigator().navigateTo(NAME);
     }
 
     @Override

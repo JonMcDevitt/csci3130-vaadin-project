@@ -27,9 +27,9 @@ public class AddCourseInputsView extends Window {
         setModal(true);
         initButtons(courseGrid);
         initInputs();
-        header = new Label("<h1>New Course</h1>");
+        header = new Label("<h1><center>New Course</center></h1>");
         header.setContentMode(ContentMode.HTML);
-        subheader = new Label("<h2>Please enter your course name and code</h2>");
+        subheader = new Label("<h2><center>Please enter your course name and code</center></h2>");
         subheader.setContentMode(ContentMode.HTML);
         HorizontalLayout buttons = new HorizontalLayout(save);
         VerticalLayout layout = new VerticalLayout(header, subheader, inputCourseCode, inputCourseName, buttons);
