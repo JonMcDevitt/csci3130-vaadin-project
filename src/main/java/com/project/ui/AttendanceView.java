@@ -93,7 +93,10 @@ public class AttendanceView extends CustomComponent implements View {
         topLayout.setWidth("100%");
         topLayout.setComponentAlignment(header, Alignment.TOP_LEFT);
         topLayout.setComponentAlignment(logout, Alignment.TOP_RIGHT);
-        topLayout.setComponentAlignment(toCourseViewButton, Alignment.TOP_LEFT);
+        topLayout.setComponentAlignment(toCourseViewButton, Alignment.TOP_RIGHT);
+        topLayout.setExpandRatio(header, 4f);
+        topLayout.setExpandRatio(logout, 1f);
+        topLayout.setExpandRatio(toCourseViewButton, 2f);
         topLayout.addStyleName("topbar");
 
         VerticalLayout layout = new VerticalLayout(topLayout, attendanceGrid, barcodeScannerComponent);
@@ -149,7 +152,7 @@ public class AttendanceView extends CustomComponent implements View {
         String courseCode = course.getCourseCode();
         String courseName = course.getCourseName();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
-        String caption = String.format("<h6>Attendance for: %s - %s on %s</h6>", courseCode, courseName, classDate.format(formatter).toString());
+        String caption = String.format("<h6>Attendance for: <span style=\\\"font-weight:bold\\\">%s</span> - %s on %s</h6>", courseCode, courseName, classDate.format(formatter).toString());
         header= new Label(caption);
         header.setContentMode(ContentMode.HTML);
     }

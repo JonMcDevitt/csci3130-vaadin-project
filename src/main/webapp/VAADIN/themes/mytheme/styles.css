@@ -12999,6 +12999,14 @@ div.v-layout.v-horizontal.v-widget {
 	box-shadow: none;
 }
 
+.mytheme .halfratio {
+	width: 50%;
+}
+
+.mytheme .quarterratio {
+	width: 25%;
+}
+
 .mytheme h1 {
 	font-size: 24px;
 	font-family: Verdana, Geneva, sans-serif;
