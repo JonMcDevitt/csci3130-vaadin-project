@@ -6,16 +6,12 @@ import com.project.backend.Student;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.*;
+
+import javax.swing.*;
 
 public class CourseView extends CustomComponent implements View {
 
@@ -34,6 +30,9 @@ public class CourseView extends CustomComponent implements View {
     private Label courseName;
     private VerticalLayout popupContent;
     private Grid studentGrid = new Grid();
+    private HorizontalLayout topLayout;
+    private Label welcome;
+    private Button logout;
 
     public CourseView() {
     }
@@ -48,12 +47,12 @@ public class CourseView extends CustomComponent implements View {
 
     private void configureComponents(String courseID) {
     	Course course = DatabaseHandler.getInstance().getCourseById(courseID);
+
         goToMain = new Button("Back to main page",
                 (Button.ClickListener) clickEvent -> goToMain());
-        addStudent = new Button("Add Student",
+        addStudent = new Button("",
                 (Button.ClickListener) clickEvent -> goToStudent());
-        courseName = new Label(course.getCourseName());
-        editStudent = new Button("Edit selected Student",
+        editStudent = new Button("Edit Student",
                 (Button.ClickListener) clickEvent -> editStudent());
         goToTakeAttendance = new Button("Take Attendance For Today",
                 (Button.ClickListener) clickEvent -> takeAttendance());
@@ -66,6 +65,8 @@ public class CourseView extends CustomComponent implements View {
         studentGrid.setColumnOrder("id");
         studentGrid.removeColumn("courseList");
         goToTakeAttendance.setId(TAKE_ATTENDANCE_FOR_TODAY_BUTTON_ID);
+        logout = new Button("Log Out", (Button.ClickListener) clickEvent -> logOut());
+        welcome = new Label("<h6>"+DatabaseHandler.getInstance().getCourseById(courseID).getCourseName()+"</h6>");
     }
 
     private void goToMain() {
@@ -91,25 +92,46 @@ public class CourseView extends CustomComponent implements View {
     }
 
     private void createLayout() {
-    	//
-        HorizontalLayout buttons = new HorizontalLayout(goToMain, addStudent, editStudent, deleteStudent, goToTakeAttendance);
+
+        welcome.setContentMode(ContentMode.HTML);
+        logout.setStyleName("plainbutton");
+        goToMain.addStyleName("plainbutton");
+        topLayout = new HorizontalLayout(welcome, goToMain, logout);
+
+        topLayout.setWidth("100%");
+        topLayout.setComponentAlignment(welcome, Alignment.TOP_LEFT);
+        topLayout.setComponentAlignment(logout, Alignment.TOP_RIGHT);
+        topLayout.setComponentAlignment(goToMain, Alignment.TOP_RIGHT);
+        topLayout.addStyleName("topbar");
+        topLayout.setExpandRatio(welcome, 4f);
+        topLayout.setExpandRatio(logout, 1f);
+        topLayout.setExpandRatio(goToMain, 2f);
+        addStudent.setIcon(FontAwesome.PLUS_SQUARE);
+        addStudent.addStyleName("tinybutton");
+
+        HorizontalLayout buttons = new HorizontalLayout(editStudent, deleteStudent, goToTakeAttendance);
         buttons.setSpacing(true);
         //buttons.setMargin(new MarginInfo(true, true));
-        VerticalLayout mainLayout = new VerticalLayout(courseName, buttons, studentGrid);
+        VerticalLayout mainLayout = new VerticalLayout(studentGrid,buttons);
+        //mainLayout.setSpacing(true);
+        HorizontalLayout horizontalLayout = new HorizontalLayout(topLayout, mainLayout, addStudent,popupContent);
         mainLayout.setSpacing(true);
-        HorizontalLayout horizontalLayout = new HorizontalLayout(mainLayout, popupContent);
-        horizontalLayout.setSizeFull();
-        horizontalLayout.setSpacing(true);
+        //horizontalLayout.setSizeFull();
+        //horizontalLayout.setSpacing(true);
         buttons.setComponentAlignment(goToTakeAttendance, Alignment.MIDDLE_CENTER);
-        buttons.setComponentAlignment(addStudent, Alignment.MIDDLE_CENTER);
         buttons.setComponentAlignment(editStudent, Alignment.MIDDLE_CENTER);
-        buttons.setComponentAlignment(goToMain, Alignment.MIDDLE_CENTER);
         buttons.setComponentAlignment(deleteStudent, Alignment.MIDDLE_CENTER);
-        mainLayout.setComponentAlignment(courseName, Alignment.MIDDLE_CENTER);
         mainLayout.setComponentAlignment(buttons, Alignment.MIDDLE_CENTER);
         mainLayout.setComponentAlignment(studentGrid, Alignment.MIDDLE_CENTER);
         horizontalLayout.setComponentAlignment(mainLayout, Alignment.MIDDLE_CENTER);
-        setCompositionRoot(horizontalLayout);
+        horizontalLayout.setComponentAlignment(popupContent, Alignment.MIDDLE_CENTER);
+        VerticalLayout layout = new VerticalLayout(topLayout, horizontalLayout);
+        layout.setComponentAlignment(horizontalLayout, Alignment.MIDDLE_CENTER);
+        setCompositionRoot(layout);
+    }
+    private void logOut() {
+        getUI().getSession().close();
+        getUI().getNavigator().navigateTo(NAME);
     }
 
     @Override
@@ -122,9 +144,11 @@ public class CourseView extends CustomComponent implements View {
 
         //TextField id = new TextField("ID");
         TextField barcode = new TextField("Barcode");
+        barcode.addStyleName("spacer-bot");
         TextField fname = new TextField("First Name");
+        fname.addStyleName("spacer-bot");
         TextField lname = new TextField("Last Name");
-
+        lname.addStyleName("spacer-bot");
         //popupContent.addComponent(id);
         popupContent.addComponent(barcode);
         popupContent.addComponent(fname);
@@ -137,6 +161,8 @@ public class CourseView extends CustomComponent implements View {
 
         popButtons.addComponent(saveButton);
         popButtons.addComponent(cancelButton);
+        popButtons.setSpacing(true);
+
         popupContent.addComponent(popButtons);
         popupContent.setVisible(false);
     }
@@ -153,8 +179,11 @@ public class CourseView extends CustomComponent implements View {
     }
 
     private void deleteStudent(String courseID) {
-        if (studentGrid.getSelectedRow() != null) {
-            currStudent = (Student) studentGrid.getSelectedRow();
+        currStudent = (Student) studentGrid.getSelectedRow();
+        if(currStudent!=null){
+        	DatabaseHandler.getInstance().removeStudent(courseID, currStudent.getId());
+        	getUI().getNavigator().addView(CourseView.NAME, new CourseView(courseID));
+        	getUI().getNavigator().navigateTo(CourseView.NAME);
         }
         DatabaseHandler.getInstance().removeStudent(courseID, currStudent.getId());
         getUI().getNavigator().addView(CourseView.NAME, new CourseView(courseID));

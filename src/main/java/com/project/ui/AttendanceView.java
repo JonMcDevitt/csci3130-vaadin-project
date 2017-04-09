@@ -17,6 +17,7 @@ package com.project.ui;
 import static java.util.stream.Collectors.groupingBy;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
@@ -34,12 +35,8 @@ import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.*;
 
 public class AttendanceView extends CustomComponent implements View {
     private static final long serialVersionUID = 8909424502341897571L;
@@ -51,13 +48,16 @@ public class AttendanceView extends CustomComponent implements View {
     private IndexedContainer attendanceRecords;
     private Map<String, List<Item>> barcodeToItemMap;
 
-    private static final String BACK_BUTTON_ID = "backButton";
+    //private static final String BACK_BUTTON_ID = "backButton";
 
     private static final String FIRST_NAME = "First Name";
     private static final String LAST_NAME = "Last Name";
     private static final String BANNER_NUMBER = "Banner Number";
     private static final String BARCODE = "Barcode";
     private static final String STATUS = "Attendance Status";
+    private HorizontalLayout topLayout;
+    private Button logout;
+    Label header;
 
     AttendanceView() {}
     
@@ -71,8 +71,7 @@ public class AttendanceView extends CustomComponent implements View {
 
         // creates all components used in view
         Grid attendanceGrid = new Grid();
-        toCourseViewButton = new Button();
-        Label header = new Label();
+
         BarcodeScannerComponent barcodeScannerComponent = new BarcodeScannerComponent();
 
         attendanceRecords = makeAttendanceRecordContainer(classDate, course);
@@ -85,20 +84,30 @@ public class AttendanceView extends CustomComponent implements View {
         });
 
         // configures components
+        logout = new Button("Log Out", (Button.ClickListener) clickEvent -> logOut());
+        logout.setStyleName("plainbutton");
         configureAttendanceGrid(attendanceGrid);
-        configureLabel(header, classDate);
+        configureLabel(classDate);
         configureBackButton();
 
-        VerticalLayout layout = new VerticalLayout(header, attendanceGrid, barcodeScannerComponent, toCourseViewButton);
-        layout.setMargin(true);
+        topLayout = new HorizontalLayout(header, toCourseViewButton, logout);
+
+        topLayout.setWidth("100%");
+        topLayout.setComponentAlignment(header, Alignment.TOP_LEFT);
+        topLayout.setComponentAlignment(logout, Alignment.TOP_RIGHT);
+        topLayout.setComponentAlignment(toCourseViewButton, Alignment.TOP_RIGHT);
+        topLayout.setExpandRatio(header, 4f);
+        topLayout.setExpandRatio(logout, 1f);
+        topLayout.setExpandRatio(toCourseViewButton, 2f);
+        topLayout.addStyleName("topbar");
+
+        VerticalLayout layout = new VerticalLayout(topLayout, attendanceGrid, barcodeScannerComponent);
 
         // adds components to layout and alligns them.
         layout.setSizeFull();
         layout.setSpacing(true);
-        layout.setComponentAlignment(header, Alignment.MIDDLE_CENTER);
         layout.setComponentAlignment(attendanceGrid, Alignment.MIDDLE_CENTER);
         layout.setComponentAlignment(barcodeScannerComponent, Alignment.MIDDLE_CENTER);
-        layout.setComponentAlignment(toCourseViewButton, Alignment.MIDDLE_CENTER);
         setCompositionRoot(layout);
     }
 
@@ -113,7 +122,7 @@ public class AttendanceView extends CustomComponent implements View {
         attendanceGrid.getColumn(BARCODE).setEditable(false);
         attendanceGrid.getEditorFieldGroup().addCommitHandler(new FieldGroup.CommitHandler() {
 
-        	
+
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -133,18 +142,22 @@ public class AttendanceView extends CustomComponent implements View {
 
     // configures back button, if clicked it will go to course view
     private void configureBackButton() {
-        toCourseViewButton.setId(BACK_BUTTON_ID);
-        toCourseViewButton.setCaption("Back to Course View");
+       // toCourseViewButton.setId(BACK_BUTTON_ID);
+        toCourseViewButton = new Button("Back to Course View");
         toCourseViewButton.addClickListener(e -> getUI().setContent(new CourseView(course.getCourseCode())));
+        toCourseViewButton.setStyleName("plainbutton");
     }
 
     // Configures label, it displays "courseCode - courseName" at the top of the
     // view
-    private void configureLabel(Label label, LocalDateTime classDate) {
+    private void configureLabel(LocalDateTime classDate) {
         String courseCode = course.getCourseCode();
         String courseName = course.getCourseName();
-        String caption = String.format("Attendance for: %s - %s on %s", courseCode, courseName, classDate.toString());
-        label.setCaption(caption);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+        String caption = String.format("<h6>Attendance for: <span style=\"font-weight:bold\">%s - %s</span> on %s</h6>",
+                courseCode, courseName, classDate.format(formatter).toString());
+        header= new Label(caption);
+        header.setContentMode(ContentMode.HTML);
     }
 
     // sets the content of each grid. If the students are coming from the absent
@@ -222,6 +235,12 @@ public class AttendanceView extends CustomComponent implements View {
         if (course == null) {
             getUI().getNavigator().navigateTo(MainMenuView.NAME);
         }
+    }
+
+
+    private void logOut() {
+        getUI().getSession().close();
+        getUI().getNavigator().navigateTo(MainMenuView.NAME);
     }
 
 }

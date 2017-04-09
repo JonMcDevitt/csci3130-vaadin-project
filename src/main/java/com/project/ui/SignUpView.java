@@ -13,17 +13,8 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Layout;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.PasswordField;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
 
 /**
@@ -46,6 +37,8 @@ public class SignUpView extends CustomComponent implements View {
     private final Button clearButton;
     private final Button cancelButton;
     private final List<Component> components;
+    private Label header;
+    private Label subheader;
 
     SignUpView() {
         //setSizeFull();
@@ -197,11 +190,21 @@ public class SignUpView extends CustomComponent implements View {
         fields.setSpacing(true);
         fields.setWidth("400px");
         fields.setMargin(new MarginInfo(true, true, true, true));
-        VerticalLayout viewLayout = new VerticalLayout(fields);
-        viewLayout.setStyleName(Reindeer.LAYOUT_BLACK);
+
+
+        header = new Label("<h1><center>Sign up for AlphaScanner</center></h1>");
+        header.setContentMode(ContentMode.HTML);
+        header.addStyleName("spacer-left");
+        subheader = new Label("<h2><center>Please enter the required information</center></h2>");
+        subheader.setContentMode(ContentMode.HTML);
+        subheader.addStyleName("spacer-left");
+
+        VerticalLayout viewLayout = new VerticalLayout(header, subheader, fields);
         viewLayout.setStyleName("centre-panel", true);
         viewLayout.setSizeFull();
         viewLayout.setComponentAlignment(fields, Alignment.MIDDLE_CENTER);
+
+
         return viewLayout;
     }
 

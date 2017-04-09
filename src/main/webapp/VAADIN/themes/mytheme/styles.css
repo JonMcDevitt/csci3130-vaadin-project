@@ -12986,11 +12986,16 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .v-grid-row-selected > .v-grid-cell {
-	background-color: #93B5D5;
+	background-color: #ddbebe;
 	background-image: none;
-	color: #FDFDFD;
+	color: #0C0C0C;
+	box-shadow: none;
 	text-shadow: none;
 	border: none;
+}
+
+.mytheme .v-grid-cell-focused:before {
+	display: none !important;
 }
 
 .mytheme .v-button:focus:after {
@@ -12999,10 +13004,29 @@ div.v-layout.v-horizontal.v-widget {
 	box-shadow: none;
 }
 
+.mytheme h1 {
+	font-size: 24px;
+	font-family: Verdana, Geneva, sans-serif;
+	font-weight: bold;
+	color: #2F3535;
+	padding: 0px;
+	margin: 12px;
+}
+
+.mytheme h2 {
+	font-size: 18px;
+	font-family: Verdana, Geneva, sans-serif;
+	font-weight: normal;
+	color: #2F3535;
+	padding: 0px;
+	margin: 12px;
+}
+
 .mytheme h6 {
 	font-size: 16px;
 	font-family: Verdana, Geneva, sans-serif;
 	font-weight: normal;
+	color: #F9F9F9;
 	padding: 0px;
 	margin: 0px;
 }
@@ -13113,6 +13137,14 @@ div.v-layout.v-horizontal.v-widget {
 	margin-top: 12px;
 }
 
+.mytheme .spacer-bot {
+	margin-bottom: 12px;
+}
+
+.mytheme .spacer-left {
+	margin-left: 48px;
+}
+
 .mytheme .topbar {
 	font-family: Verdana, Geneva, sans-serif;
 	padding-top: 10px;
@@ -13138,4 +13170,5 @@ div.v-layout.v-horizontal.v-widget {
 	background-image: none;
 	background-origin: border-box;
 	color: #AD5D5E;
+	box-shadow: none;
 }

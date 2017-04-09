@@ -9,14 +9,8 @@ import com.project.backend.Student;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Layout;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
 
 /*
@@ -39,6 +33,9 @@ public class NewStudentView extends CustomComponent implements View {
     private Button cancelButton;
     private List<Component> components;
 
+    private Label header;
+    private Label subheader;
+
     public NewStudentView() {
     }
 
@@ -48,7 +45,9 @@ public class NewStudentView extends CustomComponent implements View {
 
         configureComponents();
         configureActions(courseID);
-        setCompositionRoot(createLayout());
+        VerticalLayout layout = new VerticalLayout(createLayout());
+        layout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+        setCompositionRoot(layout);
     }
 
     private void configureComponents() {
@@ -107,17 +106,27 @@ public class NewStudentView extends CustomComponent implements View {
     }
 
     private Layout createLayout() {
+        header = new Label("<h1><center>New Student</center></h1>");
+        header.setContentMode(ContentMode.HTML);
+        subheader = new Label("<h2><center>Please enter the student's information</center></h2>");
+        subheader.setContentMode(ContentMode.HTML);
         HorizontalLayout buttons = new HorizontalLayout(
                 addButton, clearButton, cancelButton);
         buttons.setSpacing(true);
         buttons.setMargin(new MarginInfo(true, true));
         VerticalLayout fields = new VerticalLayout(
-                id, firstName, lastName, barcode, buttons);
+                header, subheader, id, firstName, lastName, barcode, buttons);
         fields.setSpacing(true);
         fields.setMargin(new MarginInfo(true, true, true, true));
         fields.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
         VerticalLayout viewLayout = new VerticalLayout(fields);
         viewLayout.setSizeFull();
+        fields.setComponentAlignment(id, Alignment.MIDDLE_CENTER);
+        fields.setComponentAlignment(firstName, Alignment.MIDDLE_CENTER);
+        fields.setComponentAlignment(id, Alignment.MIDDLE_CENTER);
+        fields.setComponentAlignment(lastName, Alignment.MIDDLE_CENTER);
+        fields.setComponentAlignment(barcode, Alignment.MIDDLE_CENTER);
+        fields.setComponentAlignment(buttons, Alignment.MIDDLE_CENTER);
         viewLayout.setComponentAlignment(fields, Alignment.MIDDLE_CENTER);
         viewLayout.setStyleName(Reindeer.LAYOUT_BLACK);
         return viewLayout;
