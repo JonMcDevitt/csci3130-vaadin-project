@@ -85,20 +85,11 @@ public class CourseView extends CustomComponent implements View {
 
 			@Override
 			public void preCommit(CommitEvent commitEvent) throws CommitException {
-				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
 			public void postCommit(CommitEvent commitEvent) throws CommitException {
-				// TODO Auto-generated method stu
-				//System.out.println(studentGrid.getSelectedRow().toString());
-				//studentGrid.getColumn("studentID").studentGrid.;
-				//System.out.println(e);
-			
-				//System.out.println(newId);
 			}
-    		
     	});
     }
 
