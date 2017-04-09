@@ -101,6 +101,9 @@ public class CourseView extends CustomComponent implements View {
         topLayout.setComponentAlignment(logout, Alignment.TOP_RIGHT);
         topLayout.setComponentAlignment(goToMain, Alignment.TOP_RIGHT);
         topLayout.addStyleName("topbar");
+        topLayout.setExpandRatio(welcome, 4f);
+        topLayout.setExpandRatio(logout, 1f);
+        topLayout.setExpandRatio(goToMain, 2f);
         addStudent.setIcon(FontAwesome.PLUS_SQUARE);
         addStudent.addStyleName("tinybutton");
 

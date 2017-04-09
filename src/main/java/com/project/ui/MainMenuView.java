@@ -89,6 +89,8 @@ public class MainMenuView extends CustomComponent implements View {
         topLayout.setWidth("100%");
         topLayout.setComponentAlignment(welcome, Alignment.TOP_LEFT);
         topLayout.setComponentAlignment(logout, Alignment.TOP_RIGHT);
+        topLayout.setExpandRatio(welcome, 1f);
+        topLayout.setExpandRatio(logout, 1f);
         VerticalLayout mainLayout = new VerticalLayout(topLayout, middleLayout,bottomButtons);
         mainLayout.setSizeFull();
         mainLayout.setSpacing(true);
