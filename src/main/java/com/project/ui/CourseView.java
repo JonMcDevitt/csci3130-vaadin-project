@@ -1,9 +1,16 @@
 package com.project.ui;
 
+import com.project.backend.AttendanceRecord;
+import com.project.backend.AttendanceTable;
 import com.project.backend.Course;
 import com.project.backend.DatabaseHandler;
 import com.project.backend.Student;
+import com.vaadin.data.Item;
+import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.data.fieldgroup.FieldGroup.CommitEvent;
+import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
@@ -62,9 +69,37 @@ public class CourseView extends CustomComponent implements View {
         studentGrid.setContainerDataSource(new BeanItemContainer<>(Student.class, DatabaseHandler.getCourseStudents(courseID)));
         studentGrid.setColumnOrder("id");
         studentGrid.removeColumn("courseList");
+        studentGrid.setWidth("700px");
+        editStudentGrid(studentGrid);
         goToTakeAttendance.setId(TAKE_ATTENDANCE_FOR_TODAY_BUTTON_ID);
         logout = new Button("Log Out", (Button.ClickListener) clickEvent -> logOut());
         welcome = new Label("<h6>"+DatabaseHandler.getCourseById(courseID).getCourseName()+"</h6>");
+    }
+    
+    private void editStudentGrid(Grid studentGrid){
+    	studentGrid.setEditorEnabled(true);
+    	studentGrid.setEditorSaveCaption("Save");
+    	studentGrid.getEditorFieldGroup().addCommitHandler(new FieldGroup.CommitHandler(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void preCommit(CommitEvent commitEvent) throws CommitException {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void postCommit(CommitEvent commitEvent) throws CommitException {
+				// TODO Auto-generated method stu
+				//System.out.println(studentGrid.getSelectedRow().toString());
+				//studentGrid.getColumn("studentID").studentGrid.;
+				//System.out.println(e);
+			
+				//System.out.println(newId);
+			}
+    		
+    	});
     }
 
     private void goToMain() {
