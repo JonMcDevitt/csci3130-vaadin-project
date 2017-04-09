@@ -12985,6 +12985,14 @@ div.v-layout.v-horizontal.v-widget {
 	overflow: hidden;
 }
 
+.mytheme .v-grid-row-selected > .v-grid-cell {
+	background-color: #93B5D5;
+	background-image: none;
+	color: #FDFDFD;
+	text-shadow: none;
+	border: none;
+}
+
 .mytheme .v-button:focus:after {
 	border: none;
 	-webkit-box-shadow: none;

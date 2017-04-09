@@ -34,6 +34,16 @@
 @mixin mytheme {
   @include valo;
 
+  .v-grid-row-selected > .v-grid-cell {
+    background-color: #93B5D5;
+    /*background-image: -webkit-linear-gradient(top, #AD5D5E 2%, #AD5D5E 98%);*/
+    /*background-image: linear-gradient(to bottom,#AD5D5E 2%, #AD5D5E 98%);*/
+    background-image: none;
+    color: #FDFDFD;
+    text-shadow: none;
+    border: none;
+}
+
   .v-button:focus:after {
     border: none;
     -webkit-box-shadow: none;
