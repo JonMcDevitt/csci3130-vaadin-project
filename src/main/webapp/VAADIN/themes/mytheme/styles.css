@@ -12986,25 +12986,22 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .v-grid-row-selected > .v-grid-cell {
-	background-color: #93B5D5;
+	background-color: #ddbebe;
 	background-image: none;
-	color: #FDFDFD;
+	color: #0C0C0C;
+	box-shadow: none;
 	text-shadow: none;
 	border: none;
+}
+
+.mytheme .v-grid-cell-focused:before {
+	display: none !important;
 }
 
 .mytheme .v-button:focus:after {
 	border: none;
 	-webkit-box-shadow: none;
 	box-shadow: none;
-}
-
-.mytheme .halfratio {
-	width: 50%;
-}
-
-.mytheme .quarterratio {
-	width: 25%;
 }
 
 .mytheme h1 {
@@ -13173,4 +13170,5 @@ div.v-layout.v-horizontal.v-widget {
 	background-image: none;
 	background-origin: border-box;
 	color: #AD5D5E;
+	box-shadow: none;
 }
