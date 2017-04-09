@@ -17,6 +17,7 @@ package com.project.ui;
 import static java.util.stream.Collectors.groupingBy;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
@@ -147,7 +148,8 @@ public class AttendanceView extends CustomComponent implements View {
     private void configureLabel(LocalDateTime classDate) {
         String courseCode = course.getCourseCode();
         String courseName = course.getCourseName();
-        String caption = String.format("<h6>Attendance for: %s - %s on %s</h6>", courseCode, courseName, classDate.toString());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+        String caption = String.format("<h6>Attendance for: %s - %s on %s</h6>", courseCode, courseName, classDate.format(formatter).toString());
         header= new Label(caption);
         header.setContentMode(ContentMode.HTML);
     }
