@@ -138,7 +138,7 @@ public class LoginView extends CustomComponent implements View {
         VerticalLayout buttons = new VerticalLayout(loginButton, signUpButton);
         //buttons.addStyleName("margintop");
         //buttons.setMargin(true);
-         buttons.setSpacing(true);
+        //buttons.setSpacing(true);
        // buttons.setMargin(new MarginInfo(true, false));
         FormLayout fields = new FormLayout(image, emailTextField, tmpPassword, buttons);
         tmpPassword.addFocusListener(new FocusListener(){
@@ -169,8 +169,10 @@ public class LoginView extends CustomComponent implements View {
     }
 
     private void initStyles(){
-        signUpButton.addStyleName("alphabutton");
-        loginButton.addStyleName("alphabutton");
+
+        signUpButton.addStyleName("spacer");
+
+        loginButton.addStyleName("spacer");
     }
 
     @Override
@@ -180,6 +182,11 @@ public class LoginView extends CustomComponent implements View {
                     "test@test.com", "p4ssw0rd", "La",
                     "Tester", "Computer Science"
             );
+            DatabaseHandler.addUser(
+                    "a@a.ca", "a", "LaDeletMe",
+                    "Tester", "Computer Science"
+            );
+
         }
        // emailTextField.focus();
     }

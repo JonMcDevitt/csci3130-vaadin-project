@@ -12985,9 +12985,27 @@ div.v-layout.v-horizontal.v-widget {
 	overflow: hidden;
 }
 
-.mytheme .v-button-alphabutton {
+.mytheme .centered {
+	align-content: center;
+}
+
+.mytheme .v-button:focus:after {
+	border: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+.mytheme h6 {
+	font-size: 16px;
+	font-family: Verdana, Geneva, sans-serif;
+	font-weight: normal;
+	padding: 0px;
+	margin: 0px;
+}
+
+.mytheme .v-button {
 	color: #F9F9F9;
-	background-color: #B93A33;
+	background-color: #AD5D5E;
 	background-image: none;
 	font-size: 16px;
 	font-family: Verdana, Geneva, sans-serif;
@@ -12999,12 +13017,104 @@ div.v-layout.v-horizontal.v-widget {
 	border: none;
 }
 
+.mytheme .v-button:hover {
+	background-color: #9b5757;
+	border: none;
+}
+
+.mytheme .v-button:focus {
+	background-image: none;
+	background-color: #AD5D5E;
+	outline: none;
+	border: none;
+}
+
+.mytheme .v-button:active {
+	background-image: none;
+	background-color: #AD5D5E;
+	outline: none;
+	border: none;
+}
+
+.mytheme .v-button-alphabutton {
+	color: #F9F9F9;
+	background-color: #AD5D5E;
+	background-image: none;
+	font-size: 16px;
+	font-family: Verdana, Geneva, sans-serif;
+	position: relative;
+	text-align: center;
+	white-space: nowrap;
+	outline: none;
+	cursor: pointer;
+	border: none;
+}
+
+.mytheme .v-button-plainbutton {
+	color: #F9F9F9;
+	background-color: transparent;
+	background-image: none;
+	box-shadow: none;
+	font-size: 16px;
+	font-family: Verdana, Geneva, sans-serif;
+	position: relative;
+	text-align: center;
+	white-space: nowrap;
+	outline: none;
+	cursor: pointer;
+	border: none;
+	height: inherit;
+}
+
+.mytheme .v-button-tinybutton {
+	color: #AD5D5E;
+	background-image: none;
+	background-color: transparent;
+	box-shadow: none;
+	font-size: 16px;
+	font-family: Verdana, Geneva, sans-serif;
+	position: relative;
+	text-align: center;
+	white-space: nowrap;
+	outline: none;
+	cursor: pointer;
+	border: none;
+	height: inherit;
+	width: inherit;
+	vertical-align: middle;
+}
+
+.mytheme .v-button-tinybutton:hover {
+	background-color: transparent;
+	color: #AD5D5E;
+}
+
+.mytheme .v-button-tinybutton:focus {
+	background-color: transparent;
+	color: #AD5D5E;
+}
+
+.mytheme .v-button-tinybutton:active {
+	background-color: transparent;
+	color: #AD5D5E;
+}
+
 .mytheme .v-verticallayout-background {
 	background: #F9F9F9;
 }
 
-.mytheme .margintop {
-	margin-top: 32px;
+.mytheme .spacer {
+	margin-top: 12px;
+}
+
+.mytheme .topbar {
+	font-family: Verdana, Geneva, sans-serif;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 10px;
+	background-color: #AD5D5E;
+	color: #F9F9F9;
+	margin-bottom: 30px;
 }
 
 .mytheme .v-formlayout-formBackground {
@@ -13015,4 +13125,11 @@ div.v-layout.v-horizontal.v-widget {
 	background: #F9F9F9;
 	color: #101920;
 	font-family: Verdana, Geneva, sans-serif;
+}
+
+.mytheme .v-table .v-selected[class*="-row"] {
+	background-color: #AD5D5E;
+	background-image: none;
+	background-origin: border-box;
+	color: #AD5D5E;
 }

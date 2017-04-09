@@ -65,7 +65,6 @@ public class SignUpView extends CustomComponent implements View {
 
         configureComponents();
         configureActions();
-        initStyles();
         setCompositionRoot(createLayout());
     }
 
@@ -115,11 +114,6 @@ public class SignUpView extends CustomComponent implements View {
         cancelButton.addClickListener((Button.ClickListener) clickEvent -> cancel());
     }
 
-    private void initStyles(){
-        signUpButton.addStyleName("alphabutton");
-        clearButton.addStyleName("alphabutton");
-        cancelButton.addStyleName("alphabutton");
-    }
 
     private void cancel() {
         this.getUI().setContent(new LoginView());

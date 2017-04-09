@@ -97,12 +97,7 @@ public class AttendanceView extends CustomComponent implements View {
         layout.setComponentAlignment(attendanceGrid, Alignment.MIDDLE_CENTER);
         layout.setComponentAlignment(barcodeScannerComponent, Alignment.MIDDLE_CENTER);
         layout.setComponentAlignment(toCourseViewButton, Alignment.MIDDLE_CENTER);
-        initStyles();
         setCompositionRoot(layout);
-    }
-
-    private void initStyles(){
-        toCourseViewButton.addStyleName("alphabutton");
     }
 
     // configures grid, sets to width to 100%

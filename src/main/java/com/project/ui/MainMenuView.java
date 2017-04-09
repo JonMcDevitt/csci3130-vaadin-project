@@ -14,6 +14,7 @@ import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
@@ -41,7 +42,7 @@ public class MainMenuView extends CustomComponent implements View {
     public static final String COURSE_GRID_ID = "courseGrid";
     private static final String GO_TO_COURSE_BUTTON_ID = "goToCourseButton";
 
-    private Label welcome = new Label();
+    private Label welcome;
     private Grid courseGrid = new Grid();
     private Button addCourse;
     private Button goToCourse;
@@ -62,39 +63,39 @@ public class MainMenuView extends CustomComponent implements View {
 
         logout = new Button("Log Out", (Button.ClickListener) clickEvent -> logOut());
 
+        welcome = new Label();
         // goToCourse button is for resetting the UI. selectedCourse is passed
         // in as a parameter for the
         // use of it's attributes in CourseView
         goToCourse = new Button("Go To Course", (Button.ClickListener) clickEvent -> goToCourse());
 
         addCourse = new Button("", (Button.ClickListener) clickEvent -> addCourse());
-        addCourse.setIcon(FontAwesome.PLUS);
+        addCourse.setIcon(FontAwesome.PLUS_SQUARE);
+        addCourse.addStyleName("tinybutton");
         delete = new Button("Delete", (ClickListener) clickEvent -> delete());
         if(selectedCourse==null){
         	delete.setEnabled(false);
         	goToCourse.setEnabled(false);
         }
-        initStyles();
+
         HorizontalLayout hl = new HorizontalLayout(goToCourse, delete);
         hl.setSpacing(true);
         HorizontalLayout topLayout = new HorizontalLayout(welcome, logout);
         HorizontalLayout middleLayout = new HorizontalLayout(courseGrid, addCourse);
-        topLayout.setComponentAlignment(welcome, Alignment.TOP_CENTER);
-        topLayout.setComponentAlignment(logout, Alignment.TOP_CENTER);
+        topLayout.setWidth("100%");
+        topLayout.setComponentAlignment(welcome, Alignment.TOP_LEFT);
+        topLayout.setComponentAlignment(logout, Alignment.TOP_RIGHT);
         VerticalLayout mainLayout = new VerticalLayout(topLayout, middleLayout,hl);
         mainLayout.setSizeFull();
         mainLayout.setSpacing(true);
         mainLayout.setComponentAlignment(topLayout, Alignment.TOP_CENTER);
         mainLayout.setComponentAlignment(hl, Alignment.BOTTOM_CENTER);
         mainLayout.setComponentAlignment(middleLayout, Alignment.MIDDLE_CENTER);
-        setCompositionRoot(mainLayout);
-
-    }
-
-    private void initStyles(){
-        logout.addStyleName("alphabutton");
+        logout.addStyleName("plainbutton");
         goToCourse.addStyleName("alphabutton");
         delete .addStyleName("alphabutton");
+        topLayout.addStyleName("topbar");
+        setCompositionRoot(mainLayout);
     }
 
     private void addCourse() {
@@ -148,8 +149,8 @@ public class MainMenuView extends CustomComponent implements View {
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
         String email = String.valueOf(getSession().getAttribute("user"));
         String firstName = DatabaseHandler.getUserById(email).getFirstName();
-        welcome.setValue("Welcome, " + firstName + ", to Alpha Scanner!");
-
+        welcome.setContentMode(ContentMode.HTML);
+        welcome.setValue("<h6>Welcome, <span style=\"font-weight:bold\">" + firstName + "</span>, to Alpha Scanner!</h6>");
         courseGrid.setContainerDataSource(new BeanItemContainer<>(Course.class, DatabaseHandler.getAllCourses()));
         courseGrid.removeColumn("studentRoster");
         courseGrid.removeColumn("attendance");

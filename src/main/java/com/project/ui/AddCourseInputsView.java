@@ -18,19 +18,16 @@ public class AddCourseInputsView extends Window {
     public AddCourseInputsView(List<Course> courseList, Grid courseGrid) {
         super();
         center();
-
+        this.setWidth("400px");
+        this.setHeight("400px");
         setClosable(true);
         setModal(true);
-
         initButtons(courseGrid);
         initInputs();
-        initStyles();
-
-        /** TODO:   Make all this pretty
-         * */
         HorizontalLayout buttons = new HorizontalLayout(save);
         VerticalLayout layout = new VerticalLayout(inputCourseCode, inputCourseName, buttons);
         setContent(layout);
+
     }
 
     private void initButtons(Grid courseGrid) {
@@ -70,11 +67,9 @@ public class AddCourseInputsView extends Window {
     private void initInputs() {
         inputCourseCode = new TextField();
         inputCourseCode.setInputPrompt("Course Code (e.g. CSCI 1101)");
+        inputCourseCode.setWidth("300px");
         inputCourseName = new TextField();
+        inputCourseName.setWidth("300px");
         inputCourseName.setInputPrompt("Course Name (e.g. Software Engineering)");
-    }
-
-    private void initStyles(){
-        save.addStyleName("alphabutton");
     }
 }

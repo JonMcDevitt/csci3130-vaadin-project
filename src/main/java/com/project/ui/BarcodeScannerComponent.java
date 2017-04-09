@@ -63,15 +63,8 @@ public class BarcodeScannerComponent extends CustomComponent {
         verticalLayout.addComponents(textField, horizontalLayout);
 
         callbackOptional = Optional.empty();
-        initStyles();
         setCompositionRoot(verticalLayout);
         setSizeUndefined();
-    }
-
-    private void initStyles() {
-        textField.addStyleName("alphabutton");
-        activateButton.addStyleName("alphabutton");
-        deactivateButton.addStyleName("alphabutton");
     }
 
     //Sets up the textfield, and toggle the component to be deactivated if focus is lost.

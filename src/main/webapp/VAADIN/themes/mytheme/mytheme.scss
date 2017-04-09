@@ -34,9 +34,25 @@
 @mixin mytheme {
   @include valo;
 
-  .v-button-alphabutton {
+
+  .v-button:focus:after {
+    border: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+
+h6{
+  font-size:16px;
+  font-family: Verdana,Geneva,sans-serif;
+  font-weight: normal;
+  padding: 0px;
+  margin: 0px;
+}
+
+
+  .v-button {
     color: #F9F9F9;
-    background-color: #B93A33;
+    background-color: #AD5D5E;
     background-image: none;
     font-size:16px;
     font-family: Verdana,Geneva,sans-serif;
@@ -48,13 +64,107 @@
     border:none;
   }
 
+  .v-button:hover {
+    background-color: #9b5757;
+
+    border:none;
+  }
+  .v-button:focus {
+    background-image: none;
+    background-color: #AD5D5E;
+    outline: none;
+    border:none;
+  }
+
+  .v-button:active {
+    background-image: none;
+    background-color: #AD5D5E;
+    outline: none;
+    border:none;
+  }
+
+
+
+  .v-button-alphabutton {
+    color: #F9F9F9;
+    background-color: #AD5D5E;
+    background-image: none;
+    font-size:16px;
+    font-family: Verdana,Geneva,sans-serif;
+    position: relative;
+    text-align: center;
+    white-space: nowrap;
+    outline: none;
+    cursor: pointer;
+    border:none;
+  }
+
+  .v-button-plainbutton {
+    color: #F9F9F9;
+    background-color: transparent;
+    background-image: none;
+    box-shadow: none;
+    font-size:16px;
+    font-family: Verdana,Geneva,sans-serif;
+    position: relative;
+    text-align: center;
+    white-space: nowrap;
+    outline: none;
+    cursor: pointer;
+    border:none;
+    height: inherit;
+  }
+
+  .v-button-tinybutton {
+    color: #AD5D5E;
+    background-image: none;
+    background-color: transparent;
+    box-shadow: none;
+    font-size:16px;
+    font-family: Verdana,Geneva,sans-serif;
+    position: relative;
+    text-align: center;
+    white-space: nowrap;
+    outline: none;
+    cursor: pointer;
+    border:none;
+    height: inherit;
+    width: inherit;
+    vertical-align: middle;
+  }
+
+  .v-button-tinybutton:hover {
+    background-color: transparent;
+    color: #AD5D5E;
+  }
+
+  .v-button-tinybutton:focus {
+    background-color: transparent;
+    color: #AD5D5E;
+  }
+  .v-button-tinybutton:active {
+    background-color: transparent;
+    color: #AD5D5E;
+  }
+
   .v-verticallayout-background {
     background: #F9F9F9;
   }
  
- .margintop{
- 	margin-top: 32px;
+ .spacer{
+ 	margin-top: 12px;
  }
+
+  .topbar{
+    font-family: Verdana,Geneva,sans-serif;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    background-color: #AD5D5E;
+    color: #F9F9F9;
+    margin-bottom: 30px;
+  }
+
 
   .v-formlayout-formBackground {
     background: #F9F9F9;
@@ -64,6 +174,13 @@
     background: #F9F9F9;
     color: #101920;
     font-family: Verdana,Geneva,sans-serif;
+  }
+
+  .v-table .v-selected[class*="-row"] {
+    background-color: #AD5D5E;
+    background-image: none;
+    background-origin: border-box;
+    color: #AD5D5E;
   }
   // Insert your own theme rules here
 }

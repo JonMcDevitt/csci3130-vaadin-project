@@ -44,7 +44,6 @@ public class CourseView extends CustomComponent implements View {
         setSizeFull();
         configureComponents(courseID);
         createLayout();
-        initStyles();
     }
 
     private void configureComponents(String courseID) {
@@ -111,14 +110,6 @@ public class CourseView extends CustomComponent implements View {
         mainLayout.setComponentAlignment(studentGrid, Alignment.MIDDLE_CENTER);
         horizontalLayout.setComponentAlignment(mainLayout, Alignment.MIDDLE_CENTER);
         setCompositionRoot(horizontalLayout);
-    }
-
-    private void initStyles(){
-       // goToMain.addStyleName("alphabutton");
-        //addStudent.addStyleName("alphabutton");
-        //editStudent.addStyleName("alphabutton");
-        //goToTakeAttendance.addStyleName("alphabutton");
-        //deleteStudent.addStyleName("alphabutton");
     }
 
     @Override
