@@ -13132,6 +13132,10 @@ div.v-layout.v-horizontal.v-widget {
 	margin-top: 12px;
 }
 
+.mytheme .spacer-bot {
+	margin-bottom: 12px;
+}
+
 .mytheme .topbar {
 	font-family: Verdana, Geneva, sans-serif;
 	padding-top: 10px;

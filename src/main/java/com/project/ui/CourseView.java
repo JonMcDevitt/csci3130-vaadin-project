@@ -118,6 +118,7 @@ public class CourseView extends CustomComponent implements View {
         mainLayout.setComponentAlignment(buttons, Alignment.MIDDLE_CENTER);
         mainLayout.setComponentAlignment(studentGrid, Alignment.MIDDLE_CENTER);
         horizontalLayout.setComponentAlignment(mainLayout, Alignment.MIDDLE_CENTER);
+        horizontalLayout.setComponentAlignment(popupContent, Alignment.MIDDLE_CENTER);
         VerticalLayout layout = new VerticalLayout(topLayout, horizontalLayout);
         layout.setComponentAlignment(horizontalLayout, Alignment.MIDDLE_CENTER);
         setCompositionRoot(layout);
@@ -137,9 +138,11 @@ public class CourseView extends CustomComponent implements View {
 
         //TextField id = new TextField("ID");
         TextField barcode = new TextField("Barcode");
+        barcode.addStyleName("spacer-bot");
         TextField fname = new TextField("First Name");
+        fname.addStyleName("spacer-bot");
         TextField lname = new TextField("Last Name");
-
+        lname.addStyleName("spacer-bot");
         //popupContent.addComponent(id);
         popupContent.addComponent(barcode);
         popupContent.addComponent(fname);
@@ -152,6 +155,8 @@ public class CourseView extends CustomComponent implements View {
 
         popButtons.addComponent(saveButton);
         popButtons.addComponent(cancelButton);
+        popButtons.setSpacing(true);
+
         popupContent.addComponent(popButtons);
         popupContent.setVisible(false);
     }
