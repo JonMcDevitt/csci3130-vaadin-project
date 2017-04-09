@@ -173,12 +173,12 @@ public class CourseView extends CustomComponent implements View {
     }
 
     private void deleteStudent(String courseID) {
-        if (studentGrid.getSelectedRow() != null) {
-            currStudent = (Student) studentGrid.getSelectedRow();
+        currStudent = (Student) studentGrid.getSelectedRow();
+        if(currStudent!=null){
+        	DatabaseHandler.removeStudent(courseID, currStudent.getId());
+        	getUI().getNavigator().addView(CourseView.NAME, new CourseView(courseID));
+        	getUI().getNavigator().navigateTo(CourseView.NAME);
         }
-        DatabaseHandler.removeStudent(courseID, currStudent.getId());
-        getUI().getNavigator().addView(CourseView.NAME, new CourseView(courseID));
-        getUI().getNavigator().navigateTo(CourseView.NAME);
     }
 
     private void changeStudent( TextField barcode, TextField firstname, TextField lastname) {
