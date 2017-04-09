@@ -50,10 +50,28 @@
     box-shadow: none;
   }
 
+
+  h1{
+    font-size:24px;
+    font-family: Verdana,Geneva,sans-serif;
+    font-weight: bold;
+    color: #2F3535;
+    padding: 0px;
+    margin: 12px;
+  }
+  h2{
+    font-size:18px;
+    font-family: Verdana,Geneva,sans-serif;
+    font-weight: normal;
+    color: #2F3535;
+    padding: 0px;
+    margin: 12px;
+  }
 h6{
   font-size:16px;
   font-family: Verdana,Geneva,sans-serif;
   font-weight: normal;
+  color: #F9F9F9;
   padding: 0px;
   margin: 0px;
 }

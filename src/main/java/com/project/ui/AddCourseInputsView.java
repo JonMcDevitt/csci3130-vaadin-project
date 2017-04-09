@@ -3,6 +3,7 @@ package com.project.ui;
 import com.project.backend.Course;
 import com.project.backend.DatabaseHandler;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 
 import java.util.List;
@@ -14,18 +15,30 @@ import java.util.regex.Pattern;
 public class AddCourseInputsView extends Window {
     private Button save;
     private TextField inputCourseCode, inputCourseName;
+    private Label header;
+    private Label subheader;
 
     public AddCourseInputsView(List<Course> courseList, Grid courseGrid) {
         super();
         center();
-        this.setWidth("400px");
-        this.setHeight("400px");
+        this.setWidth("500px");
+        this.setHeight("300px");
         setClosable(true);
         setModal(true);
         initButtons(courseGrid);
         initInputs();
+        header = new Label("<h1>New Course</h1>");
+        header.setContentMode(ContentMode.HTML);
+        subheader = new Label("<h2>Please enter your course name and code</h2>");
+        subheader.setContentMode(ContentMode.HTML);
         HorizontalLayout buttons = new HorizontalLayout(save);
-        VerticalLayout layout = new VerticalLayout(inputCourseCode, inputCourseName, buttons);
+        VerticalLayout layout = new VerticalLayout(header, subheader, inputCourseCode, inputCourseName, buttons);
+        layout.setSpacing(true);
+        layout.setComponentAlignment(buttons, Alignment.MIDDLE_CENTER);
+        layout.setComponentAlignment(header, Alignment.MIDDLE_CENTER);
+        layout.setComponentAlignment(subheader, Alignment.MIDDLE_CENTER);
+        layout.setComponentAlignment(inputCourseCode, Alignment.MIDDLE_CENTER);
+        layout.setComponentAlignment(inputCourseName, Alignment.MIDDLE_CENTER);
         setContent(layout);
 
     }
@@ -67,9 +80,9 @@ public class AddCourseInputsView extends Window {
     private void initInputs() {
         inputCourseCode = new TextField();
         inputCourseCode.setInputPrompt("Course Code (e.g. CSCI 1101)");
-        inputCourseCode.setWidth("300px");
+        inputCourseCode.setWidth("400px");
         inputCourseName = new TextField();
-        inputCourseName.setWidth("300px");
+        inputCourseName.setWidth("400px");
         inputCourseName.setInputPrompt("Course Name (e.g. Software Engineering)");
     }
 }
