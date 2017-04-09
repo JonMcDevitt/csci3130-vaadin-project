@@ -1,5 +1,6 @@
 package com.project.ui;
 
+import javax.servlet.ServletContext;
 import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
@@ -29,7 +30,7 @@ public class LoginUI extends UI {
         getNavigator().addView(CourseView.NAME, CourseView.class);
         getNavigator().addView(NewStudentView.NAME, NewStudentView.class);
         getNavigator().addView(SignUpView.NAME, SignUpView.class);
-
+        
         getNavigator().addViewChangeListener(new ViewChangeListener() {
             @Override
             public boolean beforeViewChange(ViewChangeEvent viewChangeEvent) {           	

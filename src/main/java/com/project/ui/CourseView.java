@@ -53,6 +53,8 @@ public class CourseView extends CustomComponent implements View {
     }
 
     private void configureComponents(String courseID) {
+    	Course course = DatabaseHandler.getInstance().getCourseById(courseID);
+
         goToMain = new Button("Back to main page",
                 (Button.ClickListener) clickEvent -> goToMain());
         addStudent = new Button("",
@@ -66,14 +68,14 @@ public class CourseView extends CustomComponent implements View {
 
         configurePopup();
         //Display the parameter -- course's student roaster
-        studentGrid.setContainerDataSource(new BeanItemContainer<>(Student.class, DatabaseHandler.getCourseStudents(courseID)));
+        studentGrid.setContainerDataSource(new BeanItemContainer<>(Student.class, DatabaseHandler.getInstance().getCourseStudents(courseID)));
         studentGrid.setColumnOrder("id");
         studentGrid.removeColumn("courseList");
         studentGrid.setWidth("700px");
         editStudentGrid(studentGrid);
         goToTakeAttendance.setId(TAKE_ATTENDANCE_FOR_TODAY_BUTTON_ID);
         logout = new Button("Log Out", (Button.ClickListener) clickEvent -> logOut());
-        welcome = new Label("<h6>"+DatabaseHandler.getCourseById(courseID).getCourseName()+"</h6>");
+        welcome = new Label("<h6>"+DatabaseHandler.getInstance().getCourseById(courseID).getCourseName()+"</h6>");
     }
     
     private void editStudentGrid(Grid studentGrid){
@@ -112,7 +114,7 @@ public class CourseView extends CustomComponent implements View {
     }
 
     private void takeAttendance() {
-        getUI().setContent(new AttendanceView(DatabaseHandler.getCourseById(courseID)));
+        getUI().setContent(new AttendanceView(DatabaseHandler.getInstance().getCourseById(courseID)));
     }
 
     private void createLayout() {
@@ -139,6 +141,7 @@ public class CourseView extends CustomComponent implements View {
         VerticalLayout mainLayout = new VerticalLayout(studentGrid,buttons);
         //mainLayout.setSpacing(true);
         HorizontalLayout horizontalLayout = new HorizontalLayout(topLayout, mainLayout, addStudent,popupContent);
+        mainLayout.setSpacing(true);
         //horizontalLayout.setSizeFull();
         //horizontalLayout.setSpacing(true);
         buttons.setComponentAlignment(goToTakeAttendance, Alignment.MIDDLE_CENTER);
@@ -204,10 +207,13 @@ public class CourseView extends CustomComponent implements View {
     private void deleteStudent(String courseID) {
         currStudent = (Student) studentGrid.getSelectedRow();
         if(currStudent!=null){
-        	DatabaseHandler.removeStudent(courseID, currStudent.getId());
+        	DatabaseHandler.getInstance().removeStudent(courseID, currStudent.getId());
         	getUI().getNavigator().addView(CourseView.NAME, new CourseView(courseID));
         	getUI().getNavigator().navigateTo(CourseView.NAME);
         }
+        DatabaseHandler.getInstance().removeStudent(courseID, currStudent.getId());
+        getUI().getNavigator().addView(CourseView.NAME, new CourseView(courseID));
+        getUI().getNavigator().navigateTo(CourseView.NAME);
     }
 
     private void changeStudent( TextField barcode, TextField firstname, TextField lastname) {
@@ -216,7 +222,7 @@ public class CourseView extends CustomComponent implements View {
     	String barcodes = barcode.getValue();
     	String fname = firstname.getValue();
     	String lname = lastname.getValue();
-    	DatabaseHandler.changeStudent(currID,barcodes,fname,lname, null);
+    	DatabaseHandler.getInstance().changeStudent(currID,barcodes,fname,lname, null);
         popupContent.setVisible(false);
         Notification saved = new Notification("Saved edit");
         saved.setDelayMsec(5000);

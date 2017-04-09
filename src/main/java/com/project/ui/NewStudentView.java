@@ -89,7 +89,7 @@ public class NewStudentView extends CustomComponent implements View {
     }
 
     private void addStudent(String courseID) {
-        DatabaseHandler.addStudent(courseID, id.getValue(), firstName.getValue(), lastName.getValue(), barcode.getValue());
+        DatabaseHandler.getInstance().addStudent(courseID, id.getValue(), firstName.getValue(), lastName.getValue(), barcode.getValue());
         getUI().getNavigator().addView(CourseView.NAME, new CourseView(courseID));
         getUI().getNavigator().navigateTo(CourseView.NAME);
     }

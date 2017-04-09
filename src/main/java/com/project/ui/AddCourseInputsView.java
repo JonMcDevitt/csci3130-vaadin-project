@@ -56,10 +56,10 @@ public class AddCourseInputsView extends Window {
                 Notification.show("Invalid fields.", Notification.Type.WARNING_MESSAGE);
             }*/
 
-            DatabaseHandler.addCourse(inputCourseName.getValue(), inputCourseCode.getValue());
+            DatabaseHandler.getInstance().addCourse(inputCourseName.getValue(), inputCourseCode.getValue());
             BeanItemContainer<Course> bic = (BeanItemContainer<Course>) courseGrid.getContainerDataSource();
             bic.removeAllItems();
-            bic.addAll(DatabaseHandler.getAllCourses());
+            bic.addAll(DatabaseHandler.getInstance().getAllCourses());
             courseGrid.setHeightByRows(courseGrid.getContainerDataSource().size());
             this.close();
         });
