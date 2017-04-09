@@ -113,6 +113,7 @@ public class CourseView extends CustomComponent implements View {
         VerticalLayout mainLayout = new VerticalLayout(studentGrid,buttons);
         //mainLayout.setSpacing(true);
         HorizontalLayout horizontalLayout = new HorizontalLayout(topLayout, mainLayout, addStudent,popupContent);
+        mainLayout.setSpacing(true);
         //horizontalLayout.setSizeFull();
         //horizontalLayout.setSpacing(true);
         buttons.setComponentAlignment(goToTakeAttendance, Alignment.MIDDLE_CENTER);
