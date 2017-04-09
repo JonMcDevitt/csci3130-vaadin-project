@@ -51,6 +51,8 @@ public class LoginView extends CustomComponent implements View {
     
     private static final int MINIMUM_PASSWORD_LENGTH = 8;
 
+    private static final int NOTIFICATION_DELAY_MSEC = 3000;
+
     public LoginView() {
         initUsernameTextField(emailTextField);
         initPasswordField(passwordField,tmpPassword);
@@ -64,7 +66,17 @@ public class LoginView extends CustomComponent implements View {
     private final void initUsernameTextField(TextField usernameTextField) {
     	usernameTextField.setIcon(FontAwesome.USER);
     	usernameTextField.setId(EMAIL_TEXT_FIELD_ID);
-        usernameTextField.addValidator(new EmailValidator("Username must be an email address."));
+        usernameTextField.addValidator(new EmailValidator("Username must be an email address.") {
+            @Override
+            public void validate(Object value) {
+                try {
+                    super.validate(value);
+                }
+                catch (InvalidValueException ive) {
+                    showInvalidEmailNotification();
+                }
+            }
+        });
         usernameTextField.setWidth("300px");
         usernameTextField.addStyleName("requiredField");
         //usernameTextField.setRequired(true);
@@ -104,12 +116,12 @@ public class LoginView extends CustomComponent implements View {
             String pWord = passwordField.getValue();
             User r = DatabaseHandler.getInstance().getUserById(email);
             if(r == null) {
-                Notification.show("Invalid username", Notification.Type.ERROR_MESSAGE);
+                showFailedSignInNotification();
             } else if(r.getPassword() != null && r.getPassword().equals(pWord)) {
                 getSession().setAttribute("user", email);
                 getUI().getNavigator().navigateTo(MainMenuView.NAME);
             } else {
-                Notification.show("Error: Invalid password", Notification.Type.ERROR_MESSAGE);
+                showFailedSignInNotification();
                 passwordField.setValue("");
                 passwordField.focus();
             }
@@ -120,6 +132,20 @@ public class LoginView extends CustomComponent implements View {
         loginButton.addClickListener(onLoginClicked);
     }
     
+    private void showNotification(String message) {
+        Notification notification = new Notification(message, Notification.Type.ERROR_MESSAGE);
+        notification.setDelayMsec(NOTIFICATION_DELAY_MSEC);
+        notification.show(Page.getCurrent());
+    }
+    
+    private void showInvalidEmailNotification() {
+        showNotification("Username must be an email address");
+    }
+    
+    private void showFailedSignInNotification() {
+        showNotification("Incorrect username/password");
+    }
+
     private final void initSignUpButton(Button signUpButton) {
     	signUpButton.setWidth("300px");
         signUpButton.setCaption("Sign up");
