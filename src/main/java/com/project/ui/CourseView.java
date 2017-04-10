@@ -123,7 +123,7 @@ public class CourseView extends CustomComponent implements View {
     }
 
     private void goToStudent() {
-        getUI().getNavigator().addView(NewStudentView.NAME, new NewStudentView(courseID));
+        getUI().getNavigator().addView(NewStudentView.NAME, new NewStudentView(courseID, firstNameGlobal,lastNameGlobal,departmentGlobal));
         getUI().getNavigator().navigateTo(NewStudentView.NAME);
     }
 
@@ -179,17 +179,18 @@ public class CourseView extends CustomComponent implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+        configureComponents(null);
     }
 
     private void deleteStudent(String courseID) {
         currStudent = (Student) studentGrid.getSelectedRow();
         if(currStudent!=null){
         	DatabaseHandler.getInstance().removeStudent(courseID, currStudent.getId());
-        	getUI().getNavigator().addView(CourseView.NAME, new CourseView(courseID));
+        	getUI().getNavigator().addView(CourseView.NAME, new CourseView(courseID, firstNameGlobal, lastNameGlobal,departmentGlobal));
         	getUI().getNavigator().navigateTo(CourseView.NAME);
         }
         DatabaseHandler.getInstance().removeStudent(courseID, currStudent.getId());
-        getUI().getNavigator().addView(CourseView.NAME, new CourseView(courseID));
+        getUI().getNavigator().addView(CourseView.NAME, new CourseView(courseID, firstNameGlobal, lastNameGlobal,departmentGlobal));
         getUI().getNavigator().navigateTo(CourseView.NAME);
     }
 }

@@ -22,6 +22,10 @@ import com.vaadin.ui.themes.Reindeer;
 public class NewStudentView extends CustomComponent implements View {
     public static final String NAME = "NewStudentView";
     private static final String WIDTH_TEXTFIELD_DEFAULT = "300px";
+    private final String courseID;
+    private final String fname;
+    private final String lname;
+    private final String department;
 
     private TextField id;
     private TextField firstName;
@@ -36,10 +40,11 @@ public class NewStudentView extends CustomComponent implements View {
     private Label header;
     private Label subheader;
 
-    public NewStudentView() {
-    }
-
-    public NewStudentView(String courseID) {
+    public NewStudentView(String courseID,String firstName, String lastName, String department) {
+        this.fname= firstName;
+        this.lname = lastName;
+                this.department = department;
+        this.courseID = courseID;
         setSizeFull();
         components = new ArrayList<>();
 
@@ -90,7 +95,7 @@ public class NewStudentView extends CustomComponent implements View {
 
     private void addStudent(String courseID) {
         DatabaseHandler.getInstance().addStudent(courseID, id.getValue(), firstName.getValue(), lastName.getValue(), barcode.getValue());
-        getUI().getNavigator().addView(CourseView.NAME, new CourseView(courseID));
+        getUI().getNavigator().addView(CourseView.NAME, new CourseView(courseID,fname,lname,department));
         getUI().getNavigator().navigateTo(CourseView.NAME);
     }
 
